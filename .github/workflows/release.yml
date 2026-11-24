@@ -1,0 +1,109 @@
+# Fabrique toutes les versions installables à chaque nouvelle étiquette « v… » (ex. v1.0.0)
+# Windows (installeur .exe + zip portable), macOS Apple Silicon et Intel, Linux (AppImage, .deb, .tar.gz)
+name: Versions installables
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            kind: windows
+          - os: ubuntu-22.04
+            kind: linux
+          - os: macos-15            # Apple Silicon (M1, M2…)
+            kind: mac
+            arch: arm64
+            mac_name: AppleSilicon
+          - os: macos-15-intel      # Intel
+            kind: mac
+            arch: x64
+            mac_name: Intel
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Version (tirée de l'étiquette)
+        shell: bash
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          case "$V" in [0-9]*) ;; *) V="$(node -p "require('./package.json').version")";; esac
+          echo "VERSION=$V" >> "$GITHUB_ENV"
+          npm pkg set version="$V"
+
+      - name: Assemblage de l'application HTML
+        run: python tools/build.py
+
+      - name: Dépendances
+        run: npm install --no-audit --no-fund
+
+      # ---------- Windows
+      - name: Windows — installeur et archive portable
+        if: matrix.kind == 'windows'
+        run: npx electron-builder --win nsis zip --x64 --publish never
+
+      # ---------- Linux
+      - name: Linux — AppImage, .deb, .tar.gz
+        if: matrix.kind == 'linux'
+        run: npx electron-builder --linux AppImage deb tar.gz --x64 --publish never
+
+      # ---------- macOS (sans certificat Apple : signature « ad hoc »)
+      - name: macOS — application
+        if: matrix.kind == 'mac'
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder --mac dir --${{ matrix.arch }} --publish never
+      - name: macOS — signature ad hoc et archive
+        if: matrix.kind == 'mac'
+        shell: bash
+        run: |
+          APP="$(find dist -maxdepth 2 -name 'Solar Duo.app' | head -1)"
+          echo "Application : $APP"
+          codesign --force --deep --sign - "$APP"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "dist/Solar-Duo-macOS-${{ matrix.mac_name }}.zip"
+
+      - name: Fichiers produits
+        shell: bash
+        run: ls -la dist
+
+      - name: Publication dans la version GitHub
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Solar Duo ${{ env.VERSION }}
+          body_path: NOUVEAUTES.md
+          files: |
+            dist/Solar-Duo-Windows-Setup.exe
+            dist/Solar-Duo-Windows.zip
+            dist/Solar-Duo-macOS-*.zip
+            dist/Solar-Duo-x86_64.AppImage
+            dist/solar-duo_amd64.deb
+            dist/Solar-Duo-Linux-x86_64.tar.gz
+
+      - name: Conservation des fichiers (lancement manuel)
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: solar-duo-${{ matrix.kind }}-${{ matrix.arch || 'x64' }}
+          path: |
+            dist/*.exe
+            dist/*.zip
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.tar.gz
+          if-no-files-found: warn
