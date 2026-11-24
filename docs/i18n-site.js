@@ -90,7 +90,12 @@ window.SITE_T = {
 "oth": "By the same author:",
 "ft1": "Solar Duo — Jacques Branas, in collaboration with Claude.ai · GNU GPL v3 licence",
 "ft2": "Contact:",
-"ft3": "Results are a sizing aid: check the manufacturers' current datasheets and the regulations in force before any installation."
+"ft3": "Results are a sizing aid: check the manufacturers' current datasheets and the regulations in force before any installation.",
+"nv": "Video",
+"watch": "Watch the video",
+"h2v": "Solar Duo in two minutes",
+"subv": "A tour of the tabs with the F4 house in Tarbes example, from the energy balance to the protection diagram.",
+"vl": "Video language:"
 },
 "es": {
 "nf": "Funciones",
@@ -182,7 +187,12 @@ window.SITE_T = {
 "oth": "Del mismo autor:",
 "ft1": "Solar Duo — Jacques Branas, en colaboración con Claude.ai · Licencia GNU GPL v3",
 "ft2": "Contacto:",
-"ft3": "Los resultados son una ayuda al dimensionamiento: compruebe las fichas técnicas actualizadas de los fabricantes y la normativa vigente antes de cualquier instalación."
+"ft3": "Los resultados son una ayuda al dimensionamiento: compruebe las fichas técnicas actualizadas de los fabricantes y la normativa vigente antes de cualquier instalación.",
+"nv": "Vídeo",
+"watch": "Ver el vídeo",
+"h2v": "Solar Duo en dos minutos",
+"subv": "Recorrido por las pestañas con el ejemplo de la vivienda de Tarbes, del balance energético al esquema de protecciones (vídeo en francés o en inglés).",
+"vl": "Idioma del vídeo:"
 },
 "pt": {
 "nf": "Funções",
@@ -274,7 +284,12 @@ window.SITE_T = {
 "oth": "Do mesmo autor:",
 "ft1": "Solar Duo — Jacques Branas, em colaboração com Claude.ai · Licença GNU GPL v3",
 "ft2": "Contacto:",
-"ft3": "Os resultados são uma ajuda ao dimensionamento: verifique as fichas técnicas atualizadas dos fabricantes e a regulamentação em vigor antes de qualquer instalação."
+"ft3": "Os resultados são uma ajuda ao dimensionamento: verifique as fichas técnicas atualizadas dos fabricantes e a regulamentação em vigor antes de qualquer instalação.",
+"nv": "Vídeo",
+"watch": "Ver o vídeo",
+"h2v": "O Solar Duo em dois minutos",
+"subv": "Uma volta pelos separadores com o exemplo da moradia em Tarbes, do balanço energético ao esquema das proteções (vídeo em francês ou inglês).",
+"vl": "Língua do vídeo:"
 },
 "de": {
 "nf": "Funktionen",
@@ -366,7 +381,12 @@ window.SITE_T = {
 "oth": "Vom selben Autor:",
 "ft1": "Solar Duo — Jacques Branas, in Zusammenarbeit mit Claude.ai · Lizenz GNU GPL v3",
 "ft2": "Kontakt:",
-"ft3": "Die Ergebnisse sind eine Auslegungshilfe: Prüfen Sie vor jeder Ausführung die aktuellen Datenblätter der Hersteller und die geltenden Vorschriften."
+"ft3": "Die Ergebnisse sind eine Auslegungshilfe: Prüfen Sie vor jeder Ausführung die aktuellen Datenblätter der Hersteller und die geltenden Vorschriften.",
+"nv": "Video",
+"watch": "Video ansehen",
+"h2v": "Solar Duo in zwei Minuten",
+"subv": "Ein Rundgang durch die Reiter am Beispiel des Hauses in Tarbes, von der Energiebilanz bis zum Schaltplan (Video auf Französisch oder Englisch).",
+"vl": "Sprache des Videos:"
 },
 "it": {
 "nf": "Funzioni",
@@ -458,7 +478,12 @@ window.SITE_T = {
 "oth": "Dello stesso autore:",
 "ft1": "Solar Duo — Jacques Branas, in collaborazione con Claude.ai · Licenza GNU GPL v3",
 "ft2": "Contatto:",
-"ft3": "I risultati sono un aiuto al dimensionamento: verificare le schede tecniche aggiornate dei produttori e le norme in vigore prima di ogni realizzazione."
+"ft3": "I risultati sono un aiuto al dimensionamento: verificare le schede tecniche aggiornate dei produttori e le norme in vigore prima di ogni realizzazione.",
+"nv": "Video",
+"watch": "Guarda il video",
+"h2v": "Solar Duo in due minuti",
+"subv": "Un giro tra le schede con l'esempio della casa a Tarbes, dal bilancio energetico allo schema delle protezioni (video in francese o in inglese).",
+"vl": "Lingua del video:"
 },
 "el": {
 "nf": "Λειτουργίες",
@@ -550,7 +575,12 @@ window.SITE_T = {
 "oth": "Από τον ίδιο δημιουργό:",
 "ft1": "Solar Duo — Jacques Branas, σε συνεργασία με το Claude.ai · Άδεια GNU GPL v3",
 "ft2": "Επικοινωνία:",
-"ft3": "Τα αποτελέσματα είναι βοήθημα διαστασιολόγησης: ελέγξτε τα τρέχοντα φύλλα δεδομένων των κατασκευαστών και τους ισχύοντες κανονισμούς πριν από κάθε εγκατάσταση."
+"ft3": "Τα αποτελέσματα είναι βοήθημα διαστασιολόγησης: ελέγξτε τα τρέχοντα φύλλα δεδομένων των κατασκευαστών και τους ισχύοντες κανονισμούς πριν από κάθε εγκατάσταση.",
+"nv": "Βίντεο",
+"watch": "Δείτε το βίντεο",
+"h2v": "Το Solar Duo σε δύο λεπτά",
+"subv": "Μια περιήγηση στις καρτέλες με το παράδειγμα της κατοικίας στην Tarbes, από το ενεργειακό ισοζύγιο ως το σχέδιο των προστασιών (βίντεο στα γαλλικά ή στα αγγλικά).",
+"vl": "Γλώσσα βίντεο:"
 },
 "zh": {
 "nf": "功能",
@@ -642,7 +672,12 @@ window.SITE_T = {
 "oth": "同一作者的其他软件：",
 "ft1": "Solar Duo — Jacques Branas，与 Claude.ai 合作 · GNU GPL v3 许可证",
 "ft2": "联系方式：",
-"ft3": "计算结果仅供设计参考：施工前请核对制造商最新的数据手册和现行规范。"
+"ft3": "计算结果仅供设计参考：施工前请核对制造商最新的数据手册和现行规范。",
+"nv": "视频",
+"watch": "观看视频",
+"h2v": "两分钟了解 Solar Duo",
+"subv": "以塔布住宅为例，浏览各个选项卡：从能耗统计到保护电器接线图（视频为法语或英语）。",
+"vl": "视频语言："
 },
 "ru": {
 "nf": "Возможности",
@@ -734,7 +769,12 @@ window.SITE_T = {
 "oth": "От того же автора:",
 "ft1": "Solar Duo — Jacques Branas, совместно с Claude.ai · Лицензия GNU GPL v3",
 "ft2": "Контакт:",
-"ft3": "Результаты — вспомогательный расчёт: перед монтажом проверьте актуальные паспорта производителей и действующие нормы."
+"ft3": "Результаты — вспомогательный расчёт: перед монтажом проверьте актуальные паспорта производителей и действующие нормы.",
+"nv": "Видео",
+"watch": "Смотреть видео",
+"h2v": "Solar Duo за две минуты",
+"subv": "Обзор вкладок на примере дома в Тарбе — от энергобаланса до схемы защиты (видео на французском или английском).",
+"vl": "Язык видео:"
 },
 "uk": {
 "nf": "Можливості",
@@ -826,7 +866,12 @@ window.SITE_T = {
 "oth": "Від того самого автора:",
 "ft1": "Solar Duo — Jacques Branas, у співпраці з Claude.ai · Ліцензія GNU GPL v3",
 "ft2": "Контакт:",
-"ft3": "Результати — допоміжний розрахунок: перед монтажем перевірте актуальні паспорти виробників і чинні норми."
+"ft3": "Результати — допоміжний розрахунок: перед монтажем перевірте актуальні паспорти виробників і чинні норми.",
+"nv": "Відео",
+"watch": "Дивитися відео",
+"h2v": "Solar Duo за дві хвилини",
+"subv": "Огляд вкладок на прикладі будинку в Тарбі — від енергобалансу до схеми захисту (відео французькою або англійською).",
+"vl": "Мова відео:"
 },
 "ar": {
 "nf": "الميزات",
@@ -918,7 +963,12 @@ window.SITE_T = {
 "oth": "من المؤلف نفسه:",
 "ft1": "Solar Duo — Jacques Branas، بالتعاون مع Claude.ai · رخصة GNU GPL v3",
 "ft2": "للتواصل:",
-"ft3": "النتائج مساعدة في حساب الأبعاد: تحقق من النشرات التقنية المحدّثة للصانعين ومن اللوائح السارية قبل أي تنفيذ."
+"ft3": "النتائج مساعدة في حساب الأبعاد: تحقق من النشرات التقنية المحدّثة للصانعين ومن اللوائح السارية قبل أي تنفيذ.",
+"nv": "فيديو",
+"watch": "شاهد الفيديو",
+"h2v": "Solar Duo في دقيقتين",
+"subv": "جولة في علامات التبويب بمثال المنزل في تارب، من الحصيلة الطاقية إلى مخطط الحمايات (الفيديو بالفرنسية أو الإنجليزية).",
+"vl": "لغة الفيديو:"
 },
 "sq": {
 "nf": "Funksionet",
@@ -1010,7 +1060,12 @@ window.SITE_T = {
 "oth": "Nga i njëjti autor:",
 "ft1": "Solar Duo — Jacques Branas, në bashkëpunim me Claude.ai · Licenca GNU GPL v3",
 "ft2": "Kontakt:",
-"ft3": "Rezultatet janë ndihmë për përmasimin: kontrolloni fletët teknike të përditësuara të prodhuesve dhe rregullat në fuqi para çdo realizimi."
+"ft3": "Rezultatet janë ndihmë për përmasimin: kontrolloni fletët teknike të përditësuara të prodhuesve dhe rregullat në fuqi para çdo realizimi.",
+"nv": "Video",
+"watch": "Shiko videon",
+"h2v": "Solar Duo në dy minuta",
+"subv": "Një shëtitje nëpër skeda me shembullin e shtëpisë në Tarbes, nga bilanci energjetik te skema e mbrojtjeve (video në frëngjisht ose anglisht).",
+"vl": "Gjuha e videos:"
 }
 };
 window.SITE_DYN = {
