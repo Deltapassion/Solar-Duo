@@ -621,6 +621,19 @@ DYN["sq"] = dict(dl="Shkarko", dlFor="Shkarko për ", useOnline="Përdore në in
  ok="Kompjuteri juaj u njoh. Sistem tjetër? Zgjidhni më poshtë.", allv="Të gjitha versionet: Windows, macOS, Linux",
  soon="Së shpejti", d1="shkarkim", dn="shkarkime", loc="sq-AL", title="Solar Duo — përmasimi i impianteve fotovoltaike, softuer i lirë", **{"not": "Nuk përdorni {os}?"})
 
+# ---- vidéo (ajout)
+T["en"].update(nv='Video', watch='Watch the video', h2v='Solar Duo in two minutes', subv='A tour of the tabs with the F4 house in Tarbes example, from the energy balance to the protection diagram.', vl='Video language:')
+T["es"].update(nv='Vídeo', watch='Ver el vídeo', h2v='Solar Duo en dos minutos', subv='Recorrido por las pestañas con el ejemplo de la vivienda de Tarbes, del balance energético al esquema de protecciones (vídeo en francés o en inglés).', vl='Idioma del vídeo:')
+T["pt"].update(nv='Vídeo', watch='Ver o vídeo', h2v='O Solar Duo em dois minutos', subv='Uma volta pelos separadores com o exemplo da moradia em Tarbes, do balanço energético ao esquema das proteções (vídeo em francês ou inglês).', vl='Língua do vídeo:')
+T["de"].update(nv='Video', watch='Video ansehen', h2v='Solar Duo in zwei Minuten', subv='Ein Rundgang durch die Reiter am Beispiel des Hauses in Tarbes, von der Energiebilanz bis zum Schaltplan (Video auf Französisch oder Englisch).', vl='Sprache des Videos:')
+T["it"].update(nv='Video', watch='Guarda il video', h2v='Solar Duo in due minuti', subv="Un giro tra le schede con l'esempio della casa a Tarbes, dal bilancio energetico allo schema delle protezioni (video in francese o in inglese).", vl='Lingua del video:')
+T["el"].update(nv='Βίντεο', watch='Δείτε το βίντεο', h2v='Το Solar Duo σε δύο λεπτά', subv='Μια περιήγηση στις καρτέλες με το παράδειγμα της κατοικίας στην Tarbes, από το ενεργειακό ισοζύγιο ως το σχέδιο των προστασιών (βίντεο στα γαλλικά ή στα αγγλικά).', vl='Γλώσσα βίντεο:')
+T["zh"].update(nv='视频', watch='观看视频', h2v='两分钟了解 Solar Duo', subv='以塔布住宅为例，浏览各个选项卡：从能耗统计到保护电器接线图（视频为法语或英语）。', vl='视频语言：')
+T["ru"].update(nv='Видео', watch='Смотреть видео', h2v='Solar Duo за две минуты', subv='Обзор вкладок на примере дома в Тарбе — от энергобаланса до схемы защиты (видео на французском или английском).', vl='Язык видео:')
+T["uk"].update(nv='Відео', watch='Дивитися відео', h2v='Solar Duo за дві хвилини', subv='Огляд вкладок на прикладі будинку в Тарбі — від енергобалансу до схеми захисту (відео французькою або англійською).', vl='Мова відео:')
+T["ar"].update(nv='فيديو', watch='شاهد الفيديو', h2v='Solar Duo في دقيقتين', subv='جولة في علامات التبويب بمثال المنزل في تارب، من الحصيلة الطاقية إلى مخطط الحمايات (الفيديو بالفرنسية أو الإنجليزية).', vl='لغة الفيديو:')
+T["sq"].update(nv='Video', watch='Shiko videon', h2v='Solar Duo në dy minuta', subv='Një shëtitje nëpër skeda me shembullin e shtëpisë në Tarbes, nga bilanci energjetik te skema e mbrojtjeve (video në frëngjisht ose anglisht).', vl='Gjuha e videos:')
+
 if __name__ == "__main__":
     out = Path(__file__).resolve().parent.parent / "docs" / "i18n-site.js"
     js = ("// Généré par tools/site_i18n.py — ne pas modifier à la main\n"
