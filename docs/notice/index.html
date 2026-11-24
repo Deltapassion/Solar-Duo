@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solar Duo — Notice d'utilisation</title>
+<link rel="icon" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#18222d;--muted:#55616e;--line:#dfe4ea;--paper:#f6f8fb;--card:#fff;--sun:#f6b40e;--red:#d7261e;--celeste:#74acdf;--deep:#0f4c7a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.65}
+a{color:var(--deep)}
+header{position:relative;color:#fff;background:url("../img/payolle.jpg") center 45%/cover no-repeat;isolation:isolate}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,26,44,.55),rgba(8,26,44,.80))}
+.top{display:flex;align-items:center;gap:14px;padding:14px clamp(14px,4vw,48px)}
+.top a.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;letter-spacing:.04em;margin-right:auto}
+.top a.brand img{width:34px;height:34px;border-radius:8px}
+.top a.brand .s{color:#ff6b5e}
+.top a.lk{color:#eef4f9;font-size:14px;text-decoration:none;white-space:nowrap}
+.top a.lk:hover{text-decoration:underline}
+.top button{font:inherit;font-size:14px;font-weight:600;color:#fff;background:rgba(10,30,50,.45);border:1px solid rgba(255,255,255,.45);border-radius:10px;padding:6px 12px;cursor:pointer}
+select{font:inherit;font-size:14px;font-weight:600;color:#fff;background:rgba(10,30,50,.5);border:1px solid rgba(255,255,255,.5);border-radius:10px;padding:6px 8px;cursor:pointer}
+select option{color:#111;background:#fff}
+.head{display:flex;align-items:center;gap:22px;padding:10px clamp(14px,4vw,48px) 34px;max-width:1240px;margin:0 auto}
+.head img{width:96px;height:auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.35))}
+.head h1{font-family:Fraunces,Georgia,serif;font-size:clamp(30px,5vw,48px);margin:0;line-height:1.05}
+.head p{margin:6px 0 0;color:#dbe8f3;font-size:17px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:34px;max-width:1240px;margin:0 auto;padding:30px clamp(14px,4vw,48px) 60px}
+nav.toc{position:sticky;top:16px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 10px}
+nav.toc h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+nav.toc ol{margin:0;padding:0 0 0 20px;font-size:14px}
+[dir=rtl] nav.toc ol{padding:0 20px 0 0}
+nav.toc li{margin:3px 0}
+nav.toc a{text-decoration:none;color:var(--ink)}
+nav.toc a:hover{color:var(--deep);text-decoration:underline}
+.note{background:#fff7dd;border:1px solid #f1d98b;border-radius:12px;padding:10px 14px;margin:0 0 22px;font-size:15px}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin:0 0 22px;scroll-margin-top:16px}
+section h2{display:flex;align-items:center;gap:12px;font-size:22px;margin:0 0 10px}
+section h2 .n{flex:none;display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--sun);color:#3a2500;font-size:16px;font-weight:800}
+section p{margin:0 0 10px}
+section ul{margin:0 0 10px;padding-left:22px}
+[dir=rtl] section ul{padding-left:0;padding-right:22px}
+section li{margin:4px 0}
+code{background:#eef2f6;border:1px solid #dde3ea;border-radius:6px;padding:1px 6px;font-size:.9em;direction:ltr;unicode-bidi:embed}
+figure{margin:14px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+figure img{display:block;width:100%;height:auto}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 40px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static}.top a.lk{display:none}}
+@media print{
+  header{background:none;color:#000}header::before{display:none}.top{display:none}.head p{color:#333}
+  .layout{display:block;padding:0}nav.toc{display:none}
+  section{break-inside:avoid-page;border:none;padding:0 0 10px}figure{break-inside:avoid}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <a class="brand" href="../"><img src="../img/icon.png" alt=""><span><span class="s">SOLAR</span> DUO</span></a>
+    <a class="lk" id="lSite" href="../">Site</a>
+    <a class="lk" id="lApp" href="../app/">En ligne</a>
+    <a class="lk" id="lDl" href="../#telecharger">Télécharger</a>
+    <button type="button" id="bPrint">Imprimer</button>
+    <select id="lang" aria-label="Langue / Language">
+      <option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option>
+      <option value="de">🇩🇪 Deutsch</option><option value="it">🇮🇹 Italiano</option><option value="el">🇬🇷 Ελληνικά</option><option value="zh">🇨🇳 中文</option>
+      <option value="ru">🇷🇺 Русский</option><option value="uk">🇺🇦 Українська</option><option value="ar">العربية</option><option value="sq">🇦🇱 Shqip</option>
+    </select>
+  </div>
+  <div class="head">
+    <img src="../img/solar-duo-logo.png" alt="">
+    <div><h1 id="title">Notice d'utilisation</h1><p id="sub"></p></div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc"><h2 id="toc">Sommaire</h2><ol id="tocList"></ol></nav>
+  <main id="main"></main>
+</div>
+<footer>Solar Duo — Jacques Branas, en collaboration avec Claude.ai · GNU GPL v3 · <a href="https://github.com/Deltapassion/Solar-Duo">GitHub</a></footer>
+
+<script src="notice-text.js"></script>
+<script>
+(function(){
+  var N = window.NOTICE, IMG = window.NOTICE_IMG, LANGS = Object.keys(N), APP = ["fr","en","es"], lang = "fr";
+  function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(e){ return null; } }
+  function render(){
+    var d = N[lang], shot = APP.indexOf(lang) >= 0 ? lang : "en";
+    document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.title = "Solar Duo — " + d.title;
+    document.getElementById("title").textContent = d.title;
+    document.getElementById("sub").textContent = d.sub;
+    document.getElementById("toc").textContent = d.toc;
+    document.getElementById("lSite").textContent = d.site;
+    document.getElementById("lApp").textContent = d.app;
+    document.getElementById("lDl").textContent = d.dl;
+    document.getElementById("bPrint").textContent = d.print;
+    var q = "?lang=" + lang;
+    document.querySelector(".brand").href = "../" + q; document.getElementById("lSite").href = "../" + q;
+    document.getElementById("lDl").href = "../" + q + "#telecharger";
+    document.getElementById("lApp").href = "../app/" + (APP.indexOf(lang) >= 0 ? q : "");
+    var toc = "", html = d.note ? '<p class="note">' + d.note + "</p>" : "";
+    d.s.forEach(function(s, i){
+      var id = "s" + (i + 1);
+      toc += '<li><a href="#' + id + '">' + s[0] + "</a></li>";
+      html += '<section id="' + id + '"><h2><span class="n">' + (i + 1) + "</span>" + s[0] + "</h2>" + s[1] +
+        (IMG[i] ? '<figure><img loading="lazy" alt="" src="../img/captures/' + shot + "-" + IMG[i] + '.jpg"></figure>' : "") + "</section>";
+    });
+    document.getElementById("tocList").innerHTML = toc;
+    document.getElementById("main").innerHTML = html;
+    document.getElementById("lang").value = lang;
+  }
+  function setLang(l){ lang = LANGS.indexOf(l) >= 0 ? l : "fr"; store("solarduo-site-lang", lang);
+    try { history.replaceState(null, "", "?lang=" + lang + location.hash); } catch(e){}
+    render(); }
+  function first(){
+    var q = new URLSearchParams(location.search).get("lang"); if (LANGS.indexOf(q) >= 0) return q;
+    var s = store("solarduo-site-lang"); if (LANGS.indexOf(s) >= 0) return s;
+    var n = navigator.languages || [navigator.language || "fr"];
+    for (var i = 0; i < n.length; i++){ var c = String(n[i]).slice(0, 2).toLowerCase(); if (LANGS.indexOf(c) >= 0) return c; }
+    return "fr";
+  }
+  document.getElementById("lang").addEventListener("change", function(e){ setLang(e.target.value); });
+  document.getElementById("bPrint").addEventListener("click", function(){ window.print(); });
+  setLang(first());
+  if (location.hash) { var t = document.querySelector(location.hash); if (t) t.scrollIntoView(); }
+})();
+</script>
+<script data-goatcounter="https://deltapassion.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solar Duo</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,%%FAVICON%%">
+<style>
+:root{
+  --celeste:#74ACDF; --celeste-d:#3f7fb8; --celeste-l:#e8f2fb;
+  --gold:#F6B40E; --gold-l:#fff4d6; --brown:#85340A;
+  --ink:#1f2933; --muted:#5f6b76; --line:#d9e2ea; --bg:#f5f8fb; --card:#fff;
+  --ok:#1e7b45; --ok-l:#e3f5ea; --warn:#a35a00; --warn-l:#fff1dc; --err:#b3261e; --err-l:#fde8e6;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.45}
+header{position:relative;background:#6d93b8 url("data:image/jpeg;base64,%%PHOTO%%") center 42%/cover no-repeat;border-bottom:3px solid var(--gold)}
+header::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.5),rgba(255,255,255,.12) 55%,rgba(0,0,0,.15))}
+header .hwrap{position:relative}
+.hwrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:14px 18px}
+.logo{width:86px;height:86px;flex:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
+.brand h1{margin:0;font-size:38px;letter-spacing:2px;color:#D7261E;font-weight:800;line-height:1;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 8px #fff}
+.brand h1 span{color:#5a9bd8;letter-spacing:8px;margin-left:8px}
+.brand p{margin:6px 0 0;color:#1f2933;font-size:14px;font-weight:700;text-shadow:0 0 3px #fff,0 0 6px #fff}
+.hright{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.lang{display:flex;gap:4px}
+.lang button{border:1px solid rgba(0,0,0,.15);background:#fff;border-radius:6px;padding:3px 8px;font-weight:700;cursor:pointer;font-size:12px;color:var(--ink)}
+.lang button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--celeste-d)}
+.btn.primary{background:var(--brown);border-color:var(--brown);color:#fff}
+.btn.gold{background:var(--gold);border-color:#d99a00;color:#3b2200}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav .nwrap{max-width:1180px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;padding:0 12px}
+nav button{border:0;background:none;padding:12px 14px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav button .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--celeste-l);color:var(--celeste-d);font-size:12px;margin-right:6px}
+nav button.on{color:var(--brown);border-bottom-color:var(--gold)}
+nav button.on .n{background:var(--gold);color:#3b2200}
+nav button[hidden]{display:none}
+main{max-width:1180px;margin:0 auto;padding:18px}
+section.tab{display:none}
+section.tab.on{display:block}
+h2{margin:4px 0 4px;font-size:22px;color:var(--brown)}
+.lead{color:var(--muted);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:16px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px 16px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
+label.f small{font-weight:400}
+input,select{font:inherit;padding:7px 9px;border:1px solid #c7d3de;border-radius:7px;background:#fff;color:var(--ink);min-width:0}
+input:focus,select:focus{outline:2px solid var(--celeste);border-color:var(--celeste-d)}
+input[type=number]{text-align:right}
+.seg{display:flex;gap:0;border:1px solid #c7d3de;border-radius:8px;overflow:hidden;width:max-content;max-width:100%}
+.seg button{border:0;background:#fff;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid #c7d3de}
+.seg button.on{background:var(--celeste-d);color:#fff}
+table{border-collapse:collapse;width:100%}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);background:#f8fafc}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+#loads input{width:100%}
+#loads td:nth-child(1){min-width:170px}
+#loads td:nth-child(n+2):nth-child(-n+8) input{width:74px}
+#loads td{padding:5px 4px}
+details.kuks summary{cursor:pointer;font-weight:700;font-size:16px}
+details.kuks[open] summary{margin-bottom:10px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.kgrid h4{margin:0 0 6px;font-size:14px;color:var(--brown)}
+table.ref td,table.ref th{padding:4px 8px;font-size:13px}
+.prot{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.prot h4{margin:0 0 4px;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;border-radius:20px;padding:2px 8px;text-transform:uppercase;letter-spacing:.3px}
+.tag.ob{background:#fde8e6;color:#b3261e}.tag.rec{background:#fff1dc;color:#a35a00}.tag.ok{background:#e3f5ea;color:#1e7b45}
+.prot .ref{font-family:Consolas,Menlo,monospace;font-size:13px;background:var(--gold-l);border-radius:6px;padding:2px 6px}
+.prot ul{margin:6px 0 0 18px;padding:0}.prot li{margin:2px 0}
+#schemaProt,#schemaProt2{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+.doc table{font-size:13px}
+.doc tr.pick{cursor:pointer}
+.doc tr.pick:hover td{background:#f3f8fd}
+.doc tr.sel td{background:#ffe9a8!important;font-weight:700}
+.doc tr.sel td:first-child::before{content:"✔ ";color:#1e7b45}
+.doc tr.nok td{color:#9aa5b1}
+.doc h3 a,.doc td a{color:var(--celeste-d);font-weight:600;font-size:12px}
+.doc .scroll{overflow-x:auto}
+.cpl{overflow-x:auto;margin-top:10px}.cpl svg{display:block;max-width:100%;height:auto}
+.cpl p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.del{border:0;background:none;color:var(--err);cursor:pointer;font-size:18px;line-height:1}
+tfoot td{font-weight:700;background:var(--gold-l)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:4px}
+.kpi{background:var(--celeste-l);border-radius:10px;padding:10px 12px;border-left:4px solid var(--celeste-d)}
+.kpi.g{background:var(--gold-l);border-left-color:var(--gold)}
+.kpi b{display:block;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--muted);font-weight:600}
+.kpi i{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.formula{font-family:Consolas,"Cascadia Mono",Menlo,monospace;font-size:13.5px;background:#fbfcfd;border:1px dashed #c9d6e2;border-radius:8px;padding:8px 10px;margin:6px 0;overflow-x:auto;white-space:nowrap}
+.formula .t{font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;color:var(--brown);display:block;white-space:normal;margin-bottom:2px;font-size:13px}
+.msg{border-radius:8px;padding:8px 12px;margin:6px 0;font-size:14px}
+.msg.ok{background:var(--ok-l);color:var(--ok)}
+.msg.warn{background:var(--warn-l);color:var(--warn)}
+.msg.err{background:var(--err-l);color:var(--err)}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.hint a{color:var(--celeste-d)}
+.navbtns{display:flex;justify-content:space-between;margin-top:6px}
+#synop{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+footer{max-width:1180px;margin:10px auto 30px;padding:0 18px;color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.printonly{display:none}
+@media (max-width:640px){.logo{width:60px;height:60px}.brand h1{font-size:24px}.hwrap{flex-wrap:wrap}.hright{margin-left:0;align-items:flex-start}}
+@media print{
+  header,nav,.navbtns,.tools,.lang,.noprint,footer{display:none!important}
+  body{background:#fff;font-size:12px}
+  main{padding:0;max-width:none}
+  section.tab{display:none!important}
+  section#t-sum{display:block!important}
+  .card{break-inside:avoid;border-color:#bbb}
+  .card.big{break-inside:auto}
+  .formula{white-space:normal;break-inside:avoid}
+  .printonly{display:flex!important;align-items:center;gap:12px;border-bottom:3px solid var(--gold);padding-bottom:8px;margin-bottom:12px}
+  .printonly svg{width:60px;height:60px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <svg class="logo" viewBox="-215 -215 430 430" aria-hidden="true">%%SUN%%</svg>
+    <div class="brand">
+      <h1>SOLAR<span>DUO</span></h1>
+      <p data-i="tagline"></p>
+    </div>
+    <div class="hright">
+      <div class="lang" id="langs"></div>
+      <div class="tools">
+        <button class="btn" id="bNew" data-i="new"></button>
+        <button class="btn" id="bOpen" data-i="open"></button>
+        <button class="btn" id="bSave" data-i="save"></button>
+        <button class="btn gold" id="bPrint" data-i="print"></button>
+        <input type="file" id="fOpen" accept=".json,.solarduo" hidden>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav><div class="nwrap" id="tabs"></div></nav>
+
+<main>
+<!-- 1. PROJET & SITE -->
+<section class="tab" id="t-site">
+  <h2 data-i="t_site"></h2>
+  <p class="lead" data-i="site_lead"></p>
+  <div class="card">
+    <h3 data-i="project"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="pname"></span><input id="pName"></label>
+      <label class="f"><span data-i="pauthor"></span><input id="pAuthor"></label>
+      <label class="f"><span data-i="examples"></span><select id="exSel"></select></label>
+    </div>
+    <div id="exMsg"></div>
+    <h3 style="margin-top:16px" data-i="mode"></h3>
+    <div class="seg" id="modeSeg">
+      <button data-v="isole" data-i="m_isole"></button>
+      <button data-v="reseau" data-i="m_reseau"></button>
+    </div>
+    <p class="hint" id="modeHint"></p>
+  </div>
+  <div class="card">
+    <h3 data-i="sun"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="city"></span><select id="city"></select></label>
+      <label class="f iso"><span data-i="period"></span>
+        <select id="period">
+          <option value="year" data-i="per_year"></option>
+          <option value="summer" data-i="per_summer"></option>
+          <option value="avg" data-i="per_avg"></option>
+        </select></label>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <label class="f"><span data-i="h_dec"></span><input type="number" step="10" min="100" id="hDec"></label>
+      <label class="f"><span data-i="h_sum"></span><input type="number" step="10" min="100" id="hSum"></label>
+      <label class="f"><span data-i="h_year"></span><input type="number" step="10" min="100" id="hYear"></label>
+    </div>
+    <p class="hint" data-i="sun_hint"></p>
+    <div class="res" id="rSite"></div>
+  </div>
+  <div class="navbtns"><span></span><button class="btn primary" data-go="1" data-i="next"></button></div>
+</section>
+
+<!-- 2. CONSOMMATION -->
+<section class="tab" id="t-loads">
+  <h2 data-i="t_loads"></h2>
+  <p class="lead" id="loadsLead"></p>
+  <details class="card iso kuks">
+    <summary data-i="kuks_title"></summary>
+    <div class="kgrid">
+      <div><h4 data-i="ku_title"></h4>
+        <table class="ref"><thead><tr><th data-i="ku_use"></th><th class="num">Ku</th></tr></thead><tbody id="kuTable"></tbody></table></div>
+      <div><h4 data-i="ks_title_use"></h4>
+        <table class="ref"><thead><tr><th data-i="ku_use"></th><th class="num">Ks</th></tr></thead><tbody id="ksUseTable"></tbody></table></div>
+      <div><h4 data-i="ks_title_n"></h4>
+        <table class="ref"><thead><tr><th data-i="ks_ncirc"></th><th class="num">Ks</th></tr></thead><tbody id="ksNTable"></tbody></table></div>
+    </div>
+    <p class="hint" data-i="kuks_ref"></p>
+  </details>
+  <div class="card iso">
+    <h3 data-i="loads_table"></h3>
+    <div style="overflow-x:auto">
+    <table id="loads">
+      <thead><tr><th data-i="c_name"></th><th class="num" data-i="c_p"></th><th class="num" data-i="c_v"></th><th class="num" data-i="c_q"></th><th class="num" data-i="c_h"></th><th data-i="c_per"></th><th class="num">Ku</th><th class="num">Ks</th><th data-i="c_type"></th><th class="num" data-i="c_e"></th><th></th></tr></thead>
+      <tbody></tbody>
+      <tfoot><tr><td colspan="9" data-i="total"></td><td class="num" id="eTot"></td><td></td></tr></tfoot>
+    </table>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <select id="preset"></select>
+      <button class="btn" id="bAdd" data-i="add"></button>
+      <button class="btn" id="bAddEmpty" data-i="add_empty"></button>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <label class="f"><span data-i="eta_ond"></span><input type="number" step="0.01" min="0.5" max="1" id="etaOnd"></label>
+      <label class="f"><span data-i="fc"></span><input type="number" step="0.05" min="0.1" max="1" id="simult"></label>
+    </div>
+    <p class="hint" data-i="loads_hint"></p>
+  </div>
+  <div class="card grd">
+    <h3 data-i="conso_year"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="conso_kwh"></span><input type="number" step="10" min="0" id="consoYear"></label>
+      <label class="f"><span data-i="rate"></span><input type="number" step="5" min="1" max="200" id="rate"></label>
+    </div>
+    <p class="hint" data-i="conso_hint"></p>
+  </div>
+  <div class="card"><h3 data-i="results"></h3><div id="mLoads"></div><div class="res" id="rLoads"></div><div id="fLoads"></div></div>
+  <div class="navbtns"><button class="btn" data-go="0" data-i="prev"></button><button class="btn primary" data-go="2" data-i="next"></button></div>
+</section>
+
+<!-- 3. PANNEAUX -->
+<section class="tab" id="t-pv">
+  <h2 data-i="t_pv"></h2>
+  <p class="lead" data-i="pv_lead"></p>
+  <div class="card">
+    <h3 data-i="module"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="model"></span><select id="modPreset"></select></label>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <label class="f"><span>P<sub>c</sub> (Wc)</span><input type="number" id="mP" step="5" min="1"></label>
+      <label class="f"><span>V<sub>mp</sub> (V)</span><input type="number" id="mVmp" step="0.1" min="1"></label>
+      <label class="f"><span>I<sub>mp</sub> (A)</span><input type="number" id="mImp" step="0.01" min="0.1"></label>
+      <label class="f"><span>V<sub>oc</sub> (V)</span><input type="number" id="mVoc" step="0.1" min="1"></label>
+      <label class="f"><span>I<sub>sc</sub> (A)</span><input type="number" id="mIsc" step="0.01" min="0.1"></label>
+      <label class="f"><span data-i="m_area"></span><input type="number" id="mArea" step="0.01" min="0.1"></label>
+      <label class="f iso"><span data-i="m_unom"></span><select id="mUnom"><option>12</option><option>24</option></select></label>
+    </div>
+  </div>
+  <div class="card iso">
+    <h3 data-i="pv_params"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="k"></span><input type="number" id="kLoss" step="0.01" min="0.3" max="1"></label>
+      <label class="f"><span data-i="usys"></span><select id="usysMode"><option value="auto" data-i="auto"></option><option value="12">12 V</option><option value="24">24 V</option><option value="48">48 V</option></select></label>
+      <label class="f"><span data-i="regtype"></span><select id="regType"><option value="MPPT">MPPT</option><option value="PWM">PWM</option></select></label>
+      <label class="f"><span data-i="vmax"></span><input type="number" id="regVmax" step="10" min="20"></label>
+      <label class="f"><span data-i="ns_force"></span><input type="number" id="nsForce" step="1" min="0"></label>
+    </div>
+    <p class="hint" data-i="k_hint"></p>
+  </div>
+  <div class="card grd">
+    <h3 data-i="pv_place"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="orient"></span><select id="orient"></select></label>
+      <label class="f"><span data-i="tilt"></span><select id="tilt"></select></label>
+      <label class="f"><span data-i="pr"></span><input type="number" id="pr" step="0.01" min="0.5" max="1"></label>
+    </div>
+    <p class="hint" data-i="orient_hint"></p>
+  </div>
+  <div class="card"><h3 data-i="results"></h3><div id="mPv"></div><div class="res" id="rPv"></div><div class="cpl iso" id="cplPv"></div><div id="fPv"></div></div>
+  <div class="navbtns"><button class="btn" data-go="1" data-i="prev"></button><button class="btn primary" data-go="3" data-i="next"></button></div>
+</section>
+
+<!-- 4. BATTERIES -->
+<section class="tab" id="t-bat">
+  <h2 data-i="t_bat"></h2>
+  <p class="lead" data-i="bat_lead"></p>
+  <div class="card">
+    <h3 data-i="battery"></h3>
+    <div class="grid">
+      <label class="f"><span data-i="model"></span><select id="batPreset"></select></label>
+      <label class="f"><span data-i="tech"></span><select id="batTech"><option value="pb" data-i="tech_pb"></option><option value="lfp" data-i="tech_lfp"></option></select></label>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <label class="f"><span data-i="b_u"></span><select id="batU"><option>2</option><option>6</option><option>12</option><option>24</option><option>48</option></select></label>
+      <label class="f"><span data-i="b_c"></span><input type="number" id="batC" step="5" min="1"></label>
+      <label class="f"><span data-i="b_d"></span><input type="number" id="batD" step="0.05" min="0.1" max="1"></label>
+      <label class="f"><span data-i="b_days"></span><input type="number" id="batDays" step="0.5" min="0.5"></label>
+      <label class="f"><span data-i="b_rate"></span><select id="batRate"><option>C10</option><option>C20</option><option>C100</option></select></label>
+    </div>
+    <p class="hint" data-i="bat_hint"></p>
+  </div>
+  <div class="card"><h3 data-i="results"></h3><div id="mBat"></div><div class="res" id="rBat"></div><div class="cpl" id="cplBat"></div><div id="fBat"></div></div>
+  <div class="navbtns"><button class="btn" data-go="2" data-i="prev"></button><button class="btn primary" data-go="4" data-i="next"></button></div>
+</section>
+
+<!-- 5. REGULATEUR & ONDULEUR -->
+<section class="tab" id="t-conv">
+  <h2 data-i="t_conv"></h2>
+  <p class="lead" data-i="conv_lead"></p>
+  <div class="card">
+    <div class="grid">
+      <label class="f"><span data-i="reg_brand"></span><select id="regBrand"><option value="generic" data-i="generic"></option><option value="victron">Victron SmartSolar MPPT</option><option value="studer">Studer VarioTrack (MPPT)</option></select></label>
+      <label class="f"><span data-i="ond_brand"></span><select id="ondBrand"><option value="generic" data-i="generic"></option><option value="victron">Victron Phoenix</option><option value="studer">Studer Xtender</option></select></label>
+    </div>
+    <p class="hint" data-i="brand_hint"></p>
+  </div>
+  <div class="card"><h3 data-i="reg"></h3><div id="mReg"></div><div class="res" id="rReg"></div><div id="fReg"></div></div>
+  <div class="card"><h3 data-i="ond"></h3><div id="mOnd"></div><div class="res" id="rOnd"></div><div id="fOnd"></div></div>
+  <div class="navbtns"><button class="btn" data-go="3" data-i="prev"></button><button class="btn primary" data-go="5" data-i="next"></button></div>
+</section>
+
+<!-- 6. CABLES -->
+<section class="tab" id="t-cab">
+  <h2 data-i="t_cab"></h2>
+  <p class="lead" data-i="cab_lead"></p>
+  <div class="card">
+    <div style="overflow-x:auto">
+    <table id="cabT">
+      <thead><tr><th data-i="link"></th><th class="num" data-i="len"></th><th class="num">ΔU max (%)</th><th class="num">I (A)</th><th class="num">U (V)</th><th class="num" data-i="s_calc"></th><th class="num" data-i="s_norm"></th><th class="num" data-i="du_real"></th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+    <p class="hint" data-i="cab_hint"></p>
+    <div id="fCab"></div>
+  </div>
+  <div class="navbtns"><button class="btn" data-go="4" data-i="prev"></button><button class="btn primary" data-go="6" data-i="next"></button></div>
+</section>
+
+<!-- 7. PROTECTIONS -->
+<section class="tab" id="t-prot">
+  <h2 data-i="t_prot"></h2>
+  <p class="lead" data-i="prot_lead"></p>
+  <div class="card">
+    <div class="grid">
+      <label class="f"><span data-i="prot_brand"></span><select id="protBrand"><option value="legrand">Legrand</option><option value="schneider">Schneider Electric</option></select></label>
+      <label class="f"><span data-i="dcb_brand"></span><select id="dcbBrand"><option value="schneider">Schneider Acti9 (C60PV-DC / C60H-DC)</option><option value="abb">ABB (S800PV / S200 M UC)</option></select></label>
+      <label class="f"><span data-i="m_irm"></span><input type="number" id="mIrm" step="1" min="1"></label>
+      <label class="f"><span data-i="ng"></span><input type="number" id="ng" step="0.1" min="0"></label>
+      <label class="f"><span data-i="bldg"></span><select id="bldg"><option value="hab" data-i="bldg_hab"></option><option value="ter" data-i="bldg_ter"></option><option value="sol" data-i="bldg_sol"></option></select></label>
+      <label class="f"><span data-i="dc_earth"></span><select id="dcEarth"><option value="neg" data-i="dc_earth_neg"></option><option value="float" data-i="dc_earth_float"></option></select></label>
+      <label class="f"><span data-i="lightning"></span><select id="lightning"><option value="0" data-i="no"></option><option value="1" data-i="yes"></option></select></label>
+    </div>
+    <p class="hint" data-i="prot_hint"></p>
+  </div>
+  <div id="mProt"></div>
+  <div id="protList"></div>
+  <div class="card"><h3 data-i="schema_prot"></h3><svg id="schemaProt" viewBox="0 0 1120 660"></svg><p class="hint" data-i="schema_hint"></p></div>
+  <div class="navbtns"><button class="btn" data-go="5" data-i="prev"></button><button class="btn primary" data-go="7" data-i="next"></button></div>
+</section>
+
+<!-- 8. DOCUMENTATION TECHNIQUE -->
+<section class="tab" id="t-doc">
+  <h2 data-i="t_doc"></h2>
+  <p class="lead" data-i="doc_lead"></p>
+  <div class="row noprint" style="margin-bottom:12px"><button class="btn" id="bAutoPick" data-i="doc_auto"></button></div>
+  <div id="docBody"></div>
+  <div class="navbtns"><button class="btn" data-go="6" data-i="prev"></button><button class="btn primary" data-go="8" data-i="next"></button></div>
+</section>
+
+<!-- 9. SYNTHESE -->
+<section class="tab" id="t-sum">
+  <div class="printonly"><svg viewBox="-215 -215 430 430">%%SUN%%</svg><div><b style="font-size:20px;color:var(--brown)">SOLAR DUO</b><br><span id="prTitle"></span></div></div>
+  <h2 data-i="t_sum"></h2>
+  <p class="lead" id="sumLead"></p>
+  <div id="sumMsgs"></div>
+  <div class="card"><h3 data-i="key"></h3><div class="res" id="rSum"></div></div>
+  <div class="card"><h3 data-i="synop"></h3><svg id="synop" viewBox="0 0 960 400"></svg></div>
+  <div class="card iso"><h3 data-i="schema_prot"></h3><svg id="schemaProt2" viewBox="0 0 1120 660"></svg></div>
+  <div class="card iso"><h3 data-i="cpl"></h3><div class="cpl" id="cplSum1"></div><div class="cpl" id="cplSum2"></div></div>
+  <div class="card"><h3 data-i="bom"></h3><table id="bom"><thead><tr><th data-i="item"></th><th data-i="spec"></th><th class="num" data-i="qty"></th></tr></thead><tbody></tbody></table></div>
+  <div class="card iso big" id="sumLoads"><h3 data-i="t_loads"></h3><table id="loadsPrint"><thead><tr><th data-i="c_name"></th><th class="num" data-i="c_p"></th><th class="num" data-i="c_v"></th><th class="num" data-i="c_q"></th><th class="num" data-i="c_h"></th><th data-i="c_per"></th><th class="num">Ku</th><th class="num">Ks</th><th data-i="c_type"></th><th class="num" data-i="c_e"></th></tr></thead><tbody></tbody></table></div>
+  <div class="card big"><h3 data-i="details"></h3><div id="fAll"></div></div>
+  <div class="navbtns"><button class="btn" data-go="5" data-i="prev"></button><button class="btn gold" id="bPrint2" data-i="print"></button></div>
+</section>
+</main>
+
+<footer>
+  <span>Solar Duo v<span id="ver"></span> — <span data-i="credit"></span></span>
+  <span data-i="license"></span>
+</footer>
+
+<script>
+"use strict";
+const VERSION = "1.0.0";
+
+/* ---------- Données ---------- */
+// Irradiation moyenne journalière sur plan incliné (kWh/m²/j) — ordres de grandeur PVGIS.
+// dec : mois le plus défavorable (inclinaison ~60°) ; sum : pire mois d'avril à septembre ; year : moyenne annuelle (inclinaison optimale)
+const CITIES = [
+  ["tarbes","Tarbes (65)",2.5,4.4,4.0],["bagneres","Bagnères-de-Bigorre (65)",2.4,4.3,4.0],["lourdes","Lourdes (65)",2.3,4.2,3.9],
+  ["pau","Pau (64)",2.3,4.3,3.9],["dax","Dax (40)",2.0,4.5,3.9],["toulouse","Toulouse (31)",2.1,4.6,4.0],["perpignan","Perpignan (66)",3.2,5.2,4.7],
+  ["montpellier","Montpellier (34)",2.8,5.3,4.6],["marseille","Marseille (13)",3.0,5.5,4.8],["nice","Nice (06)",3.0,5.3,4.7],["ajaccio","Ajaccio (2A)",3.0,5.5,4.8],
+  ["bordeaux","Bordeaux (33)",1.9,4.6,3.9],["lyon","Lyon (69)",1.7,4.6,3.85],["grenoble","Grenoble (38)",1.8,4.5,3.9],["clermont","Clermont-Ferrand (63)",1.8,4.4,3.8],
+  ["nantes","Nantes (44)",1.7,4.5,3.6],["brest","Brest (29)",1.5,4.2,3.4],["paris","Paris (75)",1.3,4.1,3.35],["strasbourg","Strasbourg (67)",1.2,4.1,3.3],["lille","Lille (59)",1.1,3.8,3.0],
+  ["reunion","Saint-Denis (La Réunion)",4.3,4.3,5.2],["martinique","Fort-de-France (Martinique)",4.8,4.8,5.4],["guadeloupe","Pointe-à-Pitre (Guadeloupe)",4.9,4.9,5.5],
+  ["guyane","Cayenne (Guyane)",4.0,4.0,4.9],["noumea","Nouméa (Nouvelle-Calédonie)",4.4,4.4,5.4],
+  ["madrid","Madrid (España)",3.2,5.8,5.2],["sevilla","Sevilla (España)",3.6,6.0,5.5],["lisboa","Lisboa (Portugal)",3.2,5.7,5.0],["buenosaires","Buenos Aires (Argentina)",3.0,5.0,4.8],
+  ["custom","—",2.0,4.5,4.0]
+];
+const MODULES = [
+  ["m100","100 Wc — 12 V (36 cell.)",100,18.0,5.56,21.6,6.0,0.67,12],
+  ["m200","200 Wc — 12 V (36 cell.)",200,18.5,10.8,22.5,11.5,1.30,12],
+  ["m375","375 Wc — 24 V (120 demi-cell.)",375,34.0,11.03,41.0,11.6,1.75,24],
+  ["m425","425 Wc — 24 V (108 demi-cell.)",425,32.0,13.3,38.4,14.0,1.95,24],
+  ["m500","500 Wc — 24 V (132 demi-cell.)",500,38.5,13.0,46.0,13.8,2.20,24],
+  ["mcustom","custom",0,0,0,0,0,0,24]
+];
+const BATTS = [
+  ["agm100","AGM 12 V — 100 Ah","pb",12,100],["agm200","AGM 12 V — 200 Ah","pb",12,200],["gel250","GEL 12 V — 250 Ah","pb",12,250],
+  ["opzv","OPzV 2 V — 500 Ah","pb",2,500],["lfp100","LiFePO4 12,8 V — 100 Ah","lfp",12,100],["lfp200","LiFePO4 12,8 V — 200 Ah","lfp",12,200],
+  ["lfp48","LiFePO4 51,2 V — 100 Ah","lfp",48,100],["bcustom","custom","lfp",12,100]
+];
+// [clé, puissance W, durée h/j, type, veille W, Ku, Ks]
+const APPLIANCES = [
+  ["a_led",10,5,"AC"],["a_fluo",13,6,"AC"],["a_ledext",20,6,"AC"],["a_phare",150,14,"AC"],["a_fridge",50,8,"AC"],["a_coffre",77,8,"AC"],["a_freezer",60,10,"AC"],
+  ["a_tv",80,3,"AC",5],["a_box",12,24,"AC"],["a_laptop",60,4,"AC"],["a_phone",10,2,"AC"],["a_radio",15,3,"AC"],["a_reveil",5,3,"AC"],["a_cam",5,24,"AC"],["a_router",10,24,"AC"],
+  ["a_pump",400,1,"AC"],["a_wash",800,1,"AC",0,0.8,0.9],["a_dish",1500,1.7,"AC",0,0.8,0.9],["a_dryer",3000,0.7,"AC",0,0.8,0.9],["a_micro",1000,0.25,"AC",0,0.8,0.7],
+  ["a_oven",1500,0.6,"AC",0,0.8,0.7],["a_induc",1500,0.3,"AC",0,0.8,0.7],["a_vacuum",1500,0.3,"AC",0,0.6,0.75],["a_iron",1000,0.3,"AC",0,0.9,0.9],["a_boiler",2000,3,"AC",0,0.8,0.8],
+  ["a_fan",40,4,"AC"],["a_ve",3700,8,"AC"],["a_ledDC",5,5,"DC"],["a_fridgeDC",45,8,"DC"]
+];
+const MOD_TD = { // modules des TD
+  m155:["155 Wc — 24 V (TD Caravelle)",155,35.2,4.4,43.6,4.8,1.27,24],
+  m185:["185 Wc — 24 V (TD Ombrière)",185,36.0,5.14,44.5,5.5,1.30,24],
+};
+const L0 = o => Object.assign({k:"",n:"",p:0,v:0,q:1,h:1,per:"J",ku:1,ks:1,ty:"AC"}, o);
+const EXAMPLES = {
+  caravelle:{ name:"Petite résidence — Phare de la Caravelle", mode:"isole", city:"custom", period:"avg", hDec:6.17, hSum:6.17, hYear:6.17,
+    loads:[L0({n:"Lampe fluo-compacte 13 W",p:13,q:3,h:6}),L0({n:"Lampe phare 150 W",p:150,q:1,h:14}),L0({n:"Coffre 130/140 litres (+4 °C)",p:77,q:1,h:8}),
+           L0({n:"Radio-réveil",p:5,q:1,h:3}),L0({n:"Téléviseur couleur 42 cm",p:50,v:5,q:1,h:3})],
+    simult:1, mod:"m155", k:0.75, usysMode:"24", regType:"PWM", regBrand:"generic", bat:"bcustom", tech:"pb", bU:12, bC:100, bD:0.7, days:2, rate20:"C20" },
+  pavillon:{ name:"Pavillon F4 — Tarbes", mode:"isole", city:"custom", period:"avg", hDec:1.9, hSum:1.9, hYear:1.9,
+    loads:[L0({n:"Ampoule LED",p:15,q:12,h:49,per:"S"}),L0({n:"Aspirateur",p:1500,h:2,per:"S",ku:0.6,ks:0.75}),L0({n:"Chauffe-eau",p:2000,h:21,per:"S",ku:0.8,ks:0.8}),
+           L0({n:"Fer à repasser",p:1000,h:2,per:"S",ku:0.9,ks:0.9}),L0({n:"Four",p:1500,h:4,per:"S",ku:0.8,ks:0.7}),L0({n:"Four micro-ondes",p:800,h:2,per:"S",ku:0.8,ks:0.7}),
+           L0({n:"Lave-linge",p:3000,h:5,per:"S",ku:0.8,ks:0.9}),L0({n:"Lave-vaisselle",p:1500,h:12,per:"S",ku:0.8,ks:0.9}),L0({n:"PC portable",p:80,h:20,per:"S",ku:1,ks:0.9}),
+           L0({n:"Plaque induction",p:1500,h:2,per:"S",ku:0.8,ks:0.7}),L0({n:"TV LCD 60 pouces",p:200,h:35,per:"S"}),L0({n:"Frigo-congélateur",p:150,h:168,per:"S",ku:0.8,ks:0.7}),
+           L0({n:"Sèche-linge",p:3000,h:5,per:"S",ku:0.8,ks:0.9})],
+    simult:0.5, mod:"m500", k:0.75, usysMode:"12", regType:"MPPT", bat:"bcustom", tech:"pb", bU:12, bC:220, bD:0.7, days:2, rate20:"C10" },
+  ombriere:{ name:"Ombrière solaire — recharge Renault Zoé", mode:"isole", city:"custom", period:"avg", hDec:5, hSum:5, hYear:5,
+    loads:[L0({n:"Recharge véhicule électrique 22 kWh (8 h à 2,75 kW)",p:2750,q:1,h:8})],
+    simult:1, mod:"m185", k:0.75, usysMode:"24", regType:"MPPT", bat:"bcustom", tech:"pb", bU:12, bC:230, bD:0.7, days:1, rate20:"C10" }
+};
+const REG_STD = [10,15,20,30,40,50,60,70,80,100,150,200];
+// Modules du marché (fiches techniques constructeurs, conditions STC) : [id, nom, Pc, Vmp, Imp, Voc, Isc, surface m², U nominale]
+const MOD_BRANDS = [
+  ["DualSun (France)", [
+    ["ds425","DualSun FLASH 425 Half-Cut Glass-Glass TOPCon",425,32.21,13.20,38.58,13.83,1.95,24],
+    ["ds500","DualSun FLASH 500 Half-Cut Glass-Glass TOPCon",500,36.87,13.56,44.22,14.04,2.21,24]]],
+  ["Jinko Solar (Chine)", [
+    ["jk425","Jinko Tiger Neo JKM425N-54HL4R-BDB",425,32.90,12.92,39.23,13.77,2.00,24],
+    ["jk440","Jinko Tiger Neo JKM440N-54HL4R-BDB",440,33.44,13.16,39.83,13.98,2.00,24],
+    ["jk450","Jinko Tiger Neo JKM450N-54HL4R-BDB",450,33.79,13.32,40.23,14.12,2.00,24]]]
+];
+// Régulateurs MPPT : [modèle, courant de charge max (A), tension PV max {U:V}, puissance PV nominale {U:W}]
+const REGS = {
+  victron:{name:"Victron SmartSolar MPPT", models:[
+    ["75/10",10,{12:75,24:75},{12:145,24:290}],["75/15",15,{12:75,24:75},{12:220,24:440}],
+    ["100/15",15,{12:100,24:100},{12:220,24:440}],["100/20",20,{12:100,24:100,48:100},{12:290,24:580,48:1160}],
+    ["100/30",30,{12:100,24:100},{12:440,24:880}],["100/50",50,{12:100,24:100},{12:700,24:1400}],
+    ["150/35",35,{12:150,24:150,48:150},{12:500,24:1000,48:2000}],["150/45",45,{12:150,24:150,48:150},{12:650,24:1300,48:2600}],
+    ["150/60",60,{12:150,24:150,48:150},{12:860,24:1720,48:3440}],["150/70",70,{12:150,24:150,48:150},{12:1000,24:2000,48:4000}],
+    ["150/85",85,{12:150,24:150,48:150},{12:1200,24:2400,48:4900}],["150/100",100,{12:150,24:150,48:150},{12:1450,24:2900,48:5800}]]},
+  studer:{name:"Studer VarioTrack", models:[
+    ["VT-40",40,{12:80,24:150,48:150},{12:625,24:1250,48:2500}],["VT-65",65,{12:80,24:150,48:150},{12:1000,24:2000,48:4000}],
+    ["VT-80",80,{12:80,24:150,48:150},{12:1250,24:2500,48:5000}]]}
+};
+// Onduleurs autonomes : [modèle ({U} = tension batterie), puissance continue à 25 °C, puissance de crête, tensions possibles, unité]
+const INVS = {
+  victron:{name:"Victron Phoenix", models:[
+    ["Phoenix VE.Direct {U}/250",250,400,[12,24,48],"W"],["Phoenix VE.Direct {U}/375",375,600,[12,24,48],"W"],
+    ["Phoenix VE.Direct {U}/500",450,750,[12,24,48],"W"],["Phoenix VE.Direct {U}/800",800,1200,[12,24,48],"W"],
+    ["Phoenix VE.Direct {U}/1200",1150,1600,[12,24,48],"W"],["Phoenix VE.Direct {U}/1600",1450,2100,[12,24,48],"W"],
+    ["Phoenix Smart {U}/2000",1600,4000,[12,24,48],"W"],["Phoenix Smart {U}/3000",2400,6000,[12,24,48],"W"],
+    ["Phoenix Smart {U}/5000",4000,10000,[24,48],"W"]]},
+  studer:{name:"Studer Xtender", models:[
+    ["Xtender XTS 900-12",500,2300,[12],"VA"],["Xtender XTS 1200-24",650,2500,[24],"VA"],["Xtender XTS 1400-48",750,2800,[48],"VA"],
+    ["Xtender XTM 1500-12",1500,3400,[12],"VA"],["Xtender XTM 2000-12",2000,4800,[12],"VA"],["Xtender XTM 2400-24",2000,6000,[24],"VA"],
+    ["Xtender XTM 2600-48",2000,6500,[48],"VA"],["Xtender XTM 3500-24",3000,9000,[24],"VA"],["Xtender XTM 4000-48",3500,10500,[48],"VA"],
+    ["Xtender XTH 5000-24",4500,12000,[24],"VA"]]}
+};
+// Facteurs Ku / Ks (NF C 15-100, guide UTE C 15-105, guide de l'installation électrique Schneider Electric)
+const KU_TABLE = [["ku_motor","0,75"],["ku_light","1"],["ku_heat","1"],["ku_socket","ku_socket_v"]];
+const KS_USE = [["ks_light","1"],["ks_heat","1"],["ks_socket","0,1 – 0,2"],["ks_lift1","1"],["ks_lift2","0,75"],["ks_lift3","0,6"]];
+const KS_N = [["2 – 3","0,9"],["4 – 5","0,8"],["6 – 9","0,7"],["≥ 10","0,6"]];
+// Calibres normalisés
+const FUSE_PV = [5,8,10,12,15,20,25,30,32];
+const MCB_STD = [6,10,16,20,25,32,40,50,63];
+// Références vérifiées dans les catalogues fabricants
+const LEG_GPV = {5:"4 146 25",8:"4 146 26",10:"4 146 27",12:"4 146 28",15:"4 146 29",20:"4 146 30"}; // fusibles gPV 10×38 1000 V
+const SCH_C60PV = {8:"A9N61657",10:"A9N61650",16:"A9N61651",20:"A9N61652"};           // C60PV-DC 2P 800 V
+const SCH_C60H = {5:"A9N61505",32:"A9N61515",50:"A9N61518",63:"A9N61519"};             // C60H-DC 1P 250 V
+const UOC_MAX_ISOLE = 120; // UTE C 15-712-2 § 7.2 : Uoc max du champ PV en site isolé
+const K_FROID = 1.2;       // coefficient de tension à vide par grand froid (guides UTE C 15-712)
+const OND_STD = [300,500,800,1000,1500,2000,3000,4000,5000,8000,10000,15000];
+const SEC_STD = [1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240];
+const RHO = 0.023; // Ω·mm²/m — cuivre (guide UTE C 15-712)
+const ORIENTS = ["E","SE","S","SO","O"];
+const TILTS = [0,15,30,45,60,90];
+const ORIENT_F = { // facteur de correction / optimum (France métropolitaine, ordre de grandeur)
+  E:[0.88,0.88,0.86,0.82,0.76,0.56], SE:[0.88,0.95,0.96,0.93,0.86,0.66], S:[0.88,0.97,1.00,0.98,0.91,0.68],
+  SO:[0.88,0.95,0.96,0.93,0.86,0.66], O:[0.88,0.88,0.86,0.82,0.76,0.56]
+};
+
+/* ---------- Traductions ---------- */
+const I18N = {
+fr:{
+ tagline:"Dimensionnement d'installations photovoltaïques",new:"Nouveau",open:"Ouvrir",save:"Enregistrer",print:"Imprimer / PDF",
+ t_site:"Projet et site",t_loads:"Bilan énergétique",t_pv:"Panneaux",t_bat:"Batteries",t_conv:"Régulateur et onduleur",t_cab:"Câbles",t_sum:"Synthèse",
+ site_lead:"Donnez un nom au projet, choisissez le type d'installation et le lieu.",project:"Projet",pname:"Nom du projet",pauthor:"Réalisé par",
+ mode:"Type d'installation",m_isole:"Site isolé (autonome)",m_reseau:"Raccordé au réseau (autoconsommation)",
+ mode_isole:"Installation autonome avec batteries : chalet, refuge, bergerie, abri, camping-car, relais…",
+ mode_reseau:"Installation sans batterie, raccordée au réseau : la production réduit la facture d'électricité.",
+ sun:"Ensoleillement",city:"Lieu",period:"Période d'utilisation",per_year:"Toute l'année (mois le plus défavorable)",per_summer:"D'avril à septembre",per_avg:"Moyenne annuelle (non recommandé en site isolé)",
+ h_dec:"Ir mois le plus défavorable (kWh/m²/j)",h_sum:"Ir pire mois avril–sept. (kWh/m²/j)",h_year:"Ir moyenne annuelle (kWh/m²/j)",
+ sun_hint:"Valeurs indicatives (ordre de grandeur PVGIS, plan incliné). Pour un projet réel, vérifiez sur <a href='https://re.jrc.ec.europa.eu/pvg_tools/fr/' target='_blank' rel='noopener'>PVGIS</a> et saisissez vos valeurs : le lieu passe alors en « personnalisé ».",
+ custom:"Personnalisé",ir_used:"Irradiation retenue",peak_h:"soit des heures d'ensoleillement crête par jour",ir_year:"Irradiation annuelle",
+ loads_lead_iso:"Listez les appareils alimentés, leur puissance et leur durée d'utilisation par jour.",loads_lead_grd:"Indiquez la consommation annuelle du logement (facture d'électricité) et la part à couvrir.",
+ loads_table:"Appareils",c_name:"Appareil",c_p:"Puissance (W)",c_q:"Qté",c_h:"Durée (h/j)",c_type:"Type",c_e:"Énergie (Wh/j)",total:"Total",
+ add:"Ajouter l'appareil",add_empty:"Ligne vide",eta_ond:"Rendement de l'onduleur η",simult:"Coefficient de simultanéité (récepteurs AC)",
+ conso_year:"Consommation annuelle",conso_kwh:"Consommation annuelle (kWh/an)",rate:"Part de la consommation à produire (%)",
+ conso_hint:"En autoconsommation, on vise souvent 20 à 50 % de la consommation ; au-delà, le surplus est injecté dans le réseau.",
+ results:"Résultats",e_ac:"Énergie AC",e_dc:"Énergie DC",e_day:"Énergie à fournir par jour",p_ac:"Puissance AC simultanée",e_target:"Énergie à produire par an",
+ f_e:"Énergie journalière à fournir (pertes de l'onduleur comprises)",f_pac:"Puissance AC simultanée",f_etarget:"Énergie annuelle à produire",
+ pv_lead:"Choisissez le modèle de panneau. Le logiciel calcule la puissance crête et le câblage (série / parallèle).",module:"Module photovoltaïque",model:"Modèle",
+ m_area:"Surface (m²)",m_unom:"Tension nominale (pour PWM)",pv_params:"Paramètres",k:"Coefficient de pertes k",usys:"Tension du système",auto:"Automatique",
+ regtype:"Type de régulateur",vmax:"Tension PV max du régulateur (V)",ns_force:"Modules en série (0 = auto)",
+ k_hint:"k regroupe les pertes (température, poussière, câbles, régulateur, batteries) : 0,65 en plomb, 0,70 à 0,75 en lithium. Tension conseillée : 12 V jusqu'à 500 Wc, 24 V jusqu'à 2 000 Wc, 48 V au-delà.",
+ pv_place:"Implantation",orient:"Orientation",tilt:"Inclinaison",pr:"Ratio de performance PR",
+ orient_hint:"Le facteur d'orientation/inclinaison corrige l'irradiation par rapport à l'optimum (plein sud, 30°). PR ≈ 0,75 à 0,85.",
+ or_E:"Est",or_SE:"Sud-Est",or_S:"Sud",or_SO:"Sud-Ouest",or_O:"Ouest",
+ pc_req:"Puissance crête nécessaire",pc_inst:"Puissance crête installée",n_mod:"Nombre de modules",wiring:"Câblage",series:"en série",parallel:"en parallèle",strings:"chaîne(s)",
+ surface:"Surface de panneaux",prod_day:"Production journalière estimée",prod_year:"Production annuelle estimée",cover:"Couverture des besoins",f_orient:"Facteur orientation/inclinaison",
+ f_pc:"Puissance crête nécessaire",f_n:"Nombre de modules",f_ns:"Modules en série",f_np:"Chaînes en parallèle",f_prod:"Production estimée",f_usys:"Tension du système",
+ bat_lead:"Le parc de batteries assure l'autonomie quand il n'y a pas de soleil.",battery:"Batterie",tech:"Technologie",tech_pb:"Plomb (AGM / GEL / OPzV)",tech_lfp:"Lithium fer phosphate (LiFePO4)",
+ b_u:"Tension d'un élément (V)",b_c:"Capacité d'un élément (Ah)",b_d:"Profondeur de décharge D",b_days:"Jours d'autonomie N",
+ bat_hint:"D = 0,5 en plomb (durée de vie), 0,8 à 0,9 en lithium. Autonomie : 3 à 5 jours en montagne l'hiver, 2 à 3 jours ailleurs.",
+ c_req:"Capacité nécessaire",c_inst:"Capacité installée",n_bat:"Nombre de batteries",e_stock:"Énergie stockée",e_use:"Énergie utilisable",auton:"Autonomie réelle",days:"jours",
+ f_c:"Capacité nécessaire",f_nbs:"Batteries en série",f_nbp:"Branches en parallèle",f_auto:"Autonomie réelle",
+ conv_lead:"Le régulateur protège les batteries ; l'onduleur fournit le 230 V alternatif.",reg:"Régulateur de charge",ond:"Onduleur",
+ i_reg:"Courant de charge",calibre:"Calibre conseillé",voc_cold:"Voc de la chaîne par grand froid",p_ond:"Puissance conseillée",i_dc:"Courant côté batteries",
+ f_ireg:"Courant du régulateur",f_voc:"Tension à vide par grand froid (+15 %)",f_pond:"Puissance de l'onduleur",f_idc:"Courant d'entrée de l'onduleur",
+ no_ac:"Aucun récepteur AC : pas d'onduleur nécessaire.",
+ cab_lead:"Section des câbles pour limiter la chute de tension. Indiquez la longueur aller de chaque liaison.",link:"Liaison",len:"Longueur aller (m)",s_calc:"S calculée (mm²)",s_norm:"S normalisée (mm²)",du_real:"ΔU réelle (%)",
+ l_pv:"Panneaux → régulateur",l_bat:"Régulateur → batteries",l_ond:"Batteries → onduleur",l_inv:"Panneaux → onduleur",
+ cab_hint:"S = ρ × 2L × I / (ΔU × U) avec ρ = 0,023 Ω·mm²/m (cuivre). Vérifiez aussi le courant admissible du câble et la protection (fusibles, disjoncteurs DC).",
+ f_s:"Section du câble",
+ sum_lead:"Résumé de l'installation, synoptique, nomenclature et détail des calculs.",key:"Chiffres clés",synop:"Synoptique",bom:"Nomenclature du matériel",item:"Matériel",spec:"Caractéristiques",qty:"Qté",details:"Détail des calculs",
+ b_pv:"Module photovoltaïque",b_bat:"Batterie",b_reg:"Régulateur de charge",b_ond:"Onduleur",b_ond_grid:"Onduleur réseau",
+ sy_pv:"Champ PV",sy_reg:"Régulateur",sy_bat:"Batteries",sy_ond:"Onduleur",sy_ac:"Récepteurs 230 V ~",sy_dc:"Récepteurs DC",sy_grid:"Réseau",sy_meter:"Compteur",sy_board:"Tableau",sy_loads:"Logement",
+ w_pwm:"Régulateur PWM : la tension des modules en série ({a} V) doit être égale à la tension du système ({b} V). Choisissez des modules {c} V ou un régulateur MPPT.",
+ w_voc:"Tension à vide par grand froid ({a} V) supérieure au maximum du régulateur ({b} V) : réduisez le nombre de modules en série.",
+ w_nsmin:"Pas assez de modules en série pour charger les batteries : il en faut au moins {a}.",
+ w_bat:"La tension d'un élément ({a} V) ne divise pas la tension du système ({b} V).",
+ w_pb_d:"En plomb, une profondeur de décharge supérieure à 0,6 réduit fortement la durée de vie.",
+ w_ond:"Pointe de démarrage : pompes, frigos et moteurs appellent 3 à 5 fois leur puissance au démarrage. Vérifiez la puissance crête de l'onduleur.",
+ w_reg_big:"Courant de charge élevé : prévoir plusieurs régulateurs en parallèle ou passer à une tension système plus élevée.",
+ w_over:"Production supérieure aux besoins ({a} %) à cause du câblage série : essayez des modules plus petits, une tension système plus basse ou un régulateur PWM.",w_noload:"Ajoutez au moins un appareil dans le bilan énergétique.",
+ ok_all:"Dimensionnement cohérent.",prev:"← Précédent",next:"Suivant →",
+ credit:"par Jacques Branas, en collaboration avec Claude.ai",license:"Logiciel libre — GPL v3",
+ opened:"Projet ouvert.",bad_file:"Fichier non reconnu.",
+ a_led:"Lampe LED",a_ledext:"Éclairage extérieur LED",a_fridge:"Réfrigérateur A++",a_freezer:"Congélateur",a_tv:"Téléviseur LED",a_box:"Box internet",
+ a_laptop:"Ordinateur portable",a_phone:"Chargeur de téléphone",a_pump:"Pompe immergée",a_wash:"Lave-linge (cycle éco)",a_micro:"Micro-ondes",a_fan:"Ventilateur",
+ a_radio:"Radio",a_cam:"Caméra de surveillance",a_router:"Routeur 4G",a_ledDC:"Lampe LED 12 V (DC)",a_fridgeDC:"Réfrigérateur 12 V (DC)",
+ sine:"pur sinus",u_d:"/j",u_y:"/an",u_wc:"Wc",pick:"— Appareil type —",new_line:"Nouvel appareil"
+},
+en:{
+ tagline:"Photovoltaic system sizing",new:"New",open:"Open",save:"Save",print:"Print / PDF",
+ t_site:"Project & site",t_loads:"Energy balance",t_pv:"Panels",t_bat:"Batteries",t_conv:"Charge controller & inverter",t_cab:"Cables",t_sum:"Summary",
+ site_lead:"Name the project, choose the type of system and the location.",project:"Project",pname:"Project name",pauthor:"Made by",
+ mode:"System type",m_isole:"Off-grid (stand-alone)",m_reseau:"Grid-connected (self-consumption)",
+ mode_isole:"Stand-alone system with batteries: cabin, mountain hut, shelter, camper van, relay station…",
+ mode_reseau:"System without batteries, connected to the grid: production lowers the electricity bill.",
+ sun:"Solar resource",city:"Location",period:"Period of use",per_year:"All year (worst month)",per_summer:"April to September",per_avg:"Yearly average (not recommended off-grid)",
+ h_dec:"Ir worst month (kWh/m²/day)",h_sum:"Ir worst month Apr–Sep (kWh/m²/day)",h_year:"Ir yearly average (kWh/m²/day)",
+ sun_hint:"Indicative values (PVGIS order of magnitude, tilted plane). For a real project, check on <a href='https://re.jrc.ec.europa.eu/pvg_tools/en/' target='_blank' rel='noopener'>PVGIS</a> and enter your own values: the location then switches to “custom”.",
+ custom:"Custom",ir_used:"Irradiation used",peak_h:"i.e. peak sun hours per day",ir_year:"Yearly irradiation",
+ loads_lead_iso:"List the appliances, their power and how many hours a day they run.",loads_lead_grd:"Enter the home's yearly consumption (electricity bill) and the share to cover.",
+ loads_table:"Appliances",c_name:"Appliance",c_p:"Power (W)",c_q:"Qty",c_h:"Time (h/day)",c_type:"Type",c_e:"Energy (Wh/day)",total:"Total",
+ add:"Add appliance",add_empty:"Empty row",eta_ond:"Inverter efficiency η",simult:"Simultaneity factor (AC loads)",
+ conso_year:"Yearly consumption",conso_kwh:"Yearly consumption (kWh/year)",rate:"Share of consumption to produce (%)",
+ conso_hint:"For self-consumption, 20 to 50% of consumption is a common target; any surplus is fed into the grid.",
+ results:"Results",e_ac:"AC energy",e_dc:"DC energy",e_day:"Energy to supply per day",p_ac:"Simultaneous AC power",e_target:"Energy to produce per year",
+ f_e:"Daily energy to supply (inverter losses included)",f_pac:"Simultaneous AC power",f_etarget:"Yearly energy to produce",
+ pv_lead:"Choose the panel model. The software calculates peak power and wiring (series / parallel).",module:"PV module",model:"Model",
+ m_area:"Area (m²)",m_unom:"Nominal voltage (for PWM)",pv_params:"Parameters",k:"Loss factor k",usys:"System voltage",auto:"Automatic",
+ regtype:"Controller type",vmax:"Controller max PV voltage (V)",ns_force:"Modules in series (0 = auto)",
+ k_hint:"k covers losses (temperature, dust, cables, controller, batteries): 0.65 for lead-acid, 0.70–0.75 for lithium. Suggested voltage: 12 V up to 500 Wp, 24 V up to 2,000 Wp, 48 V above.",
+ pv_place:"Installation",orient:"Orientation",tilt:"Tilt",pr:"Performance ratio PR",
+ orient_hint:"The orientation/tilt factor corrects irradiation relative to the optimum (due south, 30°). PR ≈ 0.75 to 0.85.",
+ or_E:"East",or_SE:"South-East",or_S:"South",or_SO:"South-West",or_O:"West",
+ pc_req:"Required peak power",pc_inst:"Installed peak power",n_mod:"Number of modules",wiring:"Wiring",series:"in series",parallel:"in parallel",strings:"string(s)",
+ surface:"Panel area",prod_day:"Estimated daily production",prod_year:"Estimated yearly production",cover:"Needs covered",f_orient:"Orientation/tilt factor",
+ f_pc:"Required peak power",f_n:"Number of modules",f_ns:"Modules in series",f_np:"Strings in parallel",f_prod:"Estimated production",f_usys:"System voltage",
+ bat_lead:"The battery bank provides autonomy when there is no sun.",battery:"Battery",tech:"Technology",tech_pb:"Lead-acid (AGM / GEL / OPzV)",tech_lfp:"Lithium iron phosphate (LiFePO4)",
+ b_u:"Voltage of one unit (V)",b_c:"Capacity of one unit (Ah)",b_d:"Depth of discharge D",b_days:"Days of autonomy N",
+ bat_hint:"D = 0.5 for lead-acid (lifetime), 0.8 to 0.9 for lithium. Autonomy: 3 to 5 days in mountains in winter, 2 to 3 days elsewhere.",
+ c_req:"Required capacity",c_inst:"Installed capacity",n_bat:"Number of batteries",e_stock:"Stored energy",e_use:"Usable energy",auton:"Actual autonomy",days:"days",
+ f_c:"Required capacity",f_nbs:"Batteries in series",f_nbp:"Parallel branches",f_auto:"Actual autonomy",
+ conv_lead:"The charge controller protects the batteries; the inverter supplies 230 V AC.",reg:"Charge controller",ond:"Inverter",
+ i_reg:"Charging current",calibre:"Suggested rating",voc_cold:"String Voc in extreme cold",p_ond:"Suggested power",i_dc:"Battery-side current",
+ f_ireg:"Controller current",f_voc:"Open-circuit voltage in extreme cold (+15%)",f_pond:"Inverter power",f_idc:"Inverter input current",
+ no_ac:"No AC loads: no inverter needed.",
+ cab_lead:"Cable cross-section to limit voltage drop. Enter the one-way length of each link.",link:"Link",len:"One-way length (m)",s_calc:"Calculated S (mm²)",s_norm:"Standard S (mm²)",du_real:"Actual ΔU (%)",
+ l_pv:"Panels → controller",l_bat:"Controller → batteries",l_ond:"Batteries → inverter",l_inv:"Panels → inverter",
+ cab_hint:"S = ρ × 2L × I / (ΔU × U) with ρ = 0.023 Ω·mm²/m (copper). Also check the cable's current rating and the protection (fuses, DC breakers).",
+ f_s:"Cable cross-section",
+ sum_lead:"System summary, block diagram, bill of materials and detailed calculations.",key:"Key figures",synop:"Block diagram",bom:"Bill of materials",item:"Item",spec:"Specifications",qty:"Qty",details:"Detailed calculations",
+ b_pv:"PV module",b_bat:"Battery",b_reg:"Charge controller",b_ond:"Inverter",b_ond_grid:"Grid-tie inverter",
+ sy_pv:"PV array",sy_reg:"Controller",sy_bat:"Batteries",sy_ond:"Inverter",sy_ac:"230 V ~ loads",sy_dc:"DC loads",sy_grid:"Grid",sy_meter:"Meter",sy_board:"Panel board",sy_loads:"Home",
+ w_pwm:"PWM controller: the voltage of the modules in series ({a} V) must equal the system voltage ({b} V). Choose {c} V modules or an MPPT controller.",
+ w_voc:"Open-circuit voltage in extreme cold ({a} V) exceeds the controller maximum ({b} V): reduce the number of modules in series.",
+ w_nsmin:"Not enough modules in series to charge the batteries: at least {a} are needed.",
+ w_bat:"The unit voltage ({a} V) does not divide the system voltage ({b} V).",
+ w_pb_d:"With lead-acid, a depth of discharge above 0.6 greatly shortens battery life.",
+ w_ond:"Inrush: pumps, fridges and motors draw 3 to 5 times their power at start-up. Check the inverter's surge rating.",
+ w_reg_big:"High charging current: use several controllers in parallel or a higher system voltage.",
+ w_over:"Production exceeds needs ({a}%) because of the series wiring: try smaller modules, a lower system voltage or a PWM controller.",w_noload:"Add at least one appliance to the energy balance.",
+ ok_all:"Sizing is consistent.",prev:"← Previous",next:"Next →",
+ credit:"by Jacques Branas, in collaboration with Claude.ai",license:"Free software — GPL v3",
+ opened:"Project opened.",bad_file:"File not recognised.",
+ a_led:"LED lamp",a_ledext:"Outdoor LED lighting",a_fridge:"Fridge A++",a_freezer:"Freezer",a_tv:"LED TV",a_box:"Internet box",
+ a_laptop:"Laptop",a_phone:"Phone charger",a_pump:"Submersible pump",a_wash:"Washing machine (eco)",a_micro:"Microwave",a_fan:"Fan",
+ a_radio:"Radio",a_cam:"Security camera",a_router:"4G router",a_ledDC:"12 V LED lamp (DC)",a_fridgeDC:"12 V fridge (DC)",
+ sine:"pure sine wave",u_d:"/day",u_y:"/yr",u_wc:"Wp",pick:"— Typical appliance —",new_line:"New appliance"
+},
+es:{
+ tagline:"Dimensionamiento de instalaciones fotovoltaicas",new:"Nuevo",open:"Abrir",save:"Guardar",print:"Imprimir / PDF",
+ t_site:"Proyecto y sitio",t_loads:"Balance energético",t_pv:"Paneles",t_bat:"Baterías",t_conv:"Regulador e inversor",t_cab:"Cables",t_sum:"Síntesis",
+ site_lead:"Ponga un nombre al proyecto, elija el tipo de instalación y el lugar.",project:"Proyecto",pname:"Nombre del proyecto",pauthor:"Realizado por",
+ mode:"Tipo de instalación",m_isole:"Aislada (autónoma)",m_reseau:"Conectada a red (autoconsumo)",
+ mode_isole:"Instalación autónoma con baterías: cabaña, refugio, aprisco, caseta, autocaravana, repetidor…",
+ mode_reseau:"Instalación sin baterías, conectada a la red: la producción reduce la factura eléctrica.",
+ sun:"Irradiación solar",city:"Lugar",period:"Periodo de uso",per_year:"Todo el año (peor mes)",per_summer:"De abril a septiembre",per_avg:"Media anual (no recomendado en aislada)",
+ h_dec:"Ir peor mes (kWh/m²/día)",h_sum:"Ir peor mes abr–sep (kWh/m²/día)",h_year:"Ir media anual (kWh/m²/día)",
+ sun_hint:"Valores indicativos (orden de magnitud PVGIS, plano inclinado). Para un proyecto real, compruebe en <a href='https://re.jrc.ec.europa.eu/pvg_tools/es/' target='_blank' rel='noopener'>PVGIS</a> e introduzca sus valores: el lugar pasa a «personalizado».",
+ custom:"Personalizado",ir_used:"Irradiación utilizada",peak_h:"es decir, horas solares pico por día",ir_year:"Irradiación anual",
+ loads_lead_iso:"Enumere los aparatos, su potencia y su tiempo de uso diario.",loads_lead_grd:"Indique el consumo anual de la vivienda (factura) y la parte a cubrir.",
+ loads_table:"Aparatos",c_name:"Aparato",c_p:"Potencia (W)",c_q:"Cant.",c_h:"Tiempo (h/día)",c_type:"Tipo",c_e:"Energía (Wh/día)",total:"Total",
+ add:"Añadir aparato",add_empty:"Fila vacía",eta_ond:"Rendimiento del inversor η",simult:"Coeficiente de simultaneidad (cargas CA)",
+ conso_year:"Consumo anual",conso_kwh:"Consumo anual (kWh/año)",rate:"Parte del consumo a producir (%)",
+ conso_hint:"En autoconsumo se busca a menudo cubrir del 20 al 50 % del consumo; el excedente se inyecta a la red.",
+ results:"Resultados",e_ac:"Energía CA",e_dc:"Energía CC",e_day:"Energía a suministrar por día",p_ac:"Potencia CA simultánea",e_target:"Energía a producir por año",
+ f_e:"Energía diaria a suministrar (pérdidas del inversor incluidas)",f_pac:"Potencia CA simultánea",f_etarget:"Energía anual a producir",
+ pv_lead:"Elija el modelo de panel. El programa calcula la potencia pico y el cableado (serie / paralelo).",module:"Módulo fotovoltaico",model:"Modelo",
+ m_area:"Superficie (m²)",m_unom:"Tensión nominal (para PWM)",pv_params:"Parámetros",k:"Coeficiente de pérdidas k",usys:"Tensión del sistema",auto:"Automática",
+ regtype:"Tipo de regulador",vmax:"Tensión FV máx. del regulador (V)",ns_force:"Módulos en serie (0 = auto)",
+ k_hint:"k agrupa las pérdidas (temperatura, polvo, cables, regulador, baterías): 0,65 en plomo, 0,70 a 0,75 en litio. Tensión aconsejada: 12 V hasta 500 Wp, 24 V hasta 2000 Wp, 48 V por encima.",
+ pv_place:"Implantación",orient:"Orientación",tilt:"Inclinación",pr:"Rendimiento global PR",
+ orient_hint:"El factor de orientación/inclinación corrige la irradiación respecto al óptimo (sur, 30°). PR ≈ 0,75 a 0,85.",
+ or_E:"Este",or_SE:"Sureste",or_S:"Sur",or_SO:"Suroeste",or_O:"Oeste",
+ pc_req:"Potencia pico necesaria",pc_inst:"Potencia pico instalada",n_mod:"Número de módulos",wiring:"Cableado",series:"en serie",parallel:"en paralelo",strings:"cadena(s)",
+ surface:"Superficie de paneles",prod_day:"Producción diaria estimada",prod_year:"Producción anual estimada",cover:"Cobertura de necesidades",f_orient:"Factor orientación/inclinación",
+ f_pc:"Potencia pico necesaria",f_n:"Número de módulos",f_ns:"Módulos en serie",f_np:"Cadenas en paralelo",f_prod:"Producción estimada",f_usys:"Tensión del sistema",
+ bat_lead:"El banco de baterías garantiza la autonomía cuando no hay sol.",battery:"Batería",tech:"Tecnología",tech_pb:"Plomo (AGM / GEL / OPzV)",tech_lfp:"Litio ferrofosfato (LiFePO4)",
+ b_u:"Tensión de un elemento (V)",b_c:"Capacidad de un elemento (Ah)",b_d:"Profundidad de descarga D",b_days:"Días de autonomía N",
+ bat_hint:"D = 0,5 en plomo (vida útil), 0,8 a 0,9 en litio. Autonomía: 3 a 5 días en montaña en invierno, 2 a 3 días en otros lugares.",
+ c_req:"Capacidad necesaria",c_inst:"Capacidad instalada",n_bat:"Número de baterías",e_stock:"Energía almacenada",e_use:"Energía utilizable",auton:"Autonomía real",days:"días",
+ f_c:"Capacidad necesaria",f_nbs:"Baterías en serie",f_nbp:"Ramas en paralelo",f_auto:"Autonomía real",
+ conv_lead:"El regulador protege las baterías; el inversor suministra 230 V alterna.",reg:"Regulador de carga",ond:"Inversor",
+ i_reg:"Corriente de carga",calibre:"Calibre aconsejado",voc_cold:"Voc de la cadena con frío extremo",p_ond:"Potencia aconsejada",i_dc:"Corriente lado baterías",
+ f_ireg:"Corriente del regulador",f_voc:"Tensión en vacío con frío extremo (+15 %)",f_pond:"Potencia del inversor",f_idc:"Corriente de entrada del inversor",
+ no_ac:"Ninguna carga CA: no hace falta inversor.",
+ cab_lead:"Sección de los cables para limitar la caída de tensión. Indique la longitud de ida de cada enlace.",link:"Enlace",len:"Longitud de ida (m)",s_calc:"S calculada (mm²)",s_norm:"S normalizada (mm²)",du_real:"ΔU real (%)",
+ l_pv:"Paneles → regulador",l_bat:"Regulador → baterías",l_ond:"Baterías → inversor",l_inv:"Paneles → inversor",
+ cab_hint:"S = ρ × 2L × I / (ΔU × U) con ρ = 0,023 Ω·mm²/m (cobre). Compruebe también la intensidad admisible del cable y la protección (fusibles, magnetotérmicos CC).",
+ f_s:"Sección del cable",
+ sum_lead:"Resumen de la instalación, esquema de bloques, lista de material y detalle de los cálculos.",key:"Cifras clave",synop:"Esquema de bloques",bom:"Lista de material",item:"Material",spec:"Características",qty:"Cant.",details:"Detalle de los cálculos",
+ b_pv:"Módulo fotovoltaico",b_bat:"Batería",b_reg:"Regulador de carga",b_ond:"Inversor",b_ond_grid:"Inversor de red",
+ sy_pv:"Campo FV",sy_reg:"Regulador",sy_bat:"Baterías",sy_ond:"Inversor",sy_ac:"Cargas 230 V ~",sy_dc:"Cargas CC",sy_grid:"Red",sy_meter:"Contador",sy_board:"Cuadro",sy_loads:"Vivienda",
+ w_pwm:"Regulador PWM: la tensión de los módulos en serie ({a} V) debe ser igual a la del sistema ({b} V). Elija módulos de {c} V o un regulador MPPT.",
+ w_voc:"Tensión en vacío con frío extremo ({a} V) superior al máximo del regulador ({b} V): reduzca los módulos en serie.",
+ w_nsmin:"No hay suficientes módulos en serie para cargar las baterías: se necesitan al menos {a}.",
+ w_bat:"La tensión de un elemento ({a} V) no divide la tensión del sistema ({b} V).",
+ w_pb_d:"En plomo, una profundidad de descarga superior a 0,6 reduce mucho la vida útil.",
+ w_ond:"Arranque: bombas, frigoríficos y motores consumen de 3 a 5 veces su potencia al arrancar. Compruebe la potencia pico del inversor.",
+ w_reg_big:"Corriente de carga elevada: prevea varios reguladores en paralelo o una tensión de sistema mayor.",
+ w_over:"Producción superior a las necesidades ({a} %) por el cableado en serie: pruebe módulos más pequeños, una tensión de sistema menor o un regulador PWM.",w_noload:"Añada al menos un aparato al balance energético.",
+ ok_all:"Dimensionamiento coherente.",prev:"← Anterior",next:"Siguiente →",
+ credit:"por Jacques Branas, en colaboración con Claude.ai",license:"Software libre — GPL v3",
+ opened:"Proyecto abierto.",bad_file:"Archivo no reconocido.",
+ a_led:"Lámpara LED",a_ledext:"Iluminación exterior LED",a_fridge:"Frigorífico A++",a_freezer:"Congelador",a_tv:"Televisor LED",a_box:"Router de internet",
+ a_laptop:"Portátil",a_phone:"Cargador de móvil",a_pump:"Bomba sumergible",a_wash:"Lavadora (eco)",a_micro:"Microondas",a_fan:"Ventilador",
+ a_radio:"Radio",a_cam:"Cámara de vigilancia",a_router:"Router 4G",a_ledDC:"Lámpara LED 12 V (CC)",a_fridgeDC:"Frigorífico 12 V (CC)",
+ sine:"onda senoidal pura",u_d:"/día",u_y:"/año",u_wc:"Wp",pick:"— Aparato tipo —",new_line:"Nuevo aparato"
+}};
+Object.assign(I18N.fr, {t_prot:"Protections",
+ prot_lead:"Protections du générateur, des batteries et du côté alternatif, parafoudres et mise à la terre, d'après le guide UTE C 15-712-2 et la NF C 15-100.",
+ prot_brand:"Marque des protections",dcb_brand:"Disjoncteurs courant continu",m_irm:"Fusible série max du module I_RM (A)",ng:"Densité de foudroiement Ng (impacts/km²/an)",
+ bldg:"Type de bâtiment",bldg_hab:"Habitation individuelle",bldg_ter:"Tertiaire / industriel",bldg_sol:"Installation au sol",lightning:"Paratonnerre sur le bâtiment",yes:"Oui",no:"Non",
+ prot_hint:"Ng : carte de densité de foudroiement (Météorage). I_RM : « maximum series fuse rating » sur la fiche du module. Les références sont celles des catalogues fabricants : vérifiez la disponibilité et la fiche à jour.",
+ tag_ob:"obligatoire",tag_rec:"recommandé",no_ref:"Pas de référence adaptée dans la gamme : voir la note.",
+ p_cc:"Coupe-circuits sectionneurs porte-fusibles de chaîne",p_cc_note:"Partie continue flottante : un fusible sur chaque polarité de chaque chaîne ; le coupe-circuit assure à la fois le sectionnement et la protection contre les courants inverses.",
+ p_cc_note_neg:"− relié à la terre : coupe-circuit bipolaire, fusible sur le + seulement ; le − est coupé (sectionnement) mais pas protégé, comme un neutre.",
+ or_2x1p:"(ou C60H-DC 1P sur le + et coupure du −)",
+ leg_cc:"Coupe-circuit Legrand PV",sch_cc:"Porte-fusible Schneider TeSys",cart_gpv:"cartouche gPV 10×38",
+ w_leg20:"Legrand : les coupe-circuits PV 10×38 sont limités à 20 A, insuffisant ici (I_n ≥ {a} A). Choisissez Schneider (DF101PV 32 A) ou des modules à I_sc plus faible.",
+ w_fuse:"Aucun calibre de fusible ne respecte 1,5 × I_sc ≤ I_n ≤ min(2 × I_sc ; I_RM) ({a} à {b} A) : vérifiez I_RM sur la fiche du module.",
+ p_sec:"Interrupteur-sectionneur / disjoncteur général DC (côté panneaux)",p_sec_note:"Coupure en charge des deux polarités au plus près du régulateur ; organe de coupure d'urgence du générateur PV.",range_63:"gamme jusqu'à 63 A",p_sec_big:"Calibre > 63 A : interrupteur-sectionneur courant continu de forte intensité (ex. Legrand Vistop 1000 V⎓, 32 à 125 A) ou répartir le champ en plusieurs groupes — calibre ≥ {a} A.",per_group:"un par régulateur : {n} groupes de {c} chaînes",
+ p_bat_reg:"Protection régulateur → batterie",p_bat_ond:"Protection batterie → onduleur",pdc:"pouvoir de coupure",
+ p_bat_note:"Bipolaire : coupure du + et du −, seul le + est protégé. Au plus près de la batterie. Courant de court-circuit estimé (≈ 10 × C en plomb, 20 à 30 × C en lithium) : prendre la valeur du fabricant pour vérifier le pouvoir de coupure.",
+ p_bat_big:"Calibre > 63 A ou I_cc > 10 kA : fusible NH gG (ou fusible de batterie type MEGA/ANL) avec socle sectionneur, ou disjoncteur boîtier moulé courant continu — calibre ≥ {a} A.",
+ p_spd_dc:"Parafoudre courant continu (type 2)",p_spd_dc_note:"Au plus près du régulateur, entre chaque polarité et la terre. Les modèles 600/800 V⎓ conviennent (U_cpv ≥ U_oc max) ; pour du 12/24/48 V, un modèle basse tension a un niveau de protection U_p plus bas.",
+ with_rod:"paratonnerre : obligatoire",spd_t2:"type 2",spd_t1:"parafoudre type 1+2 (gamme iPRF1)",
+ p_rcd:"Disjoncteur différentiel 30 mA type A (sortie onduleur)",rcd_typeA:"type A (détecte aussi les courants de défaut redressés des appareils électroniques)",dd_name:"disjoncteur différentiel",or_id:"ou interrupteur différentiel",
+ p_rcd_note:"Protection des personnes côté 230 V : le neutre de sortie de l'onduleur est relié à la terre (selon le modèle d'onduleur et le schéma de liaison à la terre choisi) ; tous les circuits sont protégés par un différentiel 30 mA.",
+ p_spd_ac:"Parafoudre courant alternatif",spd_ac_rod:"Bâtiment avec paratonnerre : parafoudre type 1 obligatoire en tête de tableau (NF C 15-100).",
+ p_spd_ac_note:"Dans le tableau 230 V, en aval de l'onduleur ; obligatoire avec paratonnerre, recommandé sinon (site isolé exposé).",
+ p_earth:"Mise à la terre et liaison équipotentielle",
+ earth_rule:"Liaison équipotentielle ≥ 6 mm² Cu reliant cadres des modules, structures, coffrets, régulateur, onduleur et parafoudres ; continuité ≤ 2 Ω ; conducteur de terre ≥ 16 mm² Cu (25 mm² Cu nu enterré) vers la barrette et le piquet de terre.",
+ earth_ref:"Câble H07V-K vert/jaune 6 mm², griffes ou clips de mise à la terre des cadres, barrette de coupure, piquet de terre.",
+ earth_note:"Obligatoire : toutes les masses, y compris les cadres des panneaux et leur support, sont reliées à la terre (UTE C 15-712-2 § 6.3).",earth_bom:"Liaison équipotentielle 6 mm² Cu + conducteur de terre 16 mm² + barrette + piquet",
+ schema_prot:"Schéma des protections et de la mise à la terre",schema_hint:"Schéma simplifié : coupe-circuits à fusible sur la lame ; disjoncteurs avec croix sur la borne, liaison mécanique en pointillés et déclencheurs thermique (carré non fermé) et magnétique (bosse) sur le pôle protégé uniquement. Le − (en continu) et le neutre (en alternatif) sont toujours coupés mais pas protégés ; neutre et − à gauche ; conducteur PE vert/jaune.",
+ sy_spd_dc:"parafoudre DC",sy_spd_ac:"parafoudre AC",sy_frames:"Cadres des modules et structure reliés à la terre",sy_struct:"structure",sy_bat_cab:"coffret batteries",sy_bar:"barrette",sy_rod:"piquet de terre (R ≤ 100 Ω conseillé)",sy_le:"Liaison équipotentielle ≥ 6 mm² Cu — conducteur de terre ≥ 16 mm² Cu",sy_le_short:"terre",
+ kuks_title:"Tableaux Ku et Ks (valeurs de référence)",ku_title:"Facteur d'utilisation Ku",ks_title_use:"Facteur de simultanéité Ks selon l'usage",ks_title_n:"Ks d'un tableau selon le nombre de circuits",ku_use:"Utilisation",ks_ncirc:"Nombre de circuits",
+ ku_motor:"Moteurs",ku_light:"Éclairage",ku_heat:"Chauffage",ku_socket:"Prises de courant",ku_socket_v:"selon l'usage",
+ ks_light:"Éclairage",ks_heat:"Chauffage et conditionnement d'air",ks_socket:"Prises de courant (plus de 20)",ks_lift1:"Ascenseur : moteur le plus puissant",ks_lift2:"Ascenseur : moteur suivant",ks_lift3:"Ascenseur : autres moteurs",
+ kuks_ref:"Références : NF C 15-100 ; guide UTE C 15-105 (Ks selon l'usage) ; Guide de l'installation électrique Schneider Electric, chapitre A ; NF EN 61439 (Ks des tableaux). Ku et Ks servent à calculer la puissance appelée (onduleur, câbles, protections)."});
+Object.assign(I18N.en, {t_prot:"Protection",prot_lead:"Array, battery and AC protection, surge protection and earthing, following the French guide UTE C 15-712-2 and NF C 15-100.",
+ prot_brand:"Protection brand",dcb_brand:"DC circuit breakers",m_irm:"Module max series fuse I_RM (A)",ng:"Lightning density Ng (strikes/km²/yr)",bldg:"Building type",bldg_hab:"House",bldg_ter:"Commercial / industrial",bldg_sol:"Ground-mounted",lightning:"Lightning rod on the building",yes:"Yes",no:"No",
+ tag_ob:"mandatory",tag_rec:"recommended",p_cc:"String fuse disconnectors",p_sec:"Main DC switch-disconnector / breaker (array side)",p_bat_reg:"Controller → battery protection",p_bat_ond:"Battery → inverter protection",pdc:"breaking capacity",
+ p_spd_dc:"DC surge protective device (type 2)",p_rcd:"30 mA type A RCBO (inverter output)",p_spd_ac:"AC surge protective device",p_earth:"Earthing and equipotential bonding",
+ schema_prot:"Protection and earthing diagram",kuks_title:"Ku and Ks tables (reference values)",ku_title:"Utilisation factor Ku",ks_title_use:"Simultaneity factor Ks by use",ks_title_n:"Panel Ks by number of circuits",ku_use:"Use",ks_ncirc:"Number of circuits",
+ ku_motor:"Motors",ku_light:"Lighting",ku_heat:"Heating",ku_socket:"Sockets",ku_socket_v:"depends on use",ks_light:"Lighting",ks_heat:"Heating and air conditioning",ks_socket:"Sockets (more than 20)",ks_lift1:"Lift: largest motor",ks_lift2:"Lift: next motor",ks_lift3:"Lift: other motors",
+ sy_spd_dc:"DC SPD",sy_spd_ac:"AC SPD",sy_frames:"frames",sy_struct:"structure",sy_bat_cab:"battery cabinet",sy_bar:"bar",sy_rod:"earth rod (R ≤ 100 Ω advised)",sy_le:"Equipotential bonding ≥ 6 mm² Cu — earthing conductor ≥ 16 mm² Cu",sy_le_short:"earth"});
+Object.assign(I18N.es, {t_prot:"Protecciones",prot_lead:"Protecciones del generador, de las baterías y del lado de alterna, descargadores y puesta a tierra, según la guía francesa UTE C 15-712-2 y la NF C 15-100.",
+ prot_brand:"Marca de las protecciones",dcb_brand:"Interruptores automáticos CC",m_irm:"Fusible serie máx. del módulo I_RM (A)",ng:"Densidad de rayos Ng (impactos/km²/año)",bldg:"Tipo de edificio",bldg_hab:"Vivienda",bldg_ter:"Terciario / industrial",bldg_sol:"Instalación en suelo",lightning:"Pararrayos en el edificio",yes:"Sí",no:"No",
+ tag_ob:"obligatorio",tag_rec:"recomendado",p_cc:"Seccionadores portafusibles de cadena",p_sec:"Interruptor-seccionador / magnetotérmico general CC (lado paneles)",p_bat_reg:"Protección regulador → batería",p_bat_ond:"Protección batería → inversor",pdc:"poder de corte",
+ p_spd_dc:"Descargador de corriente continua (tipo 2)",p_rcd:"Magnetotérmico diferencial 30 mA tipo A (salida inversor)",p_spd_ac:"Descargador de corriente alterna",p_earth:"Puesta a tierra y conexión equipotencial",
+ schema_prot:"Esquema de protecciones y puesta a tierra",kuks_title:"Tablas Ku y Ks (valores de referencia)",ku_title:"Factor de utilización Ku",ks_title_use:"Factor de simultaneidad Ks según el uso",ks_title_n:"Ks de un cuadro según el número de circuitos",ku_use:"Uso",ks_ncirc:"Número de circuitos",
+ ku_motor:"Motores",ku_light:"Alumbrado",ku_heat:"Calefacción",ku_socket:"Tomas de corriente",ku_socket_v:"según el uso",ks_light:"Alumbrado",ks_heat:"Calefacción y aire acondicionado",ks_socket:"Tomas de corriente (más de 20)",ks_lift1:"Ascensor: motor más potente",ks_lift2:"Ascensor: motor siguiente",ks_lift3:"Ascensor: otros motores",
+ sy_spd_dc:"descargador CC",sy_spd_ac:"descargador CA",sy_frames:"marcos",sy_struct:"estructura",sy_bat_cab:"armario baterías",sy_bar:"borne",sy_rod:"pica de tierra (R ≤ 100 Ω aconsejado)",sy_le:"Conexión equipotencial ≥ 6 mm² Cu — conductor de tierra ≥ 16 mm² Cu",sy_le_short:"tierra"});
+Object.assign(I18N.fr, {doc_pv:"Modules photovoltaïques",doc_reg:"Régulateurs de charge",doc_ond:"Onduleurs",doc_bat:"Batteries",t_doc:"Documentation technique",tag_info:"information",
+ doc_lead:"Tout le matériel proposé par Solar Duo, avec ses caractéristiques et le lien vers la fiche du fabricant. Cliquez sur une ligne pour la choisir : le matériel retenu est surligné. Les lignes grisées ne conviennent pas à l'installation calculée.",
+ doc_auto:"Revenir au choix automatique",datasheet:"Fiche",doc_for:"pour",doc_n:"Nb nécessaires",doc_need:"besoin",doc_at:"en",doc_pcont:"P continue 25 °C",doc_peak:"P crête",doc_ok:"Convient",doc_ref:"Référence",
+ doc_nok:"Ne convient pas : tension batterie non prise en charge, tension PV max ou puissance insuffisante",
+ doc_prot_hint:"Cliquer sur une ligne choisit la marque des protections (Legrand / Schneider) ou des disjoncteurs courant continu (ABB). Les lignes surlignées sont celles utilisées dans l'installation.",
+ w_force_nok:"Le modèle choisi dans le catalogue ({a}) ne convient pas à cette installation : choix automatique conservé.",
+ dc_earth:"Négatif batterie",dc_earth_neg:"Relié à la terre (Victron, Wiring Unlimited § 7.7)",dc_earth_float:"Flottant (isolé de la terre)",
+ p_negearth:"Liaison du négatif batterie à la terre",
+ negearth_rule:"Une seule liaison, au plus près de la batterie, entre le − batterie et la barrette de terre ; conducteur capable de supporter un courant de défaut au moins égal au calibre du fusible batterie : section ≥ {s} mm² Cu (celle du câble batterie).",
+ negearth_ref:"Câble vert/jaune de même section que le câble batterie, cosse sertie sur le − batterie (ou le shunt côté batterie).",
+ negearth_note:"Victron : « Ground close to the battery. The battery poles are supposed to be safe to touch. » Ne relier ni le + ni le − du champ PV directement à la terre.",
+ w_pvneg:"Régulateur MPPT sans isolation PV / batterie : avec le − batterie à la terre, le − du champ PV se retrouve aussi au potentiel de la terre (mise à la terre fonctionnelle d'une polarité, guide UTE C 15-712-2 § 6.2). Vérifiez les prescriptions correspondantes.",
+ p_float:"Partie courant continu flottante",float_rule:"Ni le + ni le − ne sont reliés à la terre : un premier défaut d'isolement n'est pas dangereux mais doit être détecté.",float_note:"Protections et sectionnement sur les deux polarités ; un contrôleur d'isolement permet de signaler le premier défaut.",
+ sy_negearth:"liaison − batterie / terre"});
+Object.assign(I18N.en, {doc_pv:"PV modules",doc_reg:"Charge controllers",doc_ond:"Inverters",doc_bat:"Batteries",t_doc:"Technical documentation",doc_lead:"All equipment offered by Solar Duo with its data and a link to the manufacturer's datasheet. Click a row to select it: the chosen equipment is highlighted; greyed rows do not suit the calculated system.",
+ doc_auto:"Back to automatic choice",datasheet:"Datasheet",doc_for:"for",doc_n:"Units needed",doc_need:"need",doc_at:"at",doc_pcont:"Cont. P 25 °C",doc_peak:"Peak P",doc_ok:"Suitable",doc_ref:"Reference",
+ dc_earth:"Battery negative",dc_earth_neg:"Earthed (Victron, Wiring Unlimited § 7.7)",dc_earth_float:"Floating",p_negearth:"Battery negative to earth link",sy_negearth:"battery − / earth link"});
+Object.assign(I18N.es, {doc_pv:"Módulos fotovoltaicos",doc_reg:"Reguladores de carga",doc_ond:"Inversores",doc_bat:"Baterías",t_doc:"Documentación técnica",doc_lead:"Todo el material propuesto por Solar Duo, con sus características y el enlace a la ficha del fabricante. Haga clic en una fila para elegirla: el material elegido queda resaltado; las filas grises no convienen a la instalación calculada.",
+ doc_auto:"Volver a la elección automática",datasheet:"Ficha",doc_for:"para",doc_n:"Unidades necesarias",doc_need:"necesidad",doc_at:"en",doc_pcont:"P continua 25 °C",doc_peak:"P pico",doc_ok:"Conviene",doc_ref:"Referencia",
+ dc_earth:"Negativo batería",dc_earth_neg:"A tierra (Victron, Wiring Unlimited § 7.7)",dc_earth_float:"Flotante",p_negearth:"Conexión del negativo de batería a tierra",sy_negearth:"conexión − batería / tierra"});
+
+// Matériel du marché et règles du guide UTE C 15-712-2
+Object.assign(I18N.fr, {w_nsconf:"Impossible de respecter à la fois N<sub>s min</sub> = {a} (tension suffisante pour charger les batteries) et la limite de 120 V (N<sub>s max</sub> = {b}) : choisissez un module à V<sub>mp</sub> plus élevé (ex. DualSun FLASH 500, 132 cellules) ou une tension batterie plus basse.",reg_brand:"Marque du régulateur",ond_brand:"Marque de l'onduleur",generic:"Générique (calibre seul)",
+ brand_hint:"Le logiciel choisit le plus petit modèle qui convient d'après les fiches techniques des fabricants (puissance PV nominale à la tension batterie, tension PV max, puissance continue à 25 °C). Vérifiez toujours la fiche à jour.",
+ model_adv:"Modèle conseillé",f_regsel:"Choix du régulateur",f_ondsel:"Choix de l'onduleur",peak:"crête",g_generic:"Génériques",g_td:"Modules des TD",
+ f_voc:"Tension à vide max du champ par grand froid (× 1,2)",voc_cold:"Uoc max du champ (grand froid)",
+ w_uoc:"Guide UTE C 15-712-2 § 7.2 : en site isolé, la tension à vide max du champ PV doit rester ≤ 120 V ({a} V). Réduisez le nombre de modules en série.",
+ w_noreg:"Aucun régulateur {b} ne convient à cette tension batterie avec Uoc max = {a} V.",
+ w_multi:"{n} régulateurs en parallèle : répartir les chaînes de modules entre eux (un régulateur par groupe de chaînes).",
+ w_noond:"Aucun onduleur {a} en {u} V n'est assez puissant : passez en 48 V ou prévoyez plusieurs onduleurs (ou un modèle plus gros).",
+ w_ks:"Ks et le facteur de charge réduisent l'énergie journalière. Dans la NF C 15-100, ils servent à la puissance appelée (onduleur, câbles, protections) : appliqués à l'énergie, ils risquent de sous-dimensionner panneaux et batteries."});
+Object.assign(I18N.en, {w_nsconf:"Cannot meet both N<sub>s min</sub> = {a} (enough voltage to charge) and the 120 V limit (N<sub>s max</sub> = {b}): choose a module with a higher V<sub>mp</sub> (e.g. DualSun FLASH 500, 132 cells) or a lower battery voltage.",reg_brand:"Controller brand",ond_brand:"Inverter brand",generic:"Generic (rating only)",
+ brand_hint:"The software picks the smallest suitable model from the manufacturers' datasheets (nominal PV power at battery voltage, max PV voltage, continuous power at 25 °C). Always check the latest datasheet.",
+ model_adv:"Suggested model",f_regsel:"Controller choice",f_ondsel:"Inverter choice",peak:"peak",g_generic:"Generic",g_td:"Exercise modules",
+ f_voc:"Array max open-circuit voltage in extreme cold (× 1.2)",voc_cold:"Array Uoc max (cold)",
+ w_uoc:"French guide UTE C 15-712-2 § 7.2: off-grid, the array max open-circuit voltage must stay ≤ 120 V ({a} V). Reduce the modules in series.",
+ w_noreg:"No {b} controller suits this battery voltage with Uoc max = {a} V.",
+ w_multi:"{n} controllers in parallel: split the module strings between them.",
+ w_noond:"No {a} inverter at {u} V is powerful enough: switch to 48 V or use several inverters.",
+ w_ks:"Ks and the load factor reduce daily energy. They are meant for the demand power (inverter, cables, protection); applied to energy they may undersize panels and batteries."});
+Object.assign(I18N.es, {w_nsconf:"Imposible cumplir a la vez N<sub>s min</sub> = {a} (tensión suficiente para cargar) y el límite de 120 V (N<sub>s max</sub> = {b}): elija un módulo con V<sub>mp</sub> más alta (p. ej. DualSun FLASH 500, 132 células) o una tensión de batería menor.",reg_brand:"Marca del regulador",ond_brand:"Marca del inversor",generic:"Genérico (solo calibre)",
+ brand_hint:"El programa elige el modelo más pequeño que conviene según las fichas técnicas de los fabricantes (potencia FV nominal a la tensión de batería, tensión FV máx., potencia continua a 25 °C). Compruebe siempre la ficha actual.",
+ model_adv:"Modelo aconsejado",f_regsel:"Elección del regulador",f_ondsel:"Elección del inversor",peak:"pico",g_generic:"Genéricos",g_td:"Módulos de los TD",
+ f_voc:"Tensión en vacío máx. del campo con frío extremo (× 1,2)",voc_cold:"Uoc máx. del campo (frío)",
+ w_uoc:"Guía francesa UTE C 15-712-2 § 7.2: en instalación aislada, la tensión en vacío máx. del campo FV debe ser ≤ 120 V ({a} V). Reduzca los módulos en serie.",
+ w_noreg:"Ningún regulador {b} conviene a esta tensión de batería con Uoc máx. = {a} V.",
+ w_multi:"{n} reguladores en paralelo: repartir las cadenas de módulos entre ellos.",
+ w_noond:"Ningún inversor {a} en {u} V es suficientemente potente: pase a 48 V o prevea varios inversores.",
+ w_ks:"Ks y el factor de carga reducen la energía diaria. Sirven para la potencia demandada (inversor, cables, protecciones); aplicados a la energía pueden subdimensionar paneles y baterías."});
+
+// Vocabulaire des TD (Ech, Esol, Ne, η ph, Ku, Ks, veille…)
+Object.assign(I18N.fr, {
+ h_dec:"Esol mois le plus défavorable (Wh/m²/j)",h_sum:"Esol pire mois avril–sept. (Wh/m²/j)",h_year:"Esol moyenne annuelle (Wh/m²/j)",per_avg:"Moyenne annuelle",
+ ir_used:"Énergie solaire journalière Esol",ne:"Nombre d'heures équivalentes Ne",
+ c_v:"Veille (W)",c_per:"Période",per_J:"J (h/jour)",per_S:"S (h/sem.)",per_hint:"J : durée par jour — S : durée par semaine",
+ fc:"Facteur de charge fc (foisonnement)",loads_hint:"Ku : facteur d'utilisation ; Ks : facteur de simultanéité ; période S = durée par semaine (÷ 7). La veille est comptée sur le reste de la journée (24 h − durée). Le facteur de charge s'applique au total.",
+ f_row:"Énergie d'un récepteur",f_e:"Énergie journalière nécessaire Ech",f_ne:"Nombre d'heures équivalentes Ne",e_day:"Énergie journalière Ech",
+ k:"Rendement de l'installation η ph",k_hint:"η ph = 75 % : pertes dans le générateur (salissure, température…), le régulateur, la batterie et l'onduleur. Tension conseillée : 12 V jusqu'à 500 Wc, 24 V jusqu'à 2 000 Wc, 48 V au-delà.",
+ eta_ond:"Rendement de l'onduleur η (courant côté batteries)",
+ bat_hint:"D = 0,7 en plomb (50 à 70 % ; plus la décharge est profonde, plus la durée de vie diminue), 0,8 en lithium. Autonomie : 2 à 5 jours.",
+ b_rate:"Capacité donnée pour",c50:"Capacité si décharge 50 %",icc:"Icc du parc (NF C 15-100 : 10 × Cn)",daily:"Décharge journalière",
+ w_pb_d:"En plomb, une décharge supérieure à 80 % réduit fortement la durée de vie.",
+ cpl:"Couplages",cpl_pv:"Couplage des modules",cpl_bat:"Couplage des batteries",to_reg:"vers le régulateur",branches:"branches en parallèle",
+ examples:"Exemples de TD",ex_none:"— Charger un exemple —",ex_caravelle:"Petite résidence (TD Phare de la Caravelle)",ex_pavillon:"Pavillon F4 à Tarbes (TDI)",ex_ombriere:"Ombrière solaire, recharge VE (Martinique)",
+ ex_loaded:"Exemple chargé : vérifiez les valeurs dans chaque onglet.",
+ a_fluo:"Lampe fluo-compacte 13 W",a_phare:"Lampe phare 150 W",a_coffre:"Coffre réfrigéré 130/140 L",a_reveil:"Radio-réveil",a_dish:"Lave-vaisselle",a_dryer:"Sèche-linge",
+ a_oven:"Four",a_induc:"Plaque à induction",a_vacuum:"Aspirateur",a_iron:"Fer à repasser",a_boiler:"Chauffe-eau électrique",a_ve:"Recharge véhicule électrique (mode 3)"
+});
+Object.assign(I18N.en, {
+ h_dec:"Esol worst month (Wh/m²/day)",h_sum:"Esol worst month Apr–Sep (Wh/m²/day)",h_year:"Esol yearly average (Wh/m²/day)",per_avg:"Yearly average",
+ ir_used:"Daily solar energy Esol",ne:"Equivalent sun hours Ne",
+ c_v:"Standby (W)",c_per:"Period",per_J:"D (h/day)",per_S:"W (h/week)",per_hint:"D: time per day — W: time per week",
+ fc:"Load factor fc (diversity)",loads_hint:"Ku: utilisation factor; Ks: simultaneity factor; period W = time per week (÷ 7). Standby is counted over the rest of the day (24 h − time). The load factor applies to the total.",
+ f_row:"Energy of one load",f_e:"Daily energy needed Ech",f_ne:"Equivalent sun hours Ne",e_day:"Daily energy Ech",
+ k:"System efficiency η ph",k_hint:"η ph = 75%: losses in the array (dirt, temperature…), controller, battery and inverter. Suggested voltage: 12 V up to 500 Wp, 24 V up to 2,000 Wp, 48 V above.",
+ eta_ond:"Inverter efficiency η (battery-side current)",
+ bat_hint:"D = 0.7 for lead-acid (50 to 70%; the deeper the discharge, the shorter the life), 0.8 for lithium. Autonomy: 2 to 5 days.",
+ b_rate:"Capacity rated at",c50:"Capacity at 50% discharge",icc:"Bank short-circuit current (10 × Cn)",daily:"Daily discharge",
+ w_pb_d:"With lead-acid, discharge above 80% greatly shortens battery life.",
+ cpl:"Wiring",cpl_pv:"Module wiring",cpl_bat:"Battery wiring",to_reg:"to the controller",branches:"parallel branches",
+ examples:"Worked examples",ex_none:"— Load an example —",ex_caravelle:"Small home (Caravelle lighthouse exercise)",ex_pavillon:"Family house in Tarbes",ex_ombriere:"Solar carport, EV charging (Martinique)",
+ ex_loaded:"Example loaded: check the values in each tab.",
+ a_fluo:"Compact fluorescent lamp 13 W",a_phare:"Lighthouse lamp 150 W",a_coffre:"Chest fridge 130/140 L",a_reveil:"Clock radio",a_dish:"Dishwasher",a_dryer:"Tumble dryer",
+ a_oven:"Oven",a_induc:"Induction hob",a_vacuum:"Vacuum cleaner",a_iron:"Iron",a_boiler:"Electric water heater",a_ve:"EV charging (mode 3)"
+});
+Object.assign(I18N.es, {
+ h_dec:"Esol peor mes (Wh/m²/día)",h_sum:"Esol peor mes abr–sep (Wh/m²/día)",h_year:"Esol media anual (Wh/m²/día)",per_avg:"Media anual",
+ ir_used:"Energía solar diaria Esol",ne:"Horas solares equivalentes Ne",
+ c_v:"Reposo (W)",c_per:"Periodo",per_J:"D (h/día)",per_S:"S (h/sem.)",per_hint:"D: tiempo por día — S: tiempo por semana",
+ fc:"Factor de carga fc",loads_hint:"Ku: factor de utilización; Ks: factor de simultaneidad; periodo S = tiempo por semana (÷ 7). El reposo se cuenta el resto del día (24 h − tiempo). El factor de carga se aplica al total.",
+ f_row:"Energía de un receptor",f_e:"Energía diaria necesaria Ech",f_ne:"Horas solares equivalentes Ne",e_day:"Energía diaria Ech",
+ k:"Rendimiento de la instalación η ph",k_hint:"η ph = 75 %: pérdidas en el generador (suciedad, temperatura…), el regulador, la batería y el inversor. Tensión aconsejada: 12 V hasta 500 Wp, 24 V hasta 2000 Wp, 48 V por encima.",
+ eta_ond:"Rendimiento del inversor η (corriente lado baterías)",
+ bat_hint:"D = 0,7 en plomo (50 a 70 %; cuanto más profunda la descarga, menor la vida útil), 0,8 en litio. Autonomía: 2 a 5 días.",
+ b_rate:"Capacidad dada para",c50:"Capacidad con descarga del 50 %",icc:"Icc del banco (10 × Cn)",daily:"Descarga diaria",
+ w_pb_d:"En plomo, una descarga superior al 80 % reduce mucho la vida útil.",
+ cpl:"Conexionado",cpl_pv:"Conexionado de los módulos",cpl_bat:"Conexionado de las baterías",to_reg:"hacia el regulador",branches:"ramas en paralelo",
+ examples:"Ejemplos de TD",ex_none:"— Cargar un ejemplo —",ex_caravelle:"Pequeña vivienda (TD Faro de la Caravelle)",ex_pavillon:"Chalet F4 en Tarbes",ex_ombriere:"Pérgola solar, recarga VE (Martinica)",
+ ex_loaded:"Ejemplo cargado: compruebe los valores en cada pestaña.",
+ a_fluo:"Lámpara fluocompacta 13 W",a_phare:"Lámpara de faro 150 W",a_coffre:"Arcón frigorífico 130/140 L",a_reveil:"Radio despertador",a_dish:"Lavavajillas",a_dryer:"Secadora",
+ a_oven:"Horno",a_induc:"Placa de inducción",a_vacuum:"Aspiradora",a_iron:"Plancha",a_boiler:"Termo eléctrico",a_ve:"Recarga vehículo eléctrico (modo 3)"
+});
+let lang = "fr";
+const t = (k, o) => { let s = (I18N[lang] && I18N[lang][k]) || I18N.fr[k] || k; if (o) for (const x in o) s = s.replace("{"+x+"}", o[x]); return s; };
+
+Object.assign(I18N.en, {
+ prot_hint:"Ng: lightning flash density map (Météorage in France). I_RM: “maximum series fuse rating” on the module datasheet. References come from manufacturer catalogues: check availability and the current datasheet.",
+ no_ref:"No suitable reference in this range: see the note.",
+ p_cc_note:"Floating DC side: one fuse on each polarity of each string; the fuse holder provides both isolation and reverse-current protection.",
+ p_cc_note_neg:"− connected to earth: 2-pole fuse holder, fuse on the + only; the − is isolated but not protected, like a neutral.",
+ or_2x1p:"(or C60H-DC 1P on the + and isolation of the −)",
+ leg_cc:"Legrand PV fuse holder",sch_cc:"Schneider TeSys fuse holder",cart_gpv:"gPV 10×38 fuse",
+ w_leg20:"Legrand: 10×38 PV fuse holders are limited to 20 A, not enough here (I_n ≥ {a} A). Choose Schneider (DF101PV 32 A) or modules with a lower I_sc.",
+ w_fuse:"No fuse rating meets 1.5 × I_sc ≤ I_n ≤ min(2 × I_sc ; I_RM) ({a} to {b} A): check I_RM on the module datasheet.",
+ p_sec_note:"On-load isolation of both polarities as close as possible to the controller; emergency switching of the PV array.",
+ range_63:"range up to 63 A",
+ p_sec_big:"Rating > 63 A: high-current DC switch-disconnector (e.g. Legrand Vistop 1000 V⎓, 32 to 125 A) or split the array into several groups — rating ≥ {a} A.",
+ per_group:"one per controller: {n} groups of {c} strings",
+ p_bat_note:"2-pole: isolates + and −, only the + is protected. As close as possible to the battery. Estimated short-circuit current (≈ 10 × C for lead-acid, 20 to 30 × C for lithium): use the manufacturer's value to check the breaking capacity.",
+ p_bat_big:"Rating > 63 A or I_sc > 10 kA: NH gG fuse (or MEGA/ANL battery fuse) with a fuse switch-disconnector base, or a DC moulded-case circuit breaker — rating ≥ {a} A.",
+ p_spd_dc_note:"As close as possible to the controller, between each polarity and earth. 600/800 V⎓ models are suitable (U_cpv ≥ U_oc max); for 12/24/48 V a low-voltage model gives a lower protection level U_p.",
+ with_rod:"lightning rod: mandatory",spd_t2:"type 2",spd_t1:"type 1+2 surge protector (iPRF1 range)",
+ rcd_typeA:"type A (also detects rectified fault currents from electronic appliances)",
+ dd_name:"RCBO (residual current breaker)",or_id:"or residual current switch",
+ p_rcd_note:"Protection of people on the 230 V side: the inverter output neutral is connected to earth (depending on the inverter model and the earthing system); all circuits are protected by a 30 mA RCD.",
+ spd_ac_rod:"Building with a lightning rod: a type 1 surge protector is mandatory at the head of the board (NF C 15-100).",
+ p_spd_ac_note:"In the 230 V board, downstream of the inverter; mandatory with a lightning rod, recommended otherwise (exposed off-grid site).",
+ earth_rule:"Equipotential bonding ≥ 6 mm² Cu linking module frames, structures, enclosures, controller, inverter and surge protectors; continuity ≤ 2 Ω; earthing conductor ≥ 16 mm² Cu (25 mm² bare Cu if buried) to the earth bar and earth rod.",
+ earth_ref:"H07V-K green/yellow 6 mm² cable, frame earthing clips, test link, earth rod.",
+ earth_note:"Mandatory: all exposed conductive parts, including the panel frames and their mounting structure, are connected to earth (UTE C 15-712-2 § 6.3).",
+ earth_bom:"6 mm² Cu equipotential bonding + 16 mm² earthing conductor + earth bar + earth rod",
+ schema_hint:"Simplified diagram: fuse holders with the fuse on the blade; circuit breakers with a cross on the terminal, dashed mechanical link, thermal (open square) and magnetic (bump) releases on the protected pole only. The − (DC) and the neutral (AC) are always switched but not protected; neutral and − on the left; green/yellow PE conductor.",
+ kuks_ref:"References: NF C 15-100; guide UTE C 15-105 (Ks by use); Schneider Electric Electrical Installation Guide, chapter A; EN 61439 (Ks of switchboards). Ku and Ks give the demand power (inverter, cables, protection).",
+ tag_info:"information",
+ doc_nok:"Not suitable: battery voltage not supported, PV voltage or power too low",
+ doc_prot_hint:"Clicking a row selects the protection brand (Legrand / Schneider) or the DC breakers (ABB). Highlighted rows are the ones used in the system.",
+ w_force_nok:"The model chosen in the catalogue ({a}) does not suit this system: automatic choice kept.",
+ negearth_rule:"A single connection, as close as possible to the battery, between battery − and the earth bar; conductor able to carry a fault current at least equal to the battery fuse rating: cross-section ≥ {s} mm² Cu (that of the battery cable).",
+ negearth_ref:"Green/yellow cable of the same cross-section as the battery cable, crimped lug on battery − (or on the battery side of the shunt).",
+ negearth_note:"Victron: “Ground close to the battery. The battery poles are supposed to be safe to touch.” Never connect the PV + or − directly to earth.",
+ w_pvneg:"MPPT controller without PV / battery isolation: with battery − earthed, the PV − is also at earth potential (functional earthing of one polarity, guide UTE C 15-712-2 § 6.2). Check the corresponding requirements.",
+ p_float:"Floating DC side",
+ float_rule:"Neither + nor − is connected to earth: a first insulation fault is not dangerous but must be detected.",
+ float_note:"Protection and isolation on both polarities; an insulation monitor reports the first fault."
+});
+Object.assign(I18N.es, {
+ prot_hint:"Ng: mapa de densidad de rayos (Météorage en Francia). I_RM: «maximum series fuse rating» en la ficha del módulo. Las referencias proceden de los catálogos de los fabricantes: compruebe la disponibilidad y la ficha actualizada.",
+ no_ref:"No hay referencia adecuada en la gama: ver la nota.",
+ p_cc_note:"Lado de continua flotante: un fusible en cada polaridad de cada cadena; el portafusibles asegura a la vez el seccionamiento y la protección contra corrientes inversas.",
+ p_cc_note_neg:"− conectado a tierra: portafusibles bipolar, fusible solo en el +; el − se secciona pero no se protege, como un neutro.",
+ or_2x1p:"(o C60H-DC 1P en el + y corte del −)",
+ leg_cc:"Portafusibles Legrand FV",sch_cc:"Portafusibles Schneider TeSys",cart_gpv:"fusible gPV 10×38",
+ w_leg20:"Legrand: los portafusibles FV 10×38 están limitados a 20 A, insuficiente aquí (I_n ≥ {a} A). Elija Schneider (DF101PV 32 A) o módulos con I_sc más baja.",
+ w_fuse:"Ningún calibre de fusible cumple 1,5 × I_sc ≤ I_n ≤ mín(2 × I_sc ; I_RM) ({a} a {b} A): compruebe I_RM en la ficha del módulo.",
+ p_sec_note:"Corte en carga de las dos polaridades lo más cerca posible del regulador; dispositivo de corte de emergencia del generador FV.",
+ range_63:"gama hasta 63 A",
+ p_sec_big:"Calibre > 63 A: interruptor-seccionador de continua de alta intensidad (p. ej. Legrand Vistop 1000 V⎓, 32 a 125 A) o repartir el campo en varios grupos — calibre ≥ {a} A.",
+ per_group:"uno por regulador: {n} grupos de {c} cadenas",
+ p_bat_note:"Bipolar: corta el + y el −, solo el + está protegido. Lo más cerca posible de la batería. Corriente de cortocircuito estimada (≈ 10 × C en plomo, 20 a 30 × C en litio): use el valor del fabricante para comprobar el poder de corte.",
+ p_bat_big:"Calibre > 63 A o I_cc > 10 kA: fusible NH gG (o fusible de batería tipo MEGA/ANL) con base seccionadora, o interruptor automático de caja moldeada de continua — calibre ≥ {a} A.",
+ p_spd_dc_note:"Lo más cerca posible del regulador, entre cada polaridad y tierra. Los modelos de 600/800 V⎓ sirven (U_cpv ≥ U_oc máx); para 12/24/48 V, un modelo de baja tensión tiene un nivel de protección U_p más bajo.",
+ with_rod:"pararrayos: obligatorio",spd_t2:"tipo 2",spd_t1:"descargador tipo 1+2 (gama iPRF1)",
+ rcd_typeA:"tipo A (detecta también las corrientes de defecto rectificadas de los aparatos electrónicos)",
+ dd_name:"interruptor magnetotérmico diferencial",or_id:"o interruptor diferencial",
+ p_rcd_note:"Protección de las personas en el lado de 230 V: el neutro de salida del inversor se conecta a tierra (según el modelo de inversor y el esquema de conexión a tierra); todos los circuitos están protegidos por un diferencial de 30 mA.",
+ spd_ac_rod:"Edificio con pararrayos: descargador tipo 1 obligatorio en la cabecera del cuadro (NF C 15-100).",
+ p_spd_ac_note:"En el cuadro de 230 V, aguas abajo del inversor; obligatorio con pararrayos, recomendado en otro caso (sitio aislado expuesto).",
+ earth_rule:"Conexión equipotencial ≥ 6 mm² Cu que une los marcos de los módulos, estructuras, cajas, regulador, inversor y descargadores; continuidad ≤ 2 Ω; conductor de tierra ≥ 16 mm² Cu (25 mm² Cu desnudo enterrado) hasta la pletina y la pica de tierra.",
+ earth_ref:"Cable H07V-K verde/amarillo 6 mm², grapas o clips de puesta a tierra de los marcos, pletina de seccionamiento, pica de tierra.",
+ earth_note:"Obligatorio: todas las masas, incluidos los marcos de los paneles y su soporte, se conectan a tierra (UTE C 15-712-2 § 6.3).",
+ earth_bom:"Conexión equipotencial 6 mm² Cu + conductor de tierra 16 mm² + pletina + pica",
+ schema_hint:"Esquema simplificado: portafusibles con el fusible sobre la cuchilla; interruptores automáticos con cruz en el borne, enlace mecánico en línea discontinua y disparadores térmico (cuadrado abierto) y magnético (joroba) solo en el polo protegido. El − (en continua) y el neutro (en alterna) siempre se cortan pero no se protegen; neutro y − a la izquierda; conductor PE verde/amarillo.",
+ kuks_ref:"Referencias: NF C 15-100; guía UTE C 15-105 (Ks según el uso); Guía de la instalación eléctrica de Schneider Electric, capítulo A; EN 61439 (Ks de los cuadros). Ku y Ks sirven para calcular la potencia demandada (inversor, cables, protecciones).",
+ tag_info:"información",
+ doc_nok:"No conviene: tensión de batería no admitida, tensión FV máx o potencia insuficiente",
+ doc_prot_hint:"Al hacer clic en una fila se elige la marca de las protecciones (Legrand / Schneider) o de los interruptores de continua (ABB). Las filas resaltadas son las que se usan en la instalación.",
+ w_force_nok:"El modelo elegido en el catálogo ({a}) no conviene a esta instalación: se mantiene la elección automática.",
+ negearth_rule:"Una sola conexión, lo más cerca posible de la batería, entre el − de la batería y la pletina de tierra; conductor capaz de soportar una corriente de defecto al menos igual al calibre del fusible de batería: sección ≥ {s} mm² Cu (la del cable de batería).",
+ negearth_ref:"Cable verde/amarillo de la misma sección que el cable de batería, terminal crimpado en el − de la batería (o en el lado batería del shunt).",
+ negearth_note:"Victron: «Ground close to the battery. The battery poles are supposed to be safe to touch.» No conecte nunca el + ni el − del campo FV directamente a tierra.",
+ w_pvneg:"Regulador MPPT sin aislamiento FV / batería: con el − de batería a tierra, el − del campo FV queda también al potencial de tierra (puesta a tierra funcional de una polaridad, guía UTE C 15-712-2 § 6.2). Compruebe los requisitos correspondientes.",
+ p_float:"Lado de continua flotante",
+ float_rule:"Ni el + ni el − están conectados a tierra: un primer defecto de aislamiento no es peligroso pero debe detectarse.",
+ float_note:"Protecciones y seccionamiento en las dos polaridades; un controlador de aislamiento señala el primer defecto."
+});
+Object.assign(I18N.fr,{upd_msg:"Une nouvelle version de Solar Duo est disponible : {v}.",upd_dl:"Télécharger"});
+Object.assign(I18N.en,{upd_msg:"A new version of Solar Duo is available: {v}.",upd_dl:"Download"});
+Object.assign(I18N.es,{upd_msg:"Hay una nueva versión de Solar Duo disponible: {v}.",upd_dl:"Descargar"});
+/* ---------- État ---------- */
+function defaults(){
+  return {
+    v:VERSION, name:"", author:"", mode:"isole",
+    city:"tarbes", period:"year", hDec:2.5, hSum:4.4, hYear:4.0,
+    loads:[
+      L0({k:"a_led",p:10,q:6,h:5}),L0({k:"a_fridge",p:50,h:8}),L0({k:"a_tv",p:80,v:5,h:3}),
+      L0({k:"a_laptop",p:60,h:3}),L0({k:"a_phone",p:10,q:2,h:2}),L0({k:"a_pump",p:400,h:0.5})
+    ],
+    eta:0.9, simult:1, consoYear:4500, rate:40,
+    mod:"ds425", mP:425, mVmp:32.21, mImp:13.20, mVoc:38.58, mIsc:13.83, mArea:1.95, mUnom:24,
+    k:0.75, usysMode:"auto", regType:"MPPT", regVmax:150, nsForce:0, regBrand:"victron", ondBrand:"victron",
+    orient:"S", tilt:30, pr:0.8,
+    bat:"lfp100", tech:"lfp", bU:12, bC:100, bD:0.8, days:3, rate20:"C20",
+    cab:{l1:10,l2:2,l3:2,d1:3,d2:1.5,d3:1.5,lg:15,dg:3},
+    protBrand:"legrand", dcbBrand:"schneider", mIrm:25, ng:2.5, bldg:"hab", lightning:0, dcEarth:"neg", regForce:"", ondForce:""
+  };
+}
+let S = defaults();
+let tab = 0;
+
+/* ---------- Utilitaires ---------- */
+const $ = id => document.getElementById(id);
+const LOC = () => lang==="en" ? "en-GB" : lang;
+const fixEn = s => lang==="en" ? s.replace(/,/g, "\u202f") : s;
+const num = (x, d=0) => fixEn((isFinite(x) ? Number(x) : 0).toLocaleString(LOC(), {minimumFractionDigits:d, maximumFractionDigits:d}));
+const nf = (x, d=2) => { // nombre "propre" pour les formules
+  if (!isFinite(x)) return "—";
+  const r = Math.round(x * 10**d) / 10**d; return fixEn(r.toLocaleString(LOC(), {maximumFractionDigits:d}));
+};
+const nextStd = (v, list) => list.find(x => x >= v - 1e-9) ?? null;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const loadName = L => L.n || (L.k ? t(L.k) : t("new_line"));
+const U = s => String(s).replace(/\/j\b/g, t("u_d")).replace(/\/an\b/g, t("u_y")).replace(/Wc\b/g, t("u_wc"));
+const kpi = (label, val, sub, gold) => `<div class="kpi${gold?" g":""}"><span>${label}</span><b>${U(val)}</b>${sub?`<i>${U(sub)}</i>`:""}</div>`;
+const fml = (title, expr) => { let e = U(expr); if (lang==="en") e = e.replace(/(\d),(\d)/g, "$1.$2").replace(/ à /g, " – "); else if (lang==="es") e = e.replace(/ à /g, " a "); return `<div class="formula"><span class="t">${title}</span>${e}</div>`; };
+const msg = (type, txt) => `<div class="msg ${type}">${String(txt).replace(/\b([IUC])_([A-Za-z]+)/g, "$1<sub>$2</sub>")}</div>`;
+
+/* ---------- Calculs ---------- */
+function compute(){
+  const R = {warn:[], f:{}};
+  R.ir = S.period==="year" ? S.hDec : S.period==="summer" ? S.hSum : S.hYear;
+  if (S.mode === "isole"){
+    let eAC=0, eDC=0, pAC=0, pDC=0;
+    for (const L of S.loads){ const r = rowE(L); if (L.ty==="DC"){eDC+=r.e;pDC+=r.pt;} else {eAC+=r.e;pAC+=r.pt;} }
+    R.eSum = eAC + eDC; R.eAC=eAC*S.simult; R.eDC=eDC*S.simult; R.pAC=pAC*S.simult; R.pDC=pDC;
+    R.E = R.eSum * S.simult;
+    R.f.e = fml(t("f_e"), S.simult===1 ? `E<sub>ch</sub> = E<sub>1</sub> + E<sub>2</sub> + … + E<sub>n</sub> = <b>${nf(R.E,0)} Wh/j</b>`
+      : `E<sub>ch</sub> = (E<sub>1</sub> + E<sub>2</sub> + … + E<sub>n</sub>) × f<sub>c</sub> = ${nf(R.eSum,0)} × ${nf(S.simult)} = <b>${nf(R.E,0)} Wh/j</b>`);
+    if (S.simult < 1 || S.loads.some(L => (L.ks ?? 1) < 1)) R.warn.push(["warn", t("w_ks"), "load"]);
+    R.f.row = fml(t("f_row"), `E = P × Nbre × Ku × Ks × t + P<sub>veille</sub> × Nbre × (24 − t)`);
+    R.f.pac = fml(t("f_pac"), `P<sub>AC</sub> = Σ(P × Nbre × Ku × Ks) × f<sub>c</sub> = ${nf(pAC,0)} × ${nf(S.simult)} = <b>${nf(R.pAC,0)} W</b>`);
+    if (R.E <= 0) R.warn.push(["err", t("w_noload"), "load"]);
+    // Puissance crête
+    R.f.ne = fml(t("f_ne"), `E<sub>sol</sub> = 1000 × N<sub>e</sub> → N<sub>e</sub> = E<sub>sol</sub> / 1000 = ${nf(R.ir*1000,0)} / 1000 = <b>${nf(R.ir)} h</b>`);
+    R.pcReq = R.E / (R.ir * S.k);
+    R.f.pc = fml(t("f_pc"), `P<sub>c</sub> = E<sub>ch</sub> / (N<sub>e</sub> × η<sub>ph</sub>) = ${nf(R.E,0)} / (${nf(R.ir)} × ${nf(S.k)}) = <b>${nf(R.pcReq,0)} Wc</b>`);
+    // Tension système
+    if (S.usysMode==="auto") R.U = R.pcReq<=500 ? 12 : R.pcReq<=2000 ? 24 : 48; else R.U = +S.usysMode;
+    R.f.u = fml(t("f_usys"), S.usysMode==="auto" ? `P<sub>c</sub> = ${nf(R.pcReq,0)} Wc → <b>${R.U} V</b> &nbsp;(≤ 500 Wc : 12 V ; ≤ 2 000 Wc : 24 V ; > 2 000 Wc : 48 V)` : `<b>${R.U} V</b>`);
+    // Modules
+    const P=S.mP, Vmp=S.mVmp, Voc=S.mVoc, Isc=S.mIsc;
+    if (S.regType==="PWM"){
+      R.ns = S.nsForce>0 ? S.nsForce : Math.max(1, Math.round(R.U / S.mUnom));
+      if (R.ns*S.mUnom !== R.U) R.warn.push(["err", t("w_pwm",{a:R.ns*S.mUnom,b:R.U,c:R.U===12?"12":"24"}), "pv"]);
+      R.f.ns = fml(t("f_ns"), `N<sub>s</sub> = U<sub>sys</sub> / U<sub>module</sub> = ${R.U} / ${S.mUnom} = <b>${R.ns}</b>`);
+    } else {
+      R.nsMin = Math.max(1, Math.ceil(1.4 * R.U / Vmp));
+      R.vLim = Math.min(UOC_MAX_ISOLE, S.regBrand==="generic" ? S.regVmax : UOC_MAX_ISOLE);
+      R.nsMax = Math.floor(R.vLim / (Voc * K_FROID));
+      R.ns = S.nsForce>0 ? S.nsForce : R.nsMin;
+      if (R.ns < R.nsMin) R.warn.push(["err", t("w_nsmin",{a:R.nsMin}), "pv"]);
+      if (R.nsMin > R.nsMax) R.warn.push(["err", t("w_nsconf",{a:R.nsMin,b:R.nsMax}), "pv"]);
+      R.f.ns = fml(t("f_ns"), `N<sub>s min</sub> = ⌈1,4 × U<sub>sys</sub> / V<sub>mp</sub>⌉ = ⌈1,4 × ${R.U} / ${nf(Vmp,1)}⌉ = ${R.nsMin} ; N<sub>s max</sub> = ⌊V<sub>max</sub> / (1,2 × V<sub>oc</sub>)⌋ = ⌊${R.vLim} / (1,2 × ${nf(Voc,1)})⌋ = ${R.nsMax} → <b>N<sub>s</sub> = ${R.ns}</b>`);
+    }
+    const n0 = Math.max(1, Math.ceil(R.pcReq / P));
+    R.np = Math.max(1, Math.ceil(n0 / R.ns));
+    R.n = R.ns * R.np;
+    R.pcInst = R.n * P;
+    R.f.n = fml(t("f_n"), `N<sub>mpv</sub> = P<sub>c</sub> / P<sub>module</sub> = ${nf(R.pcReq,0)} / ${P} = ${nf(R.pcReq/P,2)} → ${n0} → N<sub>p</sub> = ⌈${n0} / ${R.ns}⌉ = ${R.np} ${t("strings")} → <b>N = ${R.ns} × ${R.np} = ${R.n}</b> (${nf(R.pcInst,0)} Wc)`);
+    R.area = R.n * S.mArea;
+    R.prod = R.pcInst * R.ir * S.k;
+    R.cover = R.E>0 ? R.prod / R.E : 0;
+    if (R.cover > 1.5) R.warn.push(["warn", t("w_over",{a:nf(R.cover*100,0)}), "pv"]);
+    R.f.prod = fml(t("f_prod"), `E<sub>prod</sub> = P<sub>c inst</sub> × N<sub>e</sub> × η<sub>ph</sub> = ${nf(R.pcInst,0)} × ${nf(R.ir)} × ${nf(S.k)} = <b>${nf(R.prod,0)} Wh/j</b> (${nf(R.cover*100,0)} %)`);
+    // Voc grand froid
+    R.vocCold = R.ns * Voc * K_FROID;
+    if (R.vocCold > UOC_MAX_ISOLE) R.warn.push(["err", t("w_uoc",{a:nf(R.vocCold,0)}), "pv reg"]);
+    else if (S.regType==="MPPT" && S.regBrand==="generic" && R.vocCold > S.regVmax) R.warn.push(["err", t("w_voc",{a:nf(R.vocCold,0),b:S.regVmax}), "pv reg"]);
+    R.f.voc = fml(t("f_voc"), `U<sub>oc max</sub> = N<sub>s</sub> × V<sub>oc</sub> × 1,2 = ${R.ns} × ${nf(Voc,1)} × 1,2 = <b>${nf(R.vocCold,1)} V</b> ${R.vocCold<=UOC_MAX_ISOLE?"≤":">"} 120 V (UTE C 15-712-2)`);
+    // Batteries
+    R.cReq = R.E * S.days / (S.bD * R.U);
+    R.f.c = fml(t("f_c"), `C = E<sub>ch</sub> × J / (U × D) = ${nf(R.E,0)} × ${nf(S.days,1)} / (${R.U} × ${nf(S.bD)}) = <b>${nf(R.cReq,0)} Ah</b>`);
+    R.c50 = R.E * S.days / (R.U * 0.5);
+    R.f.c50 = fml(t("c50"), `C<sub>50 %</sub> = E<sub>ch</sub> × J / (U × 0,5) = ${nf(R.E,0)} × ${nf(S.days,1)} / (${R.U} × 0,5) = <b>${nf(R.c50,0)} Ah</b>`);
+    R.nbs = R.U / S.bU;
+    if (!Number.isInteger(R.nbs) || R.nbs < 1){ R.warn.push(["err", t("w_bat",{a:S.bU,b:R.U}), "bat"]); R.nbs = Math.max(1, Math.round(R.nbs)); }
+    R.nbp = Math.max(1, Math.ceil(R.cReq / S.bC));
+    R.nb = R.nbs * R.nbp; R.cInst = R.nbp * S.bC;
+    R.f.nb = fml(`${t("f_nbs")} / ${t("f_nbp")}`, `N<sub>s</sub> = U / U<sub>bat</sub> = ${R.U} / ${S.bU} = ${R.nbs} ; N<sub>p</sub> = ⌈C / C<sub>bat</sub>⌉ = ⌈${nf(R.cReq,0)} / ${S.bC}⌉ = ${R.nbp} → <b>${R.nb} ${t("b_bat").toLowerCase()}(s), ${R.cInst} Ah</b>`);
+    R.eStock = R.cInst * R.U; R.eUse = R.eStock * S.bD;
+    R.auto = R.E>0 ? R.eUse / R.E : 0;
+    R.icc = 10 * R.cInst; R.daily = R.E / R.eStock;
+    R.f.icc = fml(t("icc"), `I<sub>cc</sub> = 10 × C<sub>n</sub> = 10 × ${R.cInst} = <b>${nf(R.icc,0)} A</b>`);
+    R.f.daily = fml(t("daily"), `E<sub>ch</sub> / (C<sub>inst</sub> × U) = ${nf(R.E,0)} / (${R.cInst} × ${R.U}) = <b>${nf(R.daily*100,0)} %</b>`);
+    R.f.auto = fml(t("f_auto"), `N<sub>r</sub> = C<sub>inst</sub> × D × U / E<sub>ch</sub> = ${R.cInst} × ${nf(S.bD)} × ${R.U} / ${nf(R.E,0)} = <b>${nf(R.auto,1)} ${t("days")}</b>`);
+    if (S.tech==="pb" && S.bD>0.8) R.warn.push(["warn", t("w_pb_d"), "bat"]);
+    // Régulateur
+    if (S.regType==="MPPT"){
+      R.iReg = 1.25 * R.pcInst / R.U;
+      R.f.ireg = fml(t("f_ireg"), `I = 1,25 × P<sub>c inst</sub> / U = 1,25 × ${nf(R.pcInst,0)} / ${R.U} = <b>${nf(R.iReg,1)} A</b>`);
+    } else {
+      R.iReg = 1.25 * Isc * R.np;
+      R.f.ireg = fml(t("f_ireg"), `I = 1,25 × I<sub>sc</sub> × N<sub>p</sub> = 1,25 × ${nf(Isc)} × ${R.np} = <b>${nf(R.iReg,1)} A</b>`);
+    }
+    R.regStd = nextStd(R.iReg, REG_STD);
+    R.regModel = null;
+    if (S.regBrand !== "generic"){
+      const B = REGS[S.regBrand]; let best = null;
+      for (const m of B.models){
+        const pn = m[3][R.U], vm = m[2][R.U];
+        if (!pn || !vm || vm < R.vocCold) continue;
+        const n = Math.ceil(R.pcInst / pn);
+        if (!best || n < best.n || (n === best.n && m[1] < best.i)) best = {name:`${B.name} ${m[0]}`, n, i:m[1], p:pn, v:vm, id:`${S.regBrand}:${m[0]}`};
+      }
+      if (S.regForce && S.regForce.startsWith(S.regBrand + ":")){
+        const m = B.models.find(m => `${S.regBrand}:${m[0]}` === S.regForce);
+        const pn = m && m[3][R.U], vm = m && m[2][R.U];
+        if (m && pn && vm && vm >= R.vocCold) best = {name:`${B.name} ${m[0]}`, n:Math.ceil(R.pcInst / pn), i:m[1], p:pn, v:vm, id:S.regForce, forced:true};
+        else R.warn.push(["warn", t("w_force_nok",{a:S.regForce.split(":")[1]}), "reg"]);
+      }
+      R.regModel = best;
+      if (best) R.f.regsel = fml(t("f_regsel"), `N<sub>rég</sub> = ⌈P<sub>c inst</sub> / P<sub>PV nom</sub>(${R.U} V)⌉ = ⌈${nf(R.pcInst,0)} / ${best.p}⌉ = <b>${best.n} × ${best.name}</b> (${best.i} A, U<sub>PV max</sub> ${best.v} V ≥ ${nf(R.vocCold,0)} V)`);
+      else R.warn.push(["err", t("w_noreg",{a:nf(R.vocCold,0),b:B.name}), "reg"]);
+      if (best && best.n > 1) R.warn.push(["warn", t("w_multi",{n:best.n}), "reg"]);
+    } else if (!R.regStd || R.iReg > 100) R.warn.push(["warn", t("w_reg_big"), "reg"]);
+    // Onduleur
+    if (R.pAC > 0){
+      R.pOndReq = 1.25 * R.pAC; R.ondStd = nextStd(R.pOndReq, OND_STD) || Math.ceil(R.pOndReq/1000)*1000;
+      R.ondModel = null;
+      if (S.ondBrand !== "generic"){
+        const B = INVS[S.ondBrand];
+        let m = B.models.find(m => m[3].includes(R.U) && m[1] >= R.pOndReq);
+        if (S.ondForce && S.ondForce.startsWith(S.ondBrand + ":")){
+          const f = B.models.find(x => `${S.ondBrand}:${x[0]}` === S.ondForce);
+          if (f && f[3].includes(R.U) && f[1] >= R.pOndReq) m = f;
+          else R.warn.push(["warn", t("w_force_nok",{a:S.ondForce.split(":")[1].replace("{U}",R.U)}), "ond"]);
+        }
+        if (m){ R.ondModel = {name:m[0].replace("{U}", R.U), p:m[1], pk:m[2], u:m[4], id:`${S.ondBrand}:${m[0]}`}; R.ondStd = m[1];
+          R.f.ondsel = fml(t("f_ondsel"), `P<sub>cont</sub> ≥ 1,25 × P<sub>AC</sub> = ${nf(R.pOndReq,0)} → <b>${R.ondModel.name}</b> : ${m[1]} ${m[4]} (${t("peak")} ${m[2]} ${m[4]==="VA"?"VA":"W"})`); }
+        else R.warn.push(["err", t("w_noond",{a:B.name, u:R.U}), "ond"]);
+      }
+      R.iDC = R.ondStd / (R.U * S.eta);
+      R.f.pond = fml(t("f_pond"), `P<sub>ond</sub> = 1,25 × P<sub>AC</sub> = 1,25 × ${nf(R.pAC,0)} = <b>${nf(R.pOndReq,0)} VA</b>${R.ondModel?"":` → ${R.ondStd} VA`}`);
+      R.f.idc = fml(t("f_idc"), `I<sub>DC</sub> = P<sub>ond</sub> / (U × η) = ${R.ondStd} / (${R.U} × ${nf(S.eta)}) = <b>${nf(R.iDC,1)} A</b>`);
+      if (S.loads.some(L => ["a_pump","a_fridge","a_freezer","a_wash"].includes(L.k) && L.ty==="AC")) R.warn.push(["warn", t("w_ond"), "ond"]);
+    } else { R.pOndReq=0; R.ondStd=0; R.iDC=0; }
+    // Câbles
+    const C = S.cab;
+    R.cables = [
+      cable("l_pv", C.l1, C.d1, 1.25*Isc*R.np, R.ns*Vmp, "1"),
+      cable("l_bat", C.l2, C.d2, R.iReg, R.U, "2"),
+    ];
+    if (R.ondStd) R.cables.push(cable("l_ond", C.l3, C.d3, R.iDC, R.U, "3"));
+    R.prot = protections(R);
+    for (const w of R.prot.warn) R.warn.push([w[0], w[1], "prot"]);
+  } else {
+    // Raccordé réseau
+    R.hY = S.hYear * 365;
+    R.fo = ORIENT_F[S.orient][TILTS.indexOf(+S.tilt)];
+    R.eTarget = S.consoYear * S.rate / 100;
+    R.f.et = fml(t("f_etarget"), `E = C<sub>an</sub> × τ = ${nf(S.consoYear,0)} × ${nf(S.rate,0)} % = <b>${nf(R.eTarget,0)} kWh/an</b>`);
+    R.f.fo = fml(t("f_orient"), `${t("or_"+S.orient)}, ${S.tilt}° → <b>f = ${nf(R.fo)}</b>`);
+    R.pcReq = R.eTarget / (R.hY * S.pr * R.fo) * 1000;
+    R.f.pc = fml(t("f_pc"), `P<sub>c</sub> = E / (H<sub>an</sub> × PR × f) = ${nf(R.eTarget,0)} / (${nf(R.hY,0)} × ${nf(S.pr)} × ${nf(R.fo)}) = <b>${nf(R.pcReq/1000,2)} kWc</b>`);
+    R.n = Math.max(1, Math.ceil(R.pcReq / S.mP)); R.pcInst = R.n * S.mP; R.area = R.n * S.mArea;
+    R.f.n = fml(t("f_n"), `N = ⌈P<sub>c</sub> / P<sub>module</sub>⌉ = ⌈${nf(R.pcReq,0)} / ${S.mP}⌉ = <b>${R.n}</b> (${nf(R.pcInst/1000,2)} kWc)`);
+    R.prodY = R.pcInst/1000 * R.hY * S.pr * R.fo;
+    R.cover = S.consoYear>0 ? R.prodY / S.consoYear : 0;
+    R.f.prod = fml(t("f_prod"), `E<sub>prod</sub> = P<sub>c inst</sub> × H<sub>an</sub> × PR × f = ${nf(R.pcInst/1000,2)} × ${nf(R.hY,0)} × ${nf(S.pr)} × ${nf(R.fo)} = <b>${nf(R.prodY,0)} kWh/an</b> (${nf(R.cover*100,0)} %)`);
+    R.ondMin = 0.8 * R.pcInst; R.ondMax = 1.0 * R.pcInst;
+    const OG=[600,800,1000,1200,1500,2000,2500,3000,3600,4000,4600,5000,6000,8000,10000,12000];
+    const inRange = OG.filter(x => x >= R.ondMin-1e-9 && x <= R.ondMax+1e-9);
+    R.ondStd = inRange.length ? inRange[inRange.length-1] : (nextStd(R.ondMin, OG) || Math.ceil(R.ondMin/1000)*1000);
+    R.f.pond = fml(t("f_pond"), `P<sub>ond</sub> ≈ 0,8 à 1 × P<sub>c</sub> = ${nf(R.ondMin,0)} à ${nf(R.ondMax,0)} W → <b>${R.ondStd} W</b>`);
+    R.cables = [cable("l_inv", S.cab.lg, S.cab.dg, 1.25*S.mIsc, Math.min(R.n, Math.floor(600/(S.mVoc*1.15))||1)*S.mVmp, "g")];
+  }
+  return R;
+}
+function cable(key, L, du, I, U, id){
+  const s = U>0 ? RHO * 2 * L * I / (du/100 * U) : 0;
+  const std = nextStd(Math.max(s, key==="l_pv"||key==="l_inv" ? 4 : 1.5), SEC_STD) || SEC_STD[SEC_STD.length-1];
+  const real = U>0 ? RHO * 2 * L * I / std / U * 100 : 0;
+  const f = fml(`${t("f_s")} — ${t(key)}`, `S = ρ × 2L × I / (ΔU × U) = 0,023 × 2 × ${nf(L,1)} × ${nf(I,1)} / (${nf(du/100,3)} × ${nf(U,1)}) = ${nf(s,2)} mm² → <b>${String(std).replace(".",lang==="en"?".":",")} mm²</b>`);
+  return {key, L, du, I, U, s, std, real, f, id};
+}
+
+/* ---------- Rendu ---------- */
+const TAB_IDS = ["t-site","t-loads","t-pv","t-bat","t-conv","t-cab","t-prot","t-doc","t-sum"];
+const TAB_KEYS = ["t_site","t_loads","t_pv","t_bat","t_conv","t_cab","t_prot","t_doc","t_sum"];
+const SUM_TAB = 8;
+function visibleTabs(){ return S.mode==="isole" ? [0,1,2,3,4,5,6,7,8] : [0,1,2,5,7,8]; }
+
+function applyI18n(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i]").forEach(el => { const k = el.dataset.i; if (k==="sun_hint") el.innerHTML = t(k); else el.textContent = t(k); });
+  $("langs").innerHTML = ["fr","en","es"].map(l => `<button data-l="${l}" class="${l===lang?"on":""}">${l.toUpperCase()}</button>`).join("");
+  // villes
+  $("city").innerHTML = CITIES.map(c => `<option value="${c[0]}">${c[0]==="custom"?t("custom"):c[1]}</option>`).join("");
+  $("modPreset").innerHTML = MOD_BRANDS.map(([g,list]) => `<optgroup label="${g}">${list.map(m => `<option value="${m[0]}">${m[1]} — ${m[2]} Wc</option>`).join("")}</optgroup>`).join("")
+    + `<optgroup label="${t("g_generic")}">${MODULES.map(m => `<option value="${m[0]}">${m[0]==="mcustom"?t("custom"):m[1]}</option>`).join("")}</optgroup>`
+    + `<optgroup label="${t("g_td")}">${Object.entries(MOD_TD).map(([k,m]) => `<option value="${k}">${m[0]}</option>`).join("")}</optgroup>`;
+  $("exSel").innerHTML = `<option value="">${t("ex_none")}</option>` + Object.keys(EXAMPLES).map(k => `<option value="${k}">${t("ex_"+k)}</option>`).join("");
+  $("batPreset").innerHTML = BATTS.map(b => `<option value="${b[0]}">${b[0]==="bcustom"?t("custom"):b[1]}</option>`).join("");
+  $("preset").innerHTML = `<option value="">${t("pick")}</option>` + APPLIANCES.map(a => `<option value="${a[0]}">${t(a[0])} — ${a[1]} W</option>`).join("");
+  $("orient").innerHTML = ORIENTS.map(o => `<option value="${o}">${t("or_"+o)}</option>`).join("");
+  $("tilt").innerHTML = TILTS.map(x => `<option value="${x}">${x}°</option>`).join("");
+  $("ver").textContent = VERSION;
+  renderKuKs();
+}
+
+function renderTabs(){
+  const vis = visibleTabs();
+  if (!vis.includes(tab)) tab = 0;
+  $("tabs").innerHTML = TAB_KEYS.map((k,i) => `<button data-tab="${i}" class="${i===tab?"on":""}" ${vis.includes(i)?"":"hidden"}><span class="n">${vis.indexOf(i)+1}</span>${t(k)}</button>`).join("");
+  TAB_IDS.forEach((id,i) => $(id).classList.toggle("on", i===tab));
+  document.querySelectorAll(".iso").forEach(el => el.style.display = S.mode==="isole" ? "" : "none");
+  document.querySelectorAll(".grd").forEach(el => el.style.display = S.mode==="reseau" ? "" : "none");
+  // boutons précédent/suivant : sauter les onglets masqués
+  document.querySelectorAll("[data-go]").forEach(b => {
+    const sec = b.closest("section"); const cur = TAB_IDS.indexOf(sec.id); const pos = vis.indexOf(cur);
+    const isNext = b.dataset.i==="next"; const target = vis[pos + (isNext?1:-1)];
+    if (target===undefined) b.style.visibility="hidden"; else { b.style.visibility=""; b.dataset.go = target; }
+  });
+}
+
+function fillInputs(){
+  $("pName").value=S.name; $("pAuthor").value=S.author;
+  $("modeSeg").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v===S.mode));
+  $("modeHint").textContent = t(S.mode==="isole"?"mode_isole":"mode_reseau");
+  $("city").value=S.city; $("period").value=S.period; $("hDec").value=Math.round(S.hDec*1000); $("hSum").value=Math.round(S.hSum*1000); $("hYear").value=Math.round(S.hYear*1000);
+  $("etaOnd").value=S.eta; $("simult").value=S.simult; $("consoYear").value=S.consoYear; $("rate").value=S.rate;
+  $("modPreset").value=S.mod; $("mP").value=S.mP; $("mVmp").value=S.mVmp; $("mImp").value=S.mImp; $("mVoc").value=S.mVoc; $("mIsc").value=S.mIsc; $("mArea").value=S.mArea; $("mUnom").value=S.mUnom;
+  $("kLoss").value=S.k; $("usysMode").value=S.usysMode; $("regType").value=S.regType; $("regVmax").value=S.regVmax; $("nsForce").value=S.nsForce;
+  $("orient").value=S.orient; $("tilt").value=S.tilt; $("pr").value=S.pr;
+  $("batPreset").value=S.bat; $("batTech").value=S.tech; $("batU").value=S.bU; $("batC").value=S.bC; $("batD").value=S.bD; $("batDays").value=S.days; $("batRate").value=S.rate20||"C20";
+  $("regVmax").closest("label").style.display = (S.regType==="MPPT" && S.regBrand==="generic") ? "" : "none";
+  $("regBrand").value = S.regBrand; $("ondBrand").value = S.ondBrand;
+  $("protBrand").value = S.protBrand; $("dcbBrand").value = S.dcbBrand; $("mIrm").value = S.mIrm; $("ng").value = S.ng; $("bldg").value = S.bldg; $("lightning").value = String(S.lightning); $("dcEarth").value = S.dcEarth;
+  if (S.regBrand !== "generic"){ S.regType = "MPPT"; $("regType").value = "MPPT"; } $("regType").disabled = S.regBrand !== "generic";
+  renderLoads();
+}
+
+function rowE(L){
+  const hj = L.per==="S" ? L.h/7 : L.h;
+  const pt = L.p * L.q * (L.ku ?? 1) * (L.ks ?? 1);
+  const e = pt * hj + (L.v || 0) * L.q * Math.max(0, 24 - hj);
+  return {hj, pt, e};
+}
+function renderKuKs(){
+  $("kuTable").innerHTML = KU_TABLE.map(r => `<tr><td>${t(r[0])}</td><td class="num">${/^ku_/.test(r[1])?t(r[1]):r[1]}</td></tr>`).join("");
+  $("ksUseTable").innerHTML = KS_USE.map(r => `<tr><td>${t(r[0])}</td><td class="num">${r[1]}</td></tr>`).join("");
+  $("ksNTable").innerHTML = KS_N.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td></tr>`).join("");
+}
+function renderLoads(){
+  $("loads").querySelector("tbody").innerHTML = S.loads.map((L,i) => `<tr data-r="${i}">
+    <td><input data-f="n" value="${esc(loadName(L))}"></td>
+    <td><input data-f="p" type="number" min="0" step="1" value="${L.p}"></td>
+    <td><input data-f="v" type="number" min="0" step="0.5" value="${L.v||0}"></td>
+    <td><input data-f="q" type="number" min="0" step="1" value="${L.q}"></td>
+    <td><input data-f="h" type="number" min="0" max="${L.per==="S"?168:24}" step="0.25" value="${L.h}"></td>
+    <td><select data-f="per" title="${t("per_hint")}"><option value="J"${L.per!=="S"?" selected":""}>${t("per_J")}</option><option value="S"${L.per==="S"?" selected":""}>${t("per_S")}</option></select></td>
+    <td><input data-f="ku" type="number" min="0" max="1" step="0.05" value="${L.ku??1}"></td>
+    <td><input data-f="ks" type="number" min="0" max="1" step="0.05" value="${L.ks??1}"></td>
+    <td><select data-f="ty"><option${L.ty==="AC"?" selected":""}>AC</option><option${L.ty==="DC"?" selected":""}>DC</option></select></td>
+    <td class="num" data-e>${num(rowE(L).e)}</td>
+    <td><button class="del" data-del="${i}" title="×">×</button></td></tr>`).join("");
+}
+
+function render(){
+  const R = compute();
+  // Site
+  $("rSite").innerHTML = S.mode==="isole"
+    ? kpi(t("ir_used"), `${num(R.ir*1000)} Wh/m²/j`) + kpi(t("ne"), `${nf(R.ir)} h`, `N<sub>e</sub> = E<sub>sol</sub> / 1000`, true)
+    : kpi(t("ir_year"), `${num(S.hYear*365)} kWh/m²/an`, "", true);
+  $("loadsLead").textContent = t(S.mode==="isole"?"loads_lead_iso":"loads_lead_grd");
+  // Lignes du tableau : mise à jour énergie
+  document.querySelectorAll("#loads tbody tr").forEach(tr => { const L=S.loads[+tr.dataset.r]; tr.querySelector("[data-e]").textContent = num(rowE(L).e); });
+  const W = cat => R.warn.filter(w => w[2].split(" ").includes(cat)).map(w => msg(w[0], w[1])).join("");
+  if (S.mode==="isole"){
+    $("eTot").textContent = num(R.eSum);
+    $("rLoads").innerHTML = kpi(t("e_ac"), `${num(R.eAC)} Wh/j`) + kpi(t("e_dc"), `${num(R.eDC)} Wh/j`) + kpi(t("e_day"), `${num(R.E)} Wh/j`, "", true) + kpi(t("p_ac"), `${num(R.pAC)} W`);
+    $("fLoads").innerHTML = R.f.row + R.f.e + R.f.pac;
+    $("mLoads").innerHTML = W("load");
+    $("rPv").innerHTML = kpi(t("pc_req"), `${num(R.pcReq)} Wc`) + kpi(t("f_usys"), `${R.U} V`) + kpi(t("n_mod"), `${R.n}`, `${R.ns} ${t("series")} × ${R.np} ${t("parallel")}`, true)
+      + kpi(t("pc_inst"), `${num(R.pcInst)} Wc`, "", true) + kpi(t("surface"), `${num(R.area,1)} m²`) + kpi(t("prod_day"), `${num(R.prod)} Wh/j`, `${t("cover")} : ${num(R.cover*100)} %`);
+    $("fPv").innerHTML = R.f.ne + R.f.pc + R.f.u + R.f.ns + R.f.n + R.f.prod;
+    $("cplPv").innerHTML = coupling(R, "pv");
+    $("mPv").innerHTML = W("pv");
+    $("rBat").innerHTML = kpi(t("c_req"), `${num(R.cReq)} Ah`) + kpi(t("n_bat"), `${R.nb}`, `${R.nbs} ${t("series")} × ${R.nbp} ${t("parallel")}`, true) + kpi(t("c_inst"), `${num(R.cInst)} Ah — ${R.U} V`, "", true)
+      + kpi(t("e_stock"), `${num(R.eStock/1000,1)} kWh`, `${t("e_use")} : ${num(R.eUse/1000,1)} kWh`) + kpi(t("auton"), `${num(R.auto,1)} ${t("days")}`)
+      + kpi(t("c50"), `${num(R.c50)} Ah`) + kpi(t("icc"), `${num(R.icc)} A`) + kpi(t("daily"), `${num(R.daily*100)} %`);
+    $("fBat").innerHTML = R.f.c + R.f.c50 + R.f.nb + R.f.auto + R.f.icc + R.f.daily;
+    $("cplBat").innerHTML = coupling(R, "bat");
+    $("mBat").innerHTML = W("bat");
+    $("rReg").innerHTML = kpi(t("regtype"), S.regType) + kpi(t("i_reg"), `${num(R.iReg,1)} A`)
+      + (R.regModel ? kpi(t("model_adv"), `${R.regModel.n} × ${R.regModel.name.split(" ").pop()}`, R.regModel.name, true)
+                    : kpi(t("calibre"), R.regStd ? `${R.regStd} A — ${R.U} V` : "> 200 A", "", true))
+      + kpi(t("voc_cold"), `${num(R.vocCold,1)} V`, `max 120 V (UTE C 15-712-2)`);
+    $("fReg").innerHTML = R.f.ireg + R.f.voc + (R.f.regsel||"");
+    $("mReg").innerHTML = W("reg");
+    if (R.ondStd){
+      $("rOnd").innerHTML = kpi(t("p_ac"), `${num(R.pAC)} W`) + kpi(t("p_ond"), `${num(R.pOndReq)} VA`)
+        + (R.ondModel ? kpi(t("model_adv"), R.ondModel.name, `${R.ondModel.p} ${R.ondModel.u} — ${t("peak")} ${R.ondModel.pk} ${R.ondModel.u}`, true)
+                      : kpi(t("calibre"), `${R.ondStd} VA`, `${R.U} V ⎓ / 230 V ~`, true)) + kpi(t("i_dc"), `${num(R.iDC,1)} A`);
+      $("fOnd").innerHTML = R.f.pond + (R.f.ondsel||"") + R.f.idc;
+      $("mOnd").innerHTML = W("ond");
+    } else { $("rOnd").innerHTML=""; $("fOnd").innerHTML=""; $("mOnd").innerHTML = msg("ok", t("no_ac")); }
+  } else {
+    $("rLoads").innerHTML = kpi(t("conso_kwh"), `${num(S.consoYear)} kWh`) + kpi(t("e_target"), `${num(R.eTarget)} kWh/an`, "", true);
+    $("fLoads").innerHTML = R.f.et;
+    $("mPv").innerHTML = "";
+    $("rPv").innerHTML = kpi(t("f_orient"), nf(R.fo)) + kpi(t("pc_req"), `${num(R.pcReq/1000,2)} kWc`) + kpi(t("n_mod"), `${R.n}`, "", true) + kpi(t("pc_inst"), `${num(R.pcInst/1000,2)} kWc`, "", true)
+      + kpi(t("surface"), `${num(R.area,1)} m²`) + kpi(t("prod_year"), `${num(R.prodY)} kWh/an`, `${num(R.prodY/365,1)} kWh/j — ${t("cover")} : ${num(R.cover*100)} %`) + kpi(t("b_ond_grid"), `${R.ondStd} W`, `${num(R.ondMin)} – ${num(R.ondMax)} W`);
+    $("fPv").innerHTML = R.f.fo + R.f.pc + R.f.n + R.f.prod + R.f.pond;
+  }
+  // Câbles
+  $("cabT").querySelector("tbody").innerHTML = R.cables.map(c => `<tr>
+    <td>${t(c.key)}</td>
+    <td class="num"><input type="number" min="0.5" step="0.5" data-cl="${c.id}" value="${c.L}" style="width:80px"></td>
+    <td class="num"><input type="number" min="0.5" max="10" step="0.5" data-cd="${c.id}" value="${c.du}" style="width:70px"></td>
+    <td class="num">${num(c.I,1)}</td><td class="num">${num(c.U,1)}</td><td class="num">${num(c.s,2)}</td>
+    <td class="num"><b>${String(c.std).replace(".", lang==="en"?".":",")}</b></td><td class="num">${num(c.real,2)}</td></tr>`).join("");
+  $("fCab").innerHTML = R.cables.map(c => c.f).join("");
+  renderProt(R);
+  renderDoc(R);
+  renderSummary(R);
+}
+function renderProt(R){
+  if (S.mode !== "isole" || !R.prot) { $("protList").innerHTML=""; return; }
+  const P = R.prot;
+  $("mProt").innerHTML = R.warn.filter(w => w[2]==="prot").map(w => msg(w[0], w[1])).join("");
+  $("protList").innerHTML = P.items.map(it => `<div class="prot"><h4><span class="ref">${it.id}</span>${it.title}<span class="tag ${it.tag}">${t(it.tag==="ob"?"tag_ob":it.tag==="ok"?"tag_info":"tag_rec")}</span>${it.qty?`<span style="color:var(--muted);font-weight:600;font-size:13px">${it.qty}</span>`:""}</h4>
+    <div class="formula" style="white-space:normal">${U(it.rule)}</div><div>${it.ref}</div>${it.note?`<p class="hint">${it.note}</p>`:""}</div>`).join("");
+  const svg = schemaProt(R, P);
+  $("schemaProt").innerHTML = svg; $("schemaProt2").innerHTML = svg;
+}
+
+function renderSummary(R){
+  const title = S.name || t("t_sum");
+  $("prTitle").textContent = `${title}${S.author?" — "+S.author:""} — ${new Date().toLocaleDateString(lang)}`;
+  const cityName = S.city==="custom" ? t("custom") : (CITIES.find(c=>c[0]===S.city)||[])[1];
+  $("sumLead").textContent = `${S.name?S.name+" — ":""}${t(S.mode==="isole"?"m_isole":"m_reseau")} — ${cityName}`;
+  const errs = R.warn.filter(w=>w[0]==="err"), warns = R.warn.filter(w=>w[0]==="warn");
+  $("sumMsgs").innerHTML = (errs.length||warns.length) ? R.warn.map(w=>msg(w[0],w[1])).join("") : msg("ok", t("ok_all"));
+  const bom = [];
+  if (S.mode==="isole"){
+    $("rSum").innerHTML = kpi(t("e_day"), `${num(R.E)} Wh/j`) + kpi(t("pc_inst"), `${num(R.pcInst)} Wc`, `${R.n} × ${S.mP} Wc (${R.ns}S × ${R.np}P)`, true)
+      + kpi(t("f_usys"), `${R.U} V`) + kpi(t("c_inst"), `${num(R.cInst)} Ah`, `${R.nb} × ${S.bU} V ${S.bC} Ah (${R.nbs}S × ${R.nbp}P)`, true)
+      + kpi(t("reg"), R.regModel ? `${R.regModel.n} × ${R.regModel.name.split(" ").pop()}` : `${S.regType} ${R.regStd||">200"} A`, R.regModel ? R.regModel.name : "") + kpi(t("ond"), R.ondModel ? R.ondModel.name.replace(/^\S+ /,"") : (R.ondStd?`${R.ondStd} VA`:"—"), R.ondModel ? INVS[S.ondBrand].name : "") + kpi(t("auton"), `${num(R.auto,1)} ${t("days")}`) + kpi(t("prod_day"), `${num(R.prod)} Wh/j`);
+    bom.push([t("b_pv"), `${modName()}${modName()?" — ":""}${S.mP} Wc — Vmp ${nf(S.mVmp,1)} V — Isc ${nf(S.mIsc)} A`, R.n]);
+    bom.push([t("b_bat"), `${t(S.tech==="pb"?"tech_pb":"tech_lfp")} — ${S.bU} V ${S.bC} Ah (${S.rate20})`, R.nb]);
+    bom.push(R.regModel ? [t("b_reg"), `${R.regModel.name} — ${R.regModel.i} A — PV max ${R.regModel.v} V`, R.regModel.n]
+                        : [t("b_reg"), `${S.regType} ${R.regStd||">200"} A — ${R.U} V${S.regType==="MPPT"?` — PV ≥ ${num(R.vocCold)} V`:""}`, R.regStd?1:"?"]);
+    if (R.ondStd) bom.push(R.ondModel ? [t("b_ond"), `${R.ondModel.name} — ${R.ondModel.p} ${R.ondModel.u} — 230 V ~ ${t("sine")}`, 1]
+                                      : [t("b_ond"), `${R.ondStd} VA — ${R.U} V ⎓ / 230 V ~ — ${t("sine")}`, 1]);
+    $("loadsPrint").querySelector("tbody").innerHTML = S.loads.map(L => `<tr><td>${esc(loadName(L))}</td><td class="num">${num(L.p)}</td><td class="num">${num(L.v||0)}</td><td class="num">${L.q}</td><td class="num">${nf(L.h)}</td><td>${L.per==="S"?t("per_S"):t("per_J")}</td><td class="num">${nf(L.ku??1)}</td><td class="num">${nf(L.ks??1)}</td><td>${L.ty}</td><td class="num">${num(rowE(L).e)}</td></tr>`).join("")
+      + `<tr><td colspan="9"><b>${t("total")}</b></td><td class="num"><b>${num(R.eSum)}</b></td></tr>`
+      + (S.simult!==1 ? `<tr><td colspan="9"><b>E<sub>ch</sub> (× f<sub>c</sub> = ${nf(S.simult)})</b></td><td class="num"><b>${num(R.E)}</b></td></tr>` : "");
+    $("cplSum1").innerHTML = coupling(R, "pv"); $("cplSum2").innerHTML = coupling(R, "bat");
+    $("fAll").innerHTML = R.f.row + R.f.e + R.f.pac + R.f.ne + R.f.pc + R.f.u + R.f.ns + R.f.n + R.f.prod + R.f.voc + R.f.c + R.f.c50 + R.f.nb + R.f.auto + R.f.icc + R.f.ireg + (R.f.pond||"") + (R.f.idc||"") + R.cables.map(c=>c.f).join("");
+  } else {
+    $("rSum").innerHTML = kpi(t("e_target"), `${num(R.eTarget)} kWh/an`) + kpi(t("pc_inst"), `${num(R.pcInst/1000,2)} kWc`, `${R.n} × ${S.mP} Wc`, true)
+      + kpi(t("surface"), `${num(R.area,1)} m²`) + kpi(t("prod_year"), `${num(R.prodY)} kWh/an`, `${t("cover")} : ${num(R.cover*100)} %`, true) + kpi(t("b_ond_grid"), `${R.ondStd} W`);
+    bom.push([t("b_pv"), `${S.mP} Wc — ${nf(S.mArea)} m²`, R.n]);
+    bom.push([t("b_ond_grid"), `${R.ondStd} W — 230 V ~`, 1]);
+    $("fAll").innerHTML = R.f.et + R.f.fo + R.f.pc + R.f.n + R.f.prod + R.f.pond + R.cables.map(c=>c.f).join("");
+  }
+  if (R.prot) for (const it of R.prot.items) if (it.id !== "PE") bom.push([`${it.id} — ${it.title}`, it.ref.replace(/<[^>]+>/g,""), it.qty]);
+  if (R.prot && R.prot.items.length) bom.push([t("p_earth"), t("earth_bom"), "1"]);
+  for (const c of R.cables) bom.push([`${t("f_s")} — ${t(c.key)}`, `${String(c.std).replace(".",lang==="en"?".":",")} mm² — 2 × ${nf(c.L,1)} m`, `${nf(2*c.L,1)} m`]);
+  $("bom").querySelector("tbody").innerHTML = bom.map(b => `<tr><td>${b[0]}</td><td>${U(b[1])}</td><td class="num">${b[2]}</td></tr>`).join("");
+  $("synop").innerHTML = synoptic(R);
+}
+
+/* ---------- Documentation technique : catalogue cliquable ---------- */
+const DOC = {
+  ds425:"https://dualsun.com/en/professionals/datasheet/fiche-technique-flash-425-half-cut-glass-glass-topcon",
+  ds500:"https://dualsun.com/en/professionals/datasheet/flash-500-half-cut-glass-glass-topcon",
+  jinko:"https://www.jinkosolar.com/uploads/JKM425-450N-54HL4R-BDB-F3-EN.pdf",
+  vicS:"https://www.victronenergy.com/media/pg/Manual_SmartSolar_MPPT_75-10_up_to_100-20/en/technical-specifications.html",
+  vicM:"https://www.m.bornay.com/en/products/electronics/smartsolar-mppt.pdf",
+  vic150a:"https://www.victronenergy.com/media/pg/Manual_SmartSolar_MPPT_150-35__150-45/en/technical-specifications.html",
+  vic150b:"https://victronenergy.com/media/pg/Manual_SmartSolar_MPPT_150-60_up_to_250-70/en/technical-specifications.html",
+  vic150c:"https://victronenergy.com/media/pg/Manual_BlueSolar_MPPT_150-70_up_to_250-100_VE.Can/en/technical-specifications.html",
+  vicInvD:"https://www.victronenergy.com/upload/documents/Datasheet-Inverter-VE.Direct-250W-1600W-230V-FR.pdf",
+  vicInvS:"https://www.victronenergy.fr/upload/documents/Datasheet-Inverter-Smart-1600VA-5000VA-FR.pdf",
+  stuVT:"https://studer-innotec.com/wp-content/uploads/2023/03/Studer_variotrack_vt40_vt65_vt80_A4-WEB.pdf",
+  stuXT:"https://studer-innotec.com/wp-content/uploads/2023/03/Studer_xtender_A4-WEB-v2.4.pdf",
+  legPV:"https://docs.rs-online.com/132d/A700000008602985.pdf",
+  legGuide:"https://assets.legrand.com/pim/DOCUMENT/legrand-guide-technique-solutions-photovoltaiques.pdf",
+  leg412224:"https://www.legrand.fr/pro/catalogue/31822-t2-imax-20-ka/parafoudre-basse-tension-typet2-imax-20kapole-1pn-320v-2-modules",
+  leg412214:"https://www.legrand.fr/pro/catalogue/parafoudre-avec-protection-de-court-cicuit-integree-typet2-imax-40ka-1pn-320v-4-modules",
+  leg412274:"https://www.legrand.fr/pro/catalogue/parafoudre-pour-protection-generale-de-tableau-principal-typet1-typet2-iimp-125kapole-1pn-2-modules",
+  schC60:"https://www.se.com/fr/fr/product-range/61095-acti9-c60hdc-c60pvdc",
+  schDF:"https://www.materielelectrique.com/content/fichiers_produits/Schneider2/DF101PV_document.pdf",
+  schPRD1000:"https://se.com/in/en/product/A9L40281/iprddc-40r-1000pv-modular-surge-arrester-2p-1000vdc-with-remote-transfert",
+  schPRD40:"https://res.cloudinary.com/sonepar-fr/raw/upload/s--Agylb3qg--/v1/documents/1887/A9L40501_document.pdf",
+  schID:"https://befr.rs-online.com/web/p/rccbs/0654672",
+  abbPV:"https://fr.rs-online.com/web/p/disjoncteurs/2255925",
+  abbUC:"https://fr.rs-online.com/web/p/disjoncteurs/0200612",
+  wiring:"https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/ground,-earth-and-electrical-safety.html"
+};
+const regDoc = (b, name) => b==="studer" ? DOC.stuVT : /^(75|100\/1|100\/2)/.test(name) ? DOC.vicS : /^100/.test(name) ? DOC.vicM : /^150\/(35|45)/.test(name) ? DOC.vic150a : /^150\/(60|70)/.test(name) ? DOC.vic150b : DOC.vic150c;
+const invDoc = (b, name) => b==="studer" ? DOC.stuXT : /Smart/.test(name) ? DOC.vicInvS : DOC.vicInvD;
+// Protections : [marque, désignation, caractéristiques, référence, lien]
+const PROT_CAT = [
+  ["legrand","Coupe-circuit PV 1P","20 A — 1000 V⎓ — 10×38 — DC-20B","4 146 81","legPV"],
+  ["legrand","Coupe-circuit PV 2P","20 A — 1000 V⎓ — 10×38 — DC-20B","4 146 82","legPV"],
+  ...[[5,"4 146 25"],[8,"4 146 26"],[10,"4 146 27"],[12,"4 146 28"],[15,"4 146 29"],[20,"4 146 30"]].map(([a,r]) => ["legrand",`Cartouche gPV 10×38`,`${a} A — 1000 V⎓`,r,"legPV"]),
+  ["legrand","Parafoudre DC type 2","600 V⎓ — Imax 40 kA — 2 pôles","4 141 55","legPV"],
+  ["legrand","Parafoudre DC type 2","1000 V⎓ — Imax 40 kA — 2 pôles","4 141 56","legPV"],
+  ["legrand","Parafoudre AC type 2 1P+N","In 5 kA — Imax 20 kA — Up 1,2 kV — Uc 320 V","4 122 24","leg412224"],
+  ["legrand","Parafoudre AC type 2 1P+N","Imax 40 kA — protection de court-circuit intégrée","4 122 14","leg412214"],
+  ["legrand","Parafoudre AC type 1+2 1P+N","Iimp 12,5 kA — Up 1,5 kV","4 122 74","leg412274"],
+  ["legrand","Interrupteur-sectionneur DC Vistop","1000 V⎓ — 32 à 125 A","Vistop","legGuide"],
+  ["schneider","Porte-fusible TeSys DF101PV 1P","32 A — 1000 V⎓ — 10×38 — DC-20B","DF101PV","schDF"],
+  ...[[8,"A9N61657"],[10,"A9N61650"],[16,"A9N61651"],[20,"A9N61652"]].map(([a,r]) => ["schneider","Disjoncteur C60PV-DC 2P",`${a} A — 800 V⎓ — courbe B`,r,"schC60"]),
+  ...[[5,"A9N61505"],[32,"A9N61515"],[50,"A9N61518"],[63,"A9N61519"]].map(([a,r]) => ["schneider","Disjoncteur C60H-DC 1P",`${a} A — 250 V⎓ — Icu 10 kA à 220 V⎓ — courbe C`,r,"schC60"]),
+  ["schneider","Parafoudre iPRD-DC 40r 800PV","Type 2 — 800 V⎓ — In 15 kA — Imax 40 kA","A9L40271","schPRD1000"],
+  ["schneider","Parafoudre iPRD-DC 40r 1000PV","Type 2 — 1000 V⎓ — In 15 kA — Imax 40 kA","A9L40281","schPRD1000"],
+  ["schneider","Parafoudre iPRD20r 1P+N","Type 2 — 230 V","A9L20501",""],
+  ["schneider","Parafoudre iPRD40r 1P+N","Type 2 — Up < 1,6 kV L/N","A9L40501","schPRD40"],
+  ["schneider","Interrupteur différentiel Resi9 2P type A","25 A — 30 mA","R9R22225","schID"],
+  ["schneider","Interrupteur différentiel Resi9 2P type A","63 A — 30 mA","R9PRA263",""],
+  ["abb","Disjoncteur S800PV-S 2P","63 A — 800 V⎓ — 5 kA","2CCF019605R0001","abbPV"],
+  ["abb","Disjoncteur S200 M UC 2P C63","63 A — 440 V⎓ — 10 kA","2CDS272061R0634","abbUC"]
+];
+function renderDoc(R){
+  const lnk = (u, l) => u ? `<a href="${u}" target="_blank" rel="noopener">${l||t("datasheet")} ↗</a>` : "";
+  const tbl = (head, rows) => `<div class="scroll"><table><thead><tr>${head.map((h,i)=>`<th${i>0&&i<head.length-1?' class="num"':""}>${h}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  let h = "";
+  // --- Modules ---
+  const modRow = (id, name, P, Vmp, Imp, Voc, Isc, A, doc) => `<tr class="pick${S.mod===id?" sel":""}" data-pick="mod:${id}"><td>${name}</td><td class="num">${P}</td><td class="num">${nf(Vmp,2)}</td><td class="num">${nf(Imp,2)}</td><td class="num">${nf(Voc,2)}</td><td class="num">${nf(Isc,2)}</td><td class="num">${nf(A,2)}</td><td>${lnk(doc)}</td></tr>`;
+  let mr = "";
+  for (const [g, list] of MOD_BRANDS){
+    mr += `<tr><td colspan="8" style="background:var(--celeste-l);font-weight:700">${g}</td></tr>`;
+    mr += list.map(m => modRow(m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[0]==="ds425"?DOC.ds425 : m[0]==="ds500"?DOC.ds500 : DOC.jinko)).join("");
+  }
+  mr += `<tr><td colspan="8" style="background:var(--celeste-l);font-weight:700">${t("g_generic")} / ${t("g_td")}</td></tr>`;
+  mr += MODULES.filter(m => m[0]!=="mcustom").map(m => modRow(m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], "")).join("");
+  mr += Object.entries(MOD_TD).map(([k,m]) => modRow(k, m[0], m[1], m[2], m[3], m[4], m[5], m[6], "")).join("");
+  h += `<div class="card doc"><h3>${t("doc_pv")}</h3>${tbl([t("model"),"P<sub>c</sub> (Wc)","V<sub>mp</sub> (V)","I<sub>mp</sub> (A)","V<sub>oc</sub> (V)","I<sub>sc</sub> (A)","m²",""], mr)}</div>`;
+  if (S.mode === "isole"){
+    // --- Régulateurs ---
+    let rr = "";
+    for (const b of ["victron","studer"]){
+      const B = REGS[b];
+      rr += `<tr><td colspan="7" style="background:var(--celeste-l);font-weight:700">${B.name}</td></tr>`;
+      rr += B.models.map(m => {
+        const pn = m[3][R.U], vm = m[2][R.U], ok = pn && vm && vm >= R.vocCold;
+        const n = ok ? Math.ceil(R.pcInst / pn) : null;
+        const sel = R.regModel && R.regModel.id === `${b}:${m[0]}` && S.regBrand === b;
+        return `<tr class="pick${sel?" sel":""}${ok?"":" nok"}" data-pick="reg:${b}:${m[0]}" title="${ok?"":t("doc_nok")}"><td>${B.name.split(" ")[0]} ${m[0]}</td><td class="num">${m[1]}</td><td class="num">${[12,24,48].map(u=>m[2][u]||"—").join(" / ")}</td><td class="num">${[12,24,48].map(u=>m[3][u]||"—").join(" / ")}</td><td class="num">${pn||"—"}</td><td class="num">${n?`${n}`:"✗"}</td><td>${lnk(regDoc(b,m[0]))}</td></tr>`;
+      }).join("");
+    }
+    h += `<div class="card doc"><h3>${t("doc_reg")} — ${t("doc_for")} ${R.U} V, P<sub>c</sub> = ${num(R.pcInst)} Wc, U<sub>oc max</sub> = ${num(R.vocCold)} V</h3>${tbl([t("model"),"I<sub>max</sub> (A)","U<sub>PV max</sub> 12/24/48 V","P<sub>PV</sub> 12/24/48 V (W)",`P<sub>PV</sub> ${R.U} V`,t("doc_n"),""], rr)}</div>`;
+    // --- Onduleurs ---
+    let ir = "";
+    for (const b of ["victron","studer"]){
+      const B = INVS[b];
+      ir += `<tr><td colspan="6" style="background:var(--celeste-l);font-weight:700">${B.name}</td></tr>`;
+      ir += B.models.map(m => {
+        const ok = m[3].includes(R.U) && m[1] >= (R.pOndReq||0);
+        const sel = R.ondModel && R.ondModel.id === `${b}:${m[0]}` && S.ondBrand === b;
+        return `<tr class="pick${sel?" sel":""}${ok?"":" nok"}" data-pick="ond:${b}:${m[0]}" title="${ok?"":t("doc_nok")}"><td>${m[0].replace("{U}", m[3].includes(R.U)?R.U:m[3][0])}</td><td class="num">${m[1]} ${m[4]}</td><td class="num">${m[2]} ${m[4]}</td><td class="num">${m[3].join(" / ")}</td><td class="num">${ok?"✔":"✗"}</td><td>${lnk(invDoc(b,m[0]))}</td></tr>`;
+      }).join("");
+    }
+    h += `<div class="card doc"><h3>${t("doc_ond")} — ${t("doc_need")} ${num(R.pOndReq||0)} VA ${t("doc_at")} ${R.U} V</h3>${tbl([t("model"),t("doc_pcont"),t("doc_peak"),"U (V)",t("doc_ok"),""], ir)}</div>`;
+    // --- Batteries ---
+    const br = BATTS.filter(b => b[0]!=="bcustom").map(b => `<tr class="pick${S.bat===b[0]?" sel":""}" data-pick="bat:${b[0]}"><td>${b[1]}</td><td class="num">${t(b[2]==="pb"?"tech_pb":"tech_lfp")}</td><td class="num">${b[3]}</td><td class="num">${b[4]}</td><td class="num">${b[3]*b[4]/1000} kWh</td><td></td></tr>`).join("");
+    h += `<div class="card doc"><h3>${t("doc_bat")}</h3>${tbl([t("model"),t("tech"),"U (V)","C (Ah)",t("e_stock"),""], br)}</div>`;
+    // --- Protections ---
+    const used = R.prot ? R.prot.items.map(i => i.ref).join(" ") : "";
+    const pr = ["legrand","schneider","abb"].map(b => `<tr><td colspan="5" style="background:var(--celeste-l);font-weight:700">${b==="legrand"?"Legrand":b==="schneider"?"Schneider Electric":"ABB"}</td></tr>` +
+      PROT_CAT.filter(p => p[0]===b).map(p => {
+        const sel = p[3] !== "Vistop" && used.includes(p[3]);
+        return `<tr class="pick${sel?" sel":""}" data-pick="${b==="abb"?"dcb:abb":"prot:"+b}"><td>${p[1]}</td><td>${p[2]}</td><td class="num"><span class="ref">${p[3]}</span></td><td></td><td>${lnk(DOC[p[4]])}</td></tr>`;
+      }).join("")).join("");
+    h += `<div class="card doc"><h3>${t("t_prot")}</h3>${tbl([t("item"),t("spec"),t("doc_ref"),"",""], pr)}<p class="hint">${t("doc_prot_hint")} ${lnk(DOC.legGuide, "Legrand — guide PV")} · ${lnk(DOC.wiring, "Victron — Wiring Unlimited § 7")}</p></div>`;
+  }
+  $("docBody").innerHTML = h;
+}
+
+/* ---------- Protections (UTE C 15-712-2, NF C 15-100) ---------- */
+function protections(R){
+  const P = {items:[], warn:[]};
+  if (S.mode !== "isole") return P;
+  const Isc = S.mIsc, Voc = S.mVoc, leg = S.protBrand === "legrand";
+  const add = (o) => P.items.push(o);
+  // 1. Coupe-circuits de chaîne (obligatoires ici : sectionnement + protection, sur les 2 polarités)
+  const fMin = 1.5 * Isc, fMax = Math.min(2 * Isc, S.mIrm);
+  const fCal = FUSE_PV.find(x => x >= fMin) || null;
+  P.fuse = fCal; P.fuseOk = fCal && fCal <= fMax;
+  const ueStr = K_FROID * Voc * R.ns;
+  let refF;
+  const nF = S.dcEarth === "neg" ? 1 : 2; // − relié à la terre : fusible sur le + seul, le − est seulement coupé
+  if (leg) refF = (fCal && fCal <= 20) ? `${t("leg_cc")} 2P 20 A 1000 V⎓ <span class="ref">4 146 82</span> + ${nF} × ${t("cart_gpv")} ${fCal} A <span class="ref">${LEG_GPV[fCal]||"—"}</span>` : null;
+  else refF = fCal ? `${t("sch_cc")} <span class="ref">DF101PV</span> × 2 (1P 32 A 1000 V⎓) + ${nF} × ${t("cart_gpv")} ${fCal} A` : null;
+  if (leg && fCal && fCal > 20) P.warn.push(["err", t("w_leg20",{a:nf(fMin,1)})]);
+  if (!P.fuseOk) P.warn.push(["err", t("w_fuse",{a:nf(fMin,1),b:nf(fMax,1)})]);
+  add({id:"Q1", tag:"ob", title:t("p_cc"), qty:`${R.np} × 2P`,
+    rule:`1,5 × I<sub>sc</sub> ≤ I<sub>n</sub> ≤ min(2 × I<sub>sc</sub> ; I<sub>RM</sub>) → ${nf(fMin,1)} ≤ I<sub>n</sub> ≤ ${nf(fMax,1)} A → <b>${fCal||"—"} A gPV</b> ; U<sub>e</sub> ≥ 1,2 × U<sub>oc</sub> × N<sub>s</sub> = ${nf(ueStr,0)} V`,
+    ref: refF || `<i>${t("no_ref")}</i>`, note:t(S.dcEarth==="neg"?"p_cc_note_neg":"p_cc_note")});
+  // 2. Sectionneur / disjoncteur général DC côté panneaux
+  const nGrp = R.regModel ? R.regModel.n : 1, nch = Math.ceil(R.np / nGrp);
+  const iSec = 1.25 * Isc * nch, cSec = MCB_STD.find(x => x >= iSec) || null;
+  let refQ2;
+  if (!cSec) refQ2 = t("p_sec_big",{a:Math.ceil(iSec)});
+  else if (S.dcbBrand === "abb") refQ2 = `ABB S800PV-S 2P ${cSec||"> 63"} A (800 V⎓)${cSec===63?` <span class="ref">2CCF019605R0001</span>`:""}`;
+  else { const c = [8,10,16,20].find(x => x >= iSec); refQ2 = c ? `Schneider C60PV-DC 2P ${c} A 800 V⎓ <span class="ref">${SCH_C60PV[c]}</span>` : `Schneider C60PV-DC 2P ${cSec||"> 63"} A 800 V⎓ (${t("range_63")})`; }
+  add({id:"Q2", tag:"ob", title:t("p_sec"), qty:`${nGrp} × 2P`,
+    rule:`${nGrp>1?`${t("per_group",{n:nGrp,c:nch})} — `:""}I<sub>n</sub> ≥ 1,25 × I<sub>sc</sub> × N<sub>ch</sub> = 1,25 × ${nf(Isc)} × ${nch} = <b>${nf(iSec,1)} A</b> → ${cSec||"> 63"} A ; U<sub>e</sub> ≥ 1,2 × U<sub>oc</sub> × N<sub>s</sub> = ${nf(ueStr,0)} V`,
+    ref: refQ2, note:t("p_sec_note")});
+  // 3. Protection côté batterie (régulateur → batterie et batterie → onduleur)
+  const kIcc = S.tech === "lfp" ? 25 : 10;
+  P.icc = kIcc * R.cInst;
+  const batLine = (id, title, I) => {
+    const In = 1.25 * I, c = MCB_STD.find(x => x >= In);
+    let ref;
+    if (c && P.icc <= 10000){
+      if (S.dcbBrand === "abb") ref = `ABB S200 M UC 2P ${c} A (440 V⎓, 10 kA)${c===63?` <span class="ref">2CDS272061R0634</span>`:""}`;
+      else ref = `Schneider C60H-DC 2P ${c} A${c===10?` <span class="ref">A9N61528</span>`:""} ${t("or_2x1p")}`;
+    } else ref = t("p_bat_big",{a:Math.ceil(In)});
+    add({id, tag:"ob", title, qty:"1 × 2P",
+      rule:`I<sub>n</sub> ≥ 1,25 × I = 1,25 × ${nf(I,1)} = <b>${nf(In,1)} A</b> → ${c||"> 63"} A ; ${t("pdc")} ≥ I<sub>cc batt</sub> ≈ ${kIcc} × C = ${kIcc} × ${R.cInst} = <b>${num(P.icc)} A</b>`,
+      ref, note: t("p_bat_note")});
+  };
+  batLine("F3", t("p_bat_reg"), R.iReg);
+  if (R.ondStd) batLine("Q4", t("p_bat_ond"), R.iDC);
+  // 4. Parafoudre DC
+  const kL = {hab:115, ter:200, sol:450}[S.bldg];
+  P.lcrit = S.ng > 0 ? kL / S.ng : Infinity;
+  const L = S.cab.l1;
+  const dcOb = S.lightning == 1 || L >= P.lcrit;
+  add({id:"F5", tag: dcOb ? "ob" : "rec", title:t("p_spd_dc"), qty:"1 × 2P",
+    rule:`L<sub>crit</sub> = ${kL} / N<sub>g</sub> = ${kL} / ${nf(S.ng,1)} = <b>${nf(P.lcrit,0)} m</b> ; L = ${nf(L,1)} m ${L>=P.lcrit?"≥":"<"} L<sub>crit</sub>${S.lightning==1?` ; ${t("with_rod")}`:""} — U<sub>cpv</sub> ≥ U<sub>oc max</sub> = ${nf(R.vocCold,0)} V ; I<sub>n</sub> ≥ 5 kA ; U<sub>p</sub> ≤ 0,8 × U<sub>w</sub>`,
+    ref: leg ? `Legrand ${t("spd_t2")} 600 V⎓ <span class="ref">4 141 55</span>` : `Schneider iPRD-DC 40r 800PV ${t("spd_t2")} <span class="ref">A9L40271</span>`,
+    note:t("p_spd_dc_note")});
+  // 5. Protection différentielle 30 mA type A (sortie onduleur)
+  if (R.ondStd){
+    const iAC = (R.ondModel ? R.ondModel.p : R.ondStd) / 230;
+    const c = MCB_STD.find(x => x >= Math.max(iAC, 10)) || 63;
+    P.rcd = c;
+    add({id:"Q6", tag:"ob", title:t("p_rcd"), qty:"1 × 1P+N",
+      rule:`I<sub>AC</sub> = P<sub>ond</sub> / 230 = ${nf(iAC,1)} A → <b>${c} A</b> ; I<sub>Δn</sub> = 30 mA ; ${t("rcd_typeA")}`,
+      ref: leg ? `Legrand DX³ ${t("dd_name")} 1P+N ${c} A 30 mA type A` : `Schneider Acti9 iDT40 Vigi ${t("dd_name")} 1P+N ${c} A 30 mA type A — ${t("or_id")} Resi9 type A 30 mA <span class="ref">${c<=25?"R9R22225":"R9PRA263"}</span>`,
+      note:t("p_rcd_note")});
+    // 6. Parafoudre AC
+    add({id:"F7", tag: S.lightning==1 ? "ob" : "rec", title:t("p_spd_ac"), qty:"1 × 1P+N",
+      rule: S.lightning==1 ? t("spd_ac_rod") : `${t("spd_t2")} : I<sub>n</sub> ≥ 5 kA ; U<sub>c</sub> ≥ 1,1 × 230 V`,
+      ref: S.lightning==1 ? (leg ? `Legrand T1+T2 1P+N <span class="ref">4 122 74</span>` : `Schneider ${t("spd_t1")}`)
+                          : (leg ? `Legrand T2 1P+N In 5 kA Up 1,2 kV <span class="ref">4 122 24</span>` : `Schneider iPRD20r 1P+N T2 <span class="ref">A9L20501</span>`),
+      note:t("p_spd_ac_note")});
+  }
+  // 7. Mise à la terre
+  add({id:"PE", tag:"ob", title:t("p_earth"), qty:"",
+    rule:t("earth_rule"), ref:t("earth_ref"), note:t("earth_note")});
+  // Liaison du négatif batterie à la terre (Victron « Wiring Unlimited » § 7.7) ou continu flottant
+  const sBat = Math.max(...R.cables.filter(c => c.key==="l_bat" || c.key==="l_ond").map(c => c.std), 0);
+  P.sBatEarth = sBat;
+  if (S.dcEarth === "neg"){
+    add({id:"PE-", tag:"ob", title:t("p_negearth"), qty:"1",
+      rule:t("negearth_rule",{s:String(sBat).replace(".",",")}), ref:t("negearth_ref"), note:t("negearth_note")});
+    if (S.regBrand !== "studer") P.warn.push(["warn", t("w_pvneg")]);
+  } else {
+    add({id:"DC", tag:"ok", title:t("p_float"), qty:"", rule:t("float_rule"), ref:"—", note:t("float_note")});
+  }
+  return P;
+}
+
+/* ---------- Schéma de protection (unifilaire simplifié, avec mise à la terre) ---------- */
+function schemaProt(R, P){
+  if (S.mode !== "isole") return "";
+  const PLUS="#c62828", MINUS="#1f2933", LN="#8b4513", NN="#1e66d0", G="#2e9e4f", Y="#f2c200";
+  const ln = (x1,y1,x2,y2,c,w=2.4) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}"/>`;
+  const pl = (pts,c,w=2.4) => `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round"/>`;
+  const pe = (pts) => `<polyline points="${pts}" fill="none" stroke="${G}" stroke-width="3"/><polyline points="${pts}" fill="none" stroke="${Y}" stroke-width="3" stroke-dasharray="6 6"/>`;
+  const txt = (x,y,s,o={}) => `<text x="${x}" y="${y}" font-size="${o.fs||12}" ${o.a?`text-anchor="${o.a}"`:""} font-weight="${o.b?700:400}" fill="${o.c||"#1f2933"}">${esc(U(s))}</text>`;
+  const dot = (x,y,c) => `<circle cx="${x}" cy="${y}" r="3.2" fill="${c}"/>`;
+  // pôle de coupe-circuit : lame inclinée vers la gauche, fusible dessiné sur la lame
+  // pôle de coupe-circuit (de y à y+60) : lame inclinée vers la gauche, fusible dessiné sur la lame (fuse=false : pôle sectionné seul)
+  const ccPole = (x,y,c,fuse=true) => {
+    const bx=x, by=y+46, tx=x-16, ty=y+14;
+    const mx=(bx+tx)/2, my=(by+ty)/2, ang=Math.atan2(ty-by, tx-bx)*180/Math.PI;
+    return ln(x,y,x,y+14,c)+ln(x-5,y+14,x+5,y+14,c,2)+ln(bx,by,tx,ty,c)+ln(x,y+46,x,y+60,c)
+      +(fuse?`<rect x="${mx-12}" y="${my-4.5}" width="24" height="9" fill="#fff" stroke="${c}" stroke-width="2" transform="rotate(${ang} ${mx} ${my})"/>`:"");
+  };
+  // pôle de disjoncteur (de y à y+60) : croix sur la borne, lame inclinée ; pôle protégé = déclencheur en double boucle sous la lame
+  const cbPole = (x,y,c,prot=true) => {
+    let s = ln(x,y,x,y+14,c)+ln(x-5,y+9,x+5,y+19,c,2)+ln(x-5,y+19,x+5,y+9,c,2)+ln(x,y+40,x-16,y+12,c);
+    // pôle protégé : thermique = carré non fermé (créneau ⊐), puis magnétique = bosse (demi-cercle ⊃)
+    s += prot ? `<path d="M${x},${y+40} h8 v9 h-8 a4.5,4.5 0 0 1 0,9" fill="none" stroke="${c}" stroke-width="2.4" stroke-linejoin="miter"/>`+ln(x,y+58,x,y+60,c)
+              : ln(x,y+40,x,y+60,c);
+    return s;
+  };
+  const link = (x1,x2,y) => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#555" stroke-width="1.3" stroke-dasharray="4 3"/>`;
+  const spd = (x,y) => `<rect x="${x-9}" y="${y}" width="18" height="34" fill="#fff" stroke="#33414e" stroke-width="2"/><polyline points="${x-7},${y+28} ${x+6},${y+8} ${x+9},${y+8}" fill="none" stroke="#33414e" stroke-width="1.6"/>`;
+  const earth = (x,y) => ln(x,y,x,y+14,G,3)+ln(x-14,y+14,x+14,y+14,G,3)+ln(x-9,y+20,x+9,y+20,G,3)+ln(x-4,y+26,x+4,y+26,G,3);
+  const boxR = (x,y,w,h,l1,l2,inner="") => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="#fff" stroke="#33414e" stroke-width="2"/>${inner}${txt(x+w/2,y+h/2-2,l1,{a:"middle",b:1})}${l2?txt(x+w/2,y+h/2+14,l2,{a:"middle",fs:11,c:"#5f6b76"}):""}`;
+  const masse = (x,y) => ln(x,y,x,y+8,G,3)+[0,1,2].map(i=>ln(x-10+i*7,y+8,x-15+i*7,y+15,G,2)).join("")+ln(x-12,y+8,x+8,y+8,G,3);
+  const YPE = 625;
+  let s = "";
+  // ===== Générateur PV =====
+  const xm = 130, xp = 190;
+  s += boxR(80,24,160,62, t("sy_pv"), `${R.ns}S × ${R.np}P — ${num(R.pcInst)} Wc`);
+  s += ln(xm,86,xm,120,MINUS)+ln(xp,86,xp,120,PLUS);
+  s += txt(xm-6,112,"−",{a:"end",b:1,c:MINUS})+txt(xp+6,112,"+",{b:1,c:PLUS});
+  // Q1 coupe-circuits (2 pôles)
+  const negE = S.dcEarth === "neg";
+  s += ccPole(xm,120,MINUS,!negE)+ccPole(xp,120,PLUS)+link(xm-8,xp-8,150);
+  s += txt(xp+26,146,"Q1",{b:1})+txt(xp+26,161,`${R.np} × 2P gPV ${P.fuse||"?"} A`,{fs:11});
+  // dérivation parafoudre DC F5
+  s += ln(xm,180,xm,250,MINUS)+ln(xp,180,xp,250,PLUS);
+  s += dot(xm,214,MINUS)+dot(xp,200,PLUS)+pl(`${xm},214 340,214 340,226`,MINUS,1.8)+pl(`${xp},200 370,200 370,226`,PLUS,1.8);
+  s += spd(340,226)+spd(370,226)+txt(392,240,"F5",{b:1})+txt(392,255,t("sy_spd_dc"),{fs:11});
+  s += pe(`340,260 340,276 370,276 370,260`)+pe(`355,276 355,${YPE}`);
+  // Q2 disjoncteur / sectionneur général DC
+  s += cbPole(xm,250,MINUS,!negE)+cbPole(xp,250,PLUS)+link(xm-8,xp-8,276);
+  s += txt(xp+44,276,"Q2",{b:1})+txt(xp+44,291,`2P ${MCB_STD.find(x=>x>=1.25*S.mIsc*R.np)||">63"} A`,{fs:11});
+  // Régulateur
+  s += ln(xm,310,xm,340,MINUS)+ln(xp,310,xp,340,PLUS);
+  s += boxR(80,340,160,60, t("sy_reg"), R.regModel ? `${R.regModel.n} × ${R.regModel.name.replace("SmartSolar ","")}` : `${S.regType} ${R.regStd||""} A`,
+    ln(84,396,236,344,"#33414e",1.2)+txt(96,362,"=",{b:1,fs:16})+txt(226,394,"=",{a:"end",b:1,fs:16}));
+  // ===== Bus batterie =====
+  const xbm = 150, xbp = 175, yBus = 490;
+  s += ln(xbm,400,xbm,404,MINUS)+ln(xbm,464,xbm,yBus,MINUS)+ln(xbp,400,xbp,404,PLUS);
+  // F3 protection régulateur → batterie (sur le +)
+  s += cbPole(xbm,404,MINUS,false)+cbPole(xbp,404,PLUS)+link(xbm-8,xbp-8,430); s += txt(xbp+44,424,"F3",{b:1})+txt(xbp+44,439,`${MCB_STD.find(x=>x>=1.25*R.iReg)||">63"} A ⎓`,{fs:11});
+  s += pl(`${xbm},${yBus} 640,${yBus}`,MINUS)+pl(`${xbp},${yBus-18} ${R.ondStd?665:455},${yBus-18}`,PLUS);
+  s += ln(xbp,464,xbp,yBus-18,PLUS);
+  // Batteries
+  s += dot(430,yBus,MINUS)+dot(455,yBus-18,PLUS)+ln(430,yBus,430,528,MINUS)+ln(455,yBus-18,455,528,PLUS);
+  s += boxR(380,528,130,58, t("sy_bat"), `${R.U} V — ${num(R.cInst)} Ah`);
+  // ===== Onduleur =====
+  let xAC = null;
+  if (R.ondStd){
+    const xom = 640, xop = 665;
+    s += ln(xom,yBus,xom,420,MINUS)+ln(xom,360,xom,330,MINUS)+ln(xop,yBus-18,xop,420,PLUS)+ln(xop,360,xop,330,PLUS);
+    s += cbPole(xom,360,MINUS,false)+cbPole(xop,360,PLUS)+link(xom-8,xop-8,386); s += txt(xop+44,384,"Q4",{b:1})+txt(xop+44,399,`${MCB_STD.find(x=>x>=1.25*R.iDC)||">63"} A ⎓`,{fs:11});
+    s += boxR(600,270,110,60, t("sy_ond"), R.ondModel ? R.ondModel.name.replace("Xtender ","").replace("Phoenix ","") : `${R.ondStd} VA`,
+      ln(604,326,706,274,"#33414e",1.2)+txt(612,290,"=",{b:1,fs:16})+txt(700,322,"~",{a:"end",b:1,fs:16}));
+    // Sortie AC : neutre à gauche, phase à droite
+    const xn = 860, xl = 900;
+    s += pl(`710,290 ${xn},290 ${xn},320`,NN)+pl(`710,305 ${xl},305 ${xl},320`,LN);
+    s += txt(xn-6,316,"N",{a:"end",b:1,c:NN})+txt(xl+6,316,"L",{b:1,c:LN});
+    // F7 parafoudre AC
+    s += dot(xn,340,NN)+dot(xl,352,LN)+pl(`${xn},340 960,340 960,370`,NN,1.8)+pl(`${xl},352 990,352 990,370`,LN,1.8);
+    s += spd(960,370)+spd(990,370)+txt(1010,384,"F7",{b:1})+txt(1010,399,t("sy_spd_ac"),{fs:11});
+    s += pe(`960,404 960,420 990,420 990,404`)+pe(`975,420 975,${YPE}`);
+    // Q6 disjoncteur différentiel 30 mA type A
+    s += ln(xn,320,xn,410,NN)+ln(xl,320,xl,410,LN);
+    s += cbPole(xn,410,NN,false) + cbPole(xl,410,LN) + link(xn-8,xl-8,436);
+    s += `<ellipse cx="${(xn+xl)/2-4}" cy="488" rx="36" ry="9" fill="none" stroke="#33414e" stroke-width="1.8"/>`+link(xl-8,xl-8,476);
+    s += ln(xn,470,xn,540,NN)+ln(xl,470,xl,540,LN);
+    s += txt(xn-26,436,"Q6",{a:"end",b:1})+txt(xn-26,451,`1P+N ${P.rcd||""} A`,{a:"end",fs:11})+txt(xn-26,466,"30 mA type A",{a:"end",fs:11});
+    s += boxR(830,540,110,42, t("sy_ac"), "");
+    xAC = 885;
+    // masses onduleur et tableau
+    s += ln(600,300,586,300,G,3)+pe(`586,300 586,${YPE}`);
+    s += pe(`940,561 1040,561 1040,${YPE}`)+txt(1046,556,"PE",{fs:11,c:G,b:1});
+  }
+  // ===== Masses reliées à la liaison équipotentielle =====
+  s += ln(80,55,40,55,G,3)+pe(`40,55 40,${YPE}`)+txt(84,16,t("sy_frames"),{fs:11,c:G,b:1});
+  s += ln(80,372,64,372,G,3)+pe(`64,372 64,${YPE}`);
+  s += pe(`510,568 540,568 540,${YPE}`)+txt(544,564,t("sy_bat_cab"),{fs:10,c:G});
+  if (S.dcEarth === "neg"){ // liaison unique du − batterie à la terre, au plus près de la batterie
+    s += dot(400,yBus,MINUS)+pl(`400,${yBus} 400,512 345,512`,MINUS,2)+pe(`345,512 345,${YPE}`);
+    s += txt(339,507,t("sy_negearth"),{a:"end",fs:10,c:G,b:1})+txt(339,521,`≥ ${String(P.sBatEarth).replace(".",",")} mm²`,{a:"end",fs:10,c:G});
+  }
+  // ===== Barrette + piquet de terre =====
+  s += pe(`40,${YPE} 1080,${YPE}`);
+  s += `<rect x="1050" y="${YPE-8}" width="34" height="16" fill="#fff" stroke="${G}" stroke-width="2"/>`+txt(1067,YPE-12,t("sy_bar"),{a:"middle",fs:10,c:G,b:1});
+  s += earth(1067,YPE+8);
+  s += txt(1000,652,t("sy_rod"),{a:"end",fs:11,c:G,b:1});
+  s += txt(40,652,t("sy_le"),{fs:11,c:G});
+  return s;
+}
+
+/* ---------- Schémas de couplage (modules / batteries) ---------- */
+function coupling(R, kind){
+  const pv = kind === "pv";
+  const ns = pv ? R.ns : R.nbs, np = pv ? R.np : R.nbp;
+  const W = pv ? 96 : 92, H = pv ? 58 : 52, GX = 38, GY = 34;
+  const cols = Math.min(ns, 6), rows = Math.min(np, 4), cutS = ns > 6, cutP = np > 4;
+  const x0 = 70, y0 = 34, RED = "#c62828", BLK = "#1f2933";
+  const xEnd = x0 + cols*(W+GX) - GX, xm = x0 - 28, xp = xEnd + 28, xo = xp + 46;
+  const yLast = y0 + (rows-1)*(H+GY), yb = yLast + H + (cutP ? 44 : 20);
+  let g = "";
+  for (let r = 0; r < rows; r++){
+    const y = y0 + r*(H+GY), ym = y + H/2;
+    for (let c = 0; c < cols; c++){
+      const x = x0 + c*(W+GX);
+      if (pv){
+        g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="3" fill="#1d3f66" stroke="#33414e" stroke-width="1.5"/>`;
+        for (let i = 1; i < 4; i++) g += `<line x1="${x+i*W/4}" y1="${y+3}" x2="${x+i*W/4}" y2="${y+H-3}" stroke="#7fa7d1" stroke-width=".7"/>`;
+        g += `<line x1="${x+3}" y1="${ym}" x2="${x+W-3}" y2="${ym}" stroke="#7fa7d1" stroke-width=".7"/>`;
+        g += `<text x="${x+W/2}" y="${ym+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" stroke="#1d3f66" stroke-width="3" paint-order="stroke">${U(S.mP+" Wc")}</text>`;
+      } else {
+        g += `<rect x="${x}" y="${y+6}" width="${W}" height="${H-6}" rx="4" fill="${S.tech==="lfp"?"#dff0e5":"#eceff2"}" stroke="#33414e" stroke-width="1.5"/>`;
+        g += `<rect x="${x+10}" y="${y}" width="12" height="6" fill="#33414e"/><rect x="${x+W-22}" y="${y}" width="12" height="6" fill="#33414e"/>`;
+        g += `<text x="${x+W/2}" y="${ym+4}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2933">${S.bU} V</text><text x="${x+W/2}" y="${ym+19}" text-anchor="middle" font-size="11.5" fill="#1f2933">${S.bC} Ah</text>`;
+      }
+      // bornes : − à gauche, + à droite
+      g += `<circle cx="${x}" cy="${ym}" r="3.5" fill="#fff" stroke="${BLK}" stroke-width="1.5"/><circle cx="${x+W}" cy="${ym}" r="3.5" fill="#fff" stroke="${RED}" stroke-width="1.5"/>`;
+      g += `<text x="${x+7}" y="${y-5}" font-size="15" font-weight="700" fill="${BLK}">−</text><text x="${x+W-14}" y="${y-5}" font-size="15" font-weight="700" fill="${RED}">+</text>`;
+      if (c < cols-1){
+        const dash = cutS && c === cols-2;
+        g += `<line x1="${x+W+3.5}" y1="${ym}" x2="${x+W+GX-3.5}" y2="${ym}" stroke="#555" stroke-width="2.5"${dash?' stroke-dasharray="4 4"':""}/>`;
+        if (dash) g += `<text x="${x+W+GX/2}" y="${ym-8}" text-anchor="middle" font-size="12" fill="#555">×${ns}</text>`;
+      }
+    }
+    g += `<line x1="${x0-3.5}" y1="${ym}" x2="${xm}" y2="${ym}" stroke="${BLK}" stroke-width="2.5"/>`;
+    g += `<line x1="${xEnd+3.5}" y1="${ym}" x2="${xp}" y2="${ym}" stroke="${RED}" stroke-width="2.5"/>`;
+  }
+  const ym0 = y0 + H/2, ymL = yLast + H/2;
+  if (cutP) g += `<text x="${x0}" y="${yLast+H+26}" font-size="14" fill="#555">⋮ ${np} ${t("branches")}</text>`;
+  g += `<polyline points="${xm},${ym0} ${xm},${yb} ${xo},${yb}" fill="none" stroke="${BLK}" stroke-width="2.5"/>`;
+  g += `<polyline points="${xp},${ymL} ${xp},${ym0} ${xo},${ym0}" fill="none" stroke="${RED}" stroke-width="2.5"/>`;
+  rows > 1 && (g += `<circle cx="${xm}" cy="${ym0}" r="3" fill="${BLK}"/>`);
+  for (let r = 1; r < rows; r++){ const ym = y0 + r*(H+GY) + H/2; g += `<circle cx="${xm}" cy="${ym}" r="3" fill="${BLK}"/><circle cx="${xp}" cy="${ym}" r="3" fill="${RED}"/>`; }
+  g += `<text x="${xo+8}" y="${ym0+5}" font-size="16" font-weight="700" fill="${RED}">+</text><text x="${xo+8}" y="${yb+5}" font-size="16" font-weight="700" fill="${BLK}">−</text>`;
+  const uOut = pv ? ns*S.mVmp : ns*S.bU;
+  g += `<text x="${xo+26}" y="${(ym0+yb)/2-4}" font-size="15" font-weight="700" fill="#1f2933">${nf(uOut,1)} V ⎓</text>`;
+  g += `<text x="${xo+26}" y="${(ym0+yb)/2+15}" font-size="13" fill="#5f6b76">${t(pv ? "to_reg" : "to_reg")} →</text>`;
+  const Wt = xo + 170, Ht = yb + 14;
+  const cap = pv
+    ? `${t("cpl_pv")} : ${ns} ${t("series")} × ${np} ${t("parallel")} — U = ${ns} × ${nf(S.mVmp,1)} = ${nf(ns*S.mVmp,1)} V ; I = ${np} × ${nf(S.mImp,2)} = ${nf(np*S.mImp,1)} A ; P = ${U(nf(R.pcInst,0)+" Wc")}`
+    : `${t("cpl_bat")} : ${ns} ${t("series")} × ${np} ${t("parallel")} — U = ${ns} × ${S.bU} = ${ns*S.bU} V ; C = ${np} × ${S.bC} = ${np*S.bC} Ah`;
+  return `<svg viewBox="0 0 ${Wt} ${Ht}" width="${Wt}" role="img" aria-label="${esc(cap)}">${g}</svg><p>${cap}</p>`;
+}
+
+/* ---------- Synoptique (SVG) ---------- */
+function synoptic(R){
+  const DC="#85340A", AC="#3f7fb8";
+  const box = (x,y,w,h,lbl,sub,inner,top) => { const y1 = top ? y-26 : y+h+20, y2 = top ? y-9 : y+h+38; return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="#fff" stroke="#33414e" stroke-width="2"/>${inner||""}
+    <text x="${x+w/2}" y="${y1}" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2933">${esc(lbl)}</text>
+    <text x="${x+w/2}" y="${y2}" text-anchor="middle" font-size="13" fill="#5f6b76">${esc(U(sub))}</text></g>`; };
+  const conv = (x,y,w,h,top,bot) => `<line x1="${x+6}" y1="${y+h-6}" x2="${x+w-6}" y2="${y+6}" stroke="#33414e" stroke-width="1.5"/>
+    <text x="${x+16}" y="${y+28}" font-size="20" font-weight="700" fill="#33414e">${top}</text><text x="${x+w-16}" y="${y+h-12}" text-anchor="end" font-size="20" font-weight="700" fill="#33414e">${bot}</text>`;
+  const wire = (pts, col) => `<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#ar${col===DC?"d":"a"})"/>`;
+  const pvArr = (x,y,w,h,ns,np) => { // dessin des modules
+    let s=""; const cols=Math.min(ns,6), rows=Math.min(np,4); const cw=(w-12)/cols, ch=(h-12)/rows;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){ const X=x+6+c*cw, Y=y+6+r*ch;
+      s+=`<rect x="${X+1.5}" y="${Y+1.5}" width="${cw-3}" height="${ch-3}" fill="#1d3f66" stroke="#9fc3e6" stroke-width="1"/>
+          <line x1="${X+cw/2}" y1="${Y+2}" x2="${X+cw/2}" y2="${Y+ch-2}" stroke="#9fc3e6" stroke-width=".7"/><line x1="${X+2}" y1="${Y+ch/2}" x2="${X+cw-2}" y2="${Y+ch/2}" stroke="#9fc3e6" stroke-width=".7"/>`; }
+    return s; };
+  const batt = (x,y,w,h) => `<rect x="${x+18}" y="${y+26}" width="${w-36}" height="${h-40}" rx="4" fill="${S.tech==="lfp"?"#dff0e5":"#eceff2"}" stroke="#33414e" stroke-width="1.5"/>
+    <rect x="${x+30}" y="${y+18}" width="14" height="8" fill="#33414e"/><rect x="${x+w-44}" y="${y+18}" width="14" height="8" fill="#33414e"/>
+    <text x="${x+37}" y="${y+46}" text-anchor="middle" font-size="16" font-weight="700" fill="#b3261e">+</text><text x="${x+w-37}" y="${y+46}" text-anchor="middle" font-size="18" font-weight="700" fill="#33414e">−</text>`;
+  const house = (cx,cy) => `<path d="M${cx-22},${cy+20} V${cy-4} L${cx},${cy-24} L${cx+22},${cy-4} V${cy+20} Z M${cx-6},${cy+20} V${cy+6} H${cx+6} V${cy+20}" fill="#fff4d6" stroke="#33414e" stroke-width="2" stroke-linejoin="round"/>`;
+  const bulb = (cx,cy) => `<circle cx="${cx}" cy="${cy-6}" r="13" fill="#fff4d6" stroke="#33414e" stroke-width="2"/><path d="M${cx-9},${cy-15} L${cx+9},${cy+3} M${cx+9},${cy-15} L${cx-9},${cy+3}" stroke="#33414e" stroke-width="1.6"/><rect x="${cx-6}" y="${cy+8}" width="12" height="8" fill="#33414e"/>`;
+  const defs = `<defs>${[["d",DC],["a",AC]].map(([k,c])=>`<marker id="ar${k}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c}"/></marker>`).join("")}</defs>`;
+  const sunMini = `<g transform="translate(70,60) scale(.22)">${document.querySelector(".logo").innerHTML}</g>`;
+  const peLine = (pts) => `<polyline points="${pts}" fill="none" stroke="#2e9e4f" stroke-width="2.5"/><polyline points="${pts}" fill="none" stroke="#f2c200" stroke-width="2.5" stroke-dasharray="6 6"/>`;
+  const earthSym = (x,y) => `<g stroke="#2e9e4f" stroke-width="2.5"><line x1="${x}" y1="${y}" x2="${x}" y2="${y+10}"/><line x1="${x-12}" y1="${y+10}" x2="${x+12}" y2="${y+10}"/><line x1="${x-7}" y1="${y+15}" x2="${x+7}" y2="${y+15}"/><line x1="${x-3}" y1="${y+20}" x2="${x+3}" y2="${y+20}"/></g>`;
+  const legend = `<g font-size="13" fill="#5f6b76" transform="translate(0,28)"><g transform="translate(-150,0)">${peLine("640,360 670,360")}<text x="676" y="364">PE (${t("sy_le_short")})</text></g><line x1="640" y1="360" x2="670" y2="360" stroke="${DC}" stroke-width="3.5"/><text x="676" y="364">DC ⎓</text>
+    <line x1="740" y1="360" x2="770" y2="360" stroke="${AC}" stroke-width="3.5"/><text x="776" y="364">AC ~ 230 V</text></g>`;
+  if (S.mode==="isole"){
+    let s = defs + sunMini;
+    s += box(130,40,170,110, t("sy_pv"), `${R.ns}S × ${R.np}P — ${num(R.pcInst)} Wc`, pvArr(130,40,170,110,R.ns,R.np));
+    s += box(390,55,110,80, t("sy_reg"), R.regModel ? `${R.regModel.n} × ${R.regModel.name.replace("SmartSolar ","")}` : `${S.regType} ${R.regStd||">200"} A`, conv(390,55,110,80,"=","="), true);
+    s += box(375,215,140,90, t("sy_bat"), `${R.U} V — ${num(R.cInst)} Ah`, batt(375,215,140,90));
+    s += wire("300,95 384,95", DC);
+    s += wire("445,135 445,208", DC);
+    if (R.ondStd){
+      s += box(620,55,110,80, t("sy_ond"), R.ondModel ? R.ondModel.name.replace("Xtender ","") : `${R.ondStd} VA`, conv(620,55,110,80,"=","~"), true);
+      s += wire("515,250 575,250 575,95 614,95", DC);
+      s += box(810,55,120,80, t("sy_ac"), `${num(R.pAC)} W`, house(870,95), true);
+      s += wire("730,95 804,95", AC);
+    }
+    const yPE = 362;
+    s += peLine(`130,140 108,140 108,${yPE} 945,${yPE}`) + earthSym(108,yPE);
+    s += peLine(`390,120 372,120 372,${yPE}`) + peLine(`375,290 360,290 360,${yPE}`);
+    if (R.ondStd) s += peLine(`620,120 602,120 602,${yPE}`) + peLine(`930,120 945,120 945,${yPE}`);
+    if (R.eDC>0){
+      s += box(620,230,110,70, t("sy_dc"), `${num(R.eDC)} Wh/j`, bulb(675,262));
+      s += wire("515,270 614,270", DC);
+    }
+    return s + legend;
+  } else {
+    let s = defs + sunMini;
+    s += box(130,40,170,110, t("sy_pv"), `${R.n} × ${S.mP} Wc — ${num(R.pcInst/1000,2)} kWc`, pvArr(130,40,170,110,Math.min(R.n,6),Math.ceil(R.n/6)));
+    s += box(380,55,110,80, t("sy_ond"), `${R.ondStd} W`, conv(380,55,110,80,"=","~"), true);
+    s += box(560,55,110,80, t("sy_board"), "230 V ~", `<g stroke="#33414e" stroke-width="1.5" fill="none">${[0,1,2,3].map(i=>`<rect x="${578+i*19}" y="78" width="12" height="34" rx="2"/>`).join("")}</g>`, true);
+    s += box(560,230,110,70, t("sy_loads"), `${num(S.consoYear)} kWh/an`, house(615,262));
+    s += box(740,55,90,80, t("sy_meter"), "", `<rect x="758" y="72" width="54" height="26" fill="#e8f2fb" stroke="#33414e"/><text x="785" y="90" text-anchor="middle" font-size="13" font-family="monospace">kWh</text>`, true);
+    s += box(880,70,60,50, t("sy_grid"), "", `<path d="M895,115 L910,78 L925,115 M900,100 L920,100" stroke="#33414e" stroke-width="2" fill="none"/>`, true);
+    s += wire("300,95 374,95", DC) + wire("490,95 554,95", AC) + wire("615,135 615,223", AC) + `<polyline points="670,95 734,95" stroke="${AC}" stroke-width="3.5" marker-end="url(#ara)" marker-start="url(#ara)" fill="none"/>` + wire("830,95 874,95", AC);
+    return s + legend;
+  }
+}
+
+function brandModule(id){ for (const [,list] of MOD_BRANDS){ const m = list.find(m => m[0]===id); if (m) return m; } return null; }
+function modName(){ const b = brandModule(S.mod); return b ? b[1] : (MOD_TD[S.mod] ? MOD_TD[S.mod][0].split(" (")[0] : ""); }
+function applyModule(){
+  S.mIrm = /^jk/.test(S.mod) ? 30 : 25;
+  const b = brandModule(S.mod); if (b){ [S.mP,S.mVmp,S.mImp,S.mVoc,S.mIsc,S.mArea,S.mUnom] = b.slice(2); return; }
+  const m = MODULES.find(m=>m[0]===S.mod), td = MOD_TD[S.mod];
+  if (m && S.mod!=="mcustom") [S.mP,S.mVmp,S.mImp,S.mVoc,S.mIsc,S.mArea,S.mUnom] = m.slice(2);
+  else if (td) [S.mP,S.mVmp,S.mImp,S.mVoc,S.mIsc,S.mArea,S.mUnom] = td.slice(1);
+}
+
+/* ---------- Événements ---------- */
+function setNum(key, v){ const x = parseFloat(String(v).replace(",", ".")); if (isFinite(x)) S[key] = x; }
+function bind(){
+  const map = {pName:"name",pAuthor:"author"};
+  for (const id in map) $(id).addEventListener("input", e => { S[map[id]] = e.target.value; render(); });
+  $("modeSeg").addEventListener("click", e => { const b=e.target.closest("button"); if(!b) return; S.mode=b.dataset.v; fillInputs(); renderTabs(); render(); });
+  $("city").addEventListener("change", e => { S.city=e.target.value; const c=CITIES.find(c=>c[0]===S.city); if (c && S.city!=="custom"){ S.hDec=c[2]; S.hSum=c[3]; S.hYear=c[4]; } fillInputs(); render(); });
+  $("period").addEventListener("change", e => { S.period=e.target.value; render(); });
+  [["hDec","hDec"],["hSum","hSum"],["hYear","hYear"]].forEach(([id,k]) => $(id).addEventListener("input", e => { const x=parseFloat(e.target.value.replace(",",".")); if (isFinite(x) && x>0) S[k]=x/1000; S.city="custom"; $("city").value="custom"; render(); }));
+  $("batRate").addEventListener("change", e => { S.rate20=e.target.value; render(); });
+  $("exSel").addEventListener("change", e => { const ex=EXAMPLES[e.target.value]; if(!ex) return; S=Object.assign(defaults(), JSON.parse(JSON.stringify(ex))); applyModule(); fillInputs(); renderTabs(); render(); $("exMsg").innerHTML = msg("ok", t("ex_loaded")); e.target.value=""; });
+  [["etaOnd","eta"],["simult","simult"],["consoYear","consoYear"],["rate","rate"],["kLoss","k"],["regVmax","regVmax"],["nsForce","nsForce"],["pr","pr"],["batD","bD"],["batDays","days"]]
+    .forEach(([id,k]) => $(id).addEventListener("input", e => { setNum(k, e.target.value); render(); }));
+  [["mP","mP"],["mVmp","mVmp"],["mImp","mImp"],["mVoc","mVoc"],["mIsc","mIsc"],["mArea","mArea"]].forEach(([id,k]) => $(id).addEventListener("input", e => { setNum(k, e.target.value); S.mod="mcustom"; $("modPreset").value="mcustom"; render(); }));
+  $("mUnom").addEventListener("change", e => { S.mUnom=+e.target.value; render(); });
+  $("modPreset").addEventListener("change", e => { S.mod=e.target.value; applyModule(); fillInputs(); render(); });
+  $("usysMode").addEventListener("change", e => { S.usysMode=e.target.value; render(); });
+  $("regBrand").addEventListener("change", e => { S.regBrand=e.target.value; S.regForce=""; fillInputs(); render(); });
+  $("ondBrand").addEventListener("change", e => { S.ondBrand=e.target.value; S.ondForce=""; render(); });
+  [["protBrand","protBrand"],["dcbBrand","dcbBrand"],["bldg","bldg"]].forEach(([id,k]) => $(id).addEventListener("change", e => { S[k]=e.target.value; render(); }));
+  $("lightning").addEventListener("change", e => { S.lightning=+e.target.value; render(); });
+  $("dcEarth").addEventListener("change", e => { S.dcEarth=e.target.value; render(); });
+  $("docBody").addEventListener("click", e => {
+    if (e.target.closest("a")) return;
+    const tr = e.target.closest("[data-pick]"); if (!tr) return;
+    const [kind, b, ...rest] = tr.dataset.pick.split(":"); const id = rest.join(":");
+    if (kind==="mod"){ S.mod=b; applyModule(); }
+    else if (kind==="bat"){ const x=BATTS.find(x=>x[0]===b); S.bat=b; S.tech=x[2]; S.bU=x[3]; S.bC=x[4]; S.bD = S.tech==="pb"?0.7:0.8; }
+    else if (kind==="reg"){ S.regBrand=b; S.regForce=`${b}:${id}`; S.regType="MPPT"; }
+    else if (kind==="ond"){ S.ondBrand=b; S.ondForce=`${b}:${id}`; }
+    else if (kind==="prot"){ S.protBrand=b; }
+    else if (kind==="dcb"){ S.dcbBrand=b; }
+    fillInputs(); render();
+  });
+  $("bAutoPick").addEventListener("click", () => { S.regForce=""; S.ondForce=""; render(); });
+  [["mIrm","mIrm"],["ng","ng"]].forEach(([id,k]) => $(id).addEventListener("input", e => { setNum(k, e.target.value); render(); }));
+  $("regType").addEventListener("change", e => { S.regType=e.target.value; fillInputs(); render(); });
+  $("orient").addEventListener("change", e => { S.orient=e.target.value; render(); });
+  $("tilt").addEventListener("change", e => { S.tilt=+e.target.value; render(); });
+  $("batPreset").addEventListener("change", e => { S.bat=e.target.value; const b=BATTS.find(b=>b[0]===S.bat); if (b && S.bat!=="bcustom"){ S.tech=b[2]; S.bU=b[3]; S.bC=b[4]; S.bD = S.tech==="pb"?0.7:0.8; } fillInputs(); render(); });
+  $("batTech").addEventListener("change", e => { S.tech=e.target.value; S.bD = S.tech==="pb"?0.7:0.8; S.bat="bcustom"; fillInputs(); render(); });
+  $("batU").addEventListener("change", e => { S.bU=+e.target.value; S.bat="bcustom"; $("batPreset").value="bcustom"; render(); });
+  $("batC").addEventListener("input", e => { setNum("bC", e.target.value); S.bat="bcustom"; $("batPreset").value="bcustom"; render(); });
+  // tableau des appareils
+  const tb = $("loads").querySelector("tbody");
+  tb.addEventListener("input", e => { const tr=e.target.closest("tr"); if(!tr) return; const L=S.loads[+tr.dataset.r]; const f=e.target.dataset.f;
+    if (f==="n"){ L.n=e.target.value; L.k=""; } else if (f==="ty"||f==="per"){ L[f]=e.target.value; if (f==="per") { renderLoads(); } } else { const x=parseFloat(e.target.value.replace(",",".")); L[f]=isFinite(x)?x:0; } render(); });
+  tb.addEventListener("change", e => { const f=e.target.dataset.f; if (f==="ty"||f==="per"){ const L=S.loads[+e.target.closest("tr").dataset.r]; L[f]=e.target.value; render(); } });
+  tb.addEventListener("click", e => { const b=e.target.closest("[data-del]"); if(!b) return; S.loads.splice(+b.dataset.del,1); renderLoads(); render(); });
+  $("bAdd").addEventListener("click", () => { const k=$("preset").value; if(!k) return; const a=APPLIANCES.find(a=>a[0]===k); S.loads.push(L0({k, p:a[1], h:a[2], ty:a[3], v:a[4]||0, ku:a[5]??1, ks:a[6]??1})); renderLoads(); render(); });
+  $("bAddEmpty").addEventListener("click", () => { S.loads.push(L0({})); renderLoads(); render(); });
+  // câbles
+  $("cabT").addEventListener("change", e => { const el=e.target; const x=parseFloat(el.value.replace(",",".")); if(!isFinite(x)) return;
+    const id = el.dataset.cl || el.dataset.cd; const isL = !!el.dataset.cl;
+    const key = id==="g" ? (isL?"lg":"dg") : (isL?"l":"d")+id; S.cab[key]=x; render(); });
+  // navigation
+  document.addEventListener("click", e => {
+    const tb=e.target.closest("[data-tab]"); if (tb){ tab=+tb.dataset.tab; renderTabs(); window.scrollTo(0,0); return; }
+    const g=e.target.closest("[data-go]"); if (g){ tab=+g.dataset.go; renderTabs(); window.scrollTo(0,0); return; }
+    const l=e.target.closest("[data-l]"); if (l){ lang=l.dataset.l; try{localStorage.setItem("solarduo.lang",lang);}catch(_){} applyI18n(); fillInputs(); renderTabs(); render(); }
+  });
+  // fichiers
+  $("bNew").addEventListener("click", () => { S=defaults(); tab=0; fillInputs(); renderTabs(); render(); });
+  $("bSave").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = (S.name ? S.name.replace(/[^\w\-àâäéèêëîïôöùûüç ]+/gi,"_").trim() : "projet") + ".solarduo";
+    document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 500);
+  });
+  $("bOpen").addEventListener("click", () => $("fOpen").click());
+  $("fOpen").addEventListener("change", e => { const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+    r.onload = () => loadProject(r.result); r.readAsText(f); e.target.value=""; });
+  // application de bureau : fichier ouvert par double-clic, mise à jour disponible
+  if (window.solarDuoDesktop) { window.solarDuoDesktop.onOpen(loadProject); window.solarDuoDesktop.onUpdate(showUpdate); }
+  const pr = () => { const old=tab; tab=SUM_TAB; renderTabs(); setTimeout(()=>{ window.print(); tab=old; renderTabs(); }, 50); };
+  $("bPrint").addEventListener("click", pr); $("bPrint2").addEventListener("click", pr);
+}
+
+
+function loadProject(txt){
+  try { const o=JSON.parse(txt); if (!o || !Array.isArray(o.loads)) throw 0; S=Object.assign(defaults(), o); S.cab=Object.assign(defaults().cab, o.cab||{}); S.loads=S.loads.map(L0); applyModule(); tab=0; fillInputs(); renderTabs(); render(); }
+  catch(_){ $("rSite").insertAdjacentHTML("beforebegin", msg("err", t("bad_file"))); }
+}
+function showUpdate(u){
+  if (!u || !u.version || $("updBar")) return;
+  const d=document.createElement("div"); d.id="updBar"; d.className="noprint";
+  d.style.cssText="position:sticky;top:0;z-index:50;background:#1d6fb8;color:#fff;padding:8px 14px;display:flex;gap:12px;align-items:center;justify-content:center;font-size:14px";
+  d.innerHTML=`<span>${esc(t("upd_msg").replace("{v}",u.version))}</span><a href="${esc(u.url)}" target="_blank" rel="noopener" style="color:#fff;font-weight:700;text-decoration:underline">${esc(t("upd_dl"))}</a><button type="button" style="background:none;border:1px solid #fff;color:#fff;border-radius:4px;cursor:pointer;padding:1px 8px" aria-label="×">×</button>`;
+  d.querySelector("button").onclick=()=>d.remove(); document.body.prepend(d);
+}
+/* ---------- Démarrage ---------- */
+try { const q = new URLSearchParams(location.search).get("lang"); if (q && I18N[q]) { lang = q; } else { const l = localStorage.getItem("solarduo.lang"); if (l && I18N[l]) lang = l; else { const n=(navigator.language||"fr").slice(0,2); lang = I18N[n] ? n : "en"; } } } catch(_){}
+applyI18n(); fillInputs(); bind(); renderTabs(); render();
+</script>
+</body>
+</html>

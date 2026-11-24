@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solar Duo — dimensionnement d'installations photovoltaïques, logiciel libre</title>
+<meta name="description" content="Solar Duo : logiciel libre pour dimensionner une installation photovoltaïque, en site isolé ou raccordée au réseau : bilan énergétique, panneaux, batteries, régulateur, onduleur, câbles, protections et mise à la terre. Windows, macOS, Linux et en ligne.">
+<meta property="og:title" content="Solar Duo">
+<meta property="og:description" content="Dimensionnement d'installations photovoltaïques — logiciel libre pour la classe et pour tous.">
+<meta property="og:image" content="https://deltapassion.github.io/Solar-Duo/img/og.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#eaeef3; --muted:#a3afbe; --paper:#0d1218; --card:#141c26; --line:#263343;
+  --sun:#f6b40e; --sun-deep:#b07a00; --red:#d7261e; --celeste:#74acdf; --sky-deep:#0f4c7a; --snow:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.6}
+a{color:var(--celeste)}
+img{max-width:100%;display:block}
+
+/* ---------- héros : Payolle ---------- */
+.hero{position:relative;min-height:92vh;display:flex;flex-direction:column;color:var(--snow);
+  background:url("img/payolle.jpg") center 45%/cover no-repeat;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(8,26,44,.62) 0%,rgba(8,26,44,.15) 36%,rgba(8,26,44,.30) 60%,rgba(8,20,32,.90) 100%)}
+nav{display:flex;align-items:center;gap:20px;padding:18px clamp(16px,5vw,64px)}
+nav .brand{white-space:nowrap;display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.04em;color:#fff;text-decoration:none;margin-right:auto}
+nav .brand img{width:36px;height:36px;border-radius:9px}
+nav .brand .s{color:#ff6b5e}
+nav a.l{color:#eef4f9;text-decoration:none;font-size:15px;white-space:nowrap}
+nav a.l:hover{color:#fff;text-decoration:underline}
+.hero .inner{margin-top:auto;padding:0 clamp(16px,5vw,64px) clamp(40px,8vh,88px);max-width:1180px}
+.kicker{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28);padding:5px 12px;border-radius:999px;backdrop-filter:blur(4px)}
+.title{display:flex;align-items:center;gap:clamp(10px,2vw,22px);margin:18px 0 14px}
+.title img{width:clamp(84px,13vw,150px);height:auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.35))}
+h1{font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(46px,9vw,112px);line-height:.95;margin:0;letter-spacing:.02em;
+  text-shadow:0 4px 22px rgba(0,0,0,.35)}
+h1 .s{color:var(--red);-webkit-text-stroke:2px #fff;paint-order:stroke fill}
+h1 .d{color:var(--celeste);letter-spacing:.18em;-webkit-text-stroke:2px #fff;paint-order:stroke fill}
+.hero p.lead{font-size:clamp(17px,2.2vw,22px);max-width:780px;margin:0 0 28px;color:#f1f6fb;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border-radius:12px;font-weight:600;text-decoration:none;font-size:16px;
+  transition:transform .15s ease, box-shadow .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--sun);color:#3a2500;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+.btn.ghost{color:#fff;border:1px solid rgba(255,255,255,.55);background:rgba(10,30,50,.28);backdrop-filter:blur(4px)}
+.btn svg{width:20px;height:20px;flex:none}
+.photo-credit{position:absolute;right:14px;bottom:10px;font-size:12px;color:rgba(255,255,255,.72)}
+.hero .osnote{margin:12px 0 0;font-size:14px;color:#dde9f3}
+.hero .osnote a{color:#fff}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,9vw,104px) clamp(16px,5vw,64px)}
+.wrap{max-width:1180px;margin:0 auto}
+h2{font-family:Fraunces,Georgia,serif;font-size:clamp(30px,4.5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:18px;max-width:760px;margin:0 0 40px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card h3{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card .ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px;color:#fff;font-size:22px}
+
+/* méthode : zone claire avec l'éclaboussure de couleurs */
+.zone-clair{position:relative;isolation:isolate;background:url("img/splash.jpg") center/cover no-repeat;
+  --ink:#17212c;--muted:#3d4a58;--card:#fff;--line:#d6dce4;color:var(--ink)}
+.zone-clair::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.90) 0%,rgba(255,255,255,.58) 45%,rgba(255,255,255,.90) 100%)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-bottom:44px}
+.step{background:rgba(255,255,255,.88);backdrop-filter:blur(3px);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(40,20,80,.10)}
+.step .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--sun);color:#3a2500;font-weight:800;margin-bottom:8px}
+.step h3{margin:0 0 8px;font-size:18px}
+.step .f{font-family:"Cambria Math",Cambria,Georgia,serif;font-size:19px;background:#fff8e3;border:1px solid #f3dc97;border-radius:10px;padding:8px 12px;margin:0 0 10px;direction:ltr;text-align:left}
+.step p{margin:0;color:var(--muted);font-size:15px}
+.uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.use{background:rgba(255,255,255,.88);backdrop-filter:blur(3px);border:1px solid var(--line);border-radius:16px;padding:22px}
+.use h3{margin:6px 0 6px;font-size:19px}
+.use p{margin:0;color:var(--muted)}
+.use .num{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.use .num span{font-size:13px;font-weight:600;background:#eef4fa;border:1px solid #d6e3ef;border-radius:999px;padding:3px 10px;direction:ltr}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8a5a00;background:#fff1c7;border-radius:999px;padding:3px 10px}
+
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.shots figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.shots figure img{width:100%;height:auto;background:#fff}
+.shots figcaption{padding:10px 14px;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+.shots .big{grid-column:span 2}
+
+/* téléchargement */
+.dl{position:relative;color:#fff;background:radial-gradient(1200px 500px at 85% 0%,rgba(116,172,223,.22),transparent 60%),linear-gradient(180deg,#0b1f33,#0a1622)}
+.dlhead{display:grid;grid-template-columns:1fr auto;gap:34px;align-items:center;margin-bottom:26px}
+.dlhead figure{margin:0;width:min(360px,34vw);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.22);box-shadow:0 18px 50px rgba(0,0,0,.45);transform:rotate(1.5deg)}
+.dlhead figcaption{font-size:12px;color:#b8cde0;padding:6px 10px;background:rgba(0,0,0,.35)}
+.dl .sub{color:#d5e5f2;margin-bottom:22px}
+.dlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:28px}
+.dlc{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;color:#fff;text-decoration:none;display:block}
+.dlc:hover{background:rgba(255,255,255,.13)}
+.dlc strong{display:block;font-size:18px}
+.dlc span{color:#cfe0ee;font-size:14px}
+.dlc strong span,.dlc .badge span{font-size:inherit;color:inherit}
+[hidden]{display:none!important}
+.dlc .os{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.dlc .os svg{width:26px;height:26px;flex:none;color:#fff}
+.dlc em{display:block;font-style:normal;font-size:13px;color:#9fc4e0;margin-top:8px;font-variant-numeric:tabular-nums}
+.dlc.mine{border-color:var(--sun);background:rgba(246,180,14,.14);box-shadow:0 0 0 2px rgba(246,180,14,.35)}
+.dlc .badge{display:none;margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--sun);color:#3a2500;border-radius:999px;padding:3px 8px}
+[dir=rtl] .dlc .badge{margin-left:0;margin-right:auto}
+.dlc.mine .badge{display:inline-block}
+.dlc.soon{opacity:.6}
+.dlc.soon em{color:#ffd28a}
+.dlc.web{border-color:rgba(116,172,223,.6);background:rgba(116,172,223,.14)}
+.dl code{background:rgba(0,0,0,.3);padding:2px 7px;border-radius:6px;font-size:14px}
+.dl ol{padding-left:22px;color:#e2eef7}
+[dir=rtl] .dl ol{padding-left:0;padding-right:22px}
+.dl a{color:#fff}
+.counter{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 18px;margin:0 0 22px;font-size:15px}
+.counter b{font-size:20px;font-variant-numeric:tabular-nums}
+.mainrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin:0 0 26px}
+.btn.big{font-size:18px;padding:16px 26px;border-radius:14px}
+.btn.dlmain{background:var(--sun);color:#3a2500;box-shadow:0 12px 34px rgba(0,0,0,.35)}
+.mainrow .alt{color:#d5e5f2;font-size:14px}
+.notices{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 26px}
+.notices a{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 14px;text-decoration:none;font-size:14px}
+.notices a:hover{background:rgba(255,255,255,.14)}
+
+/* langue */
+.langsel{font:inherit;font-size:14px;font-weight:600;color:#fff;background:rgba(10,30,50,.45);border:1px solid rgba(255,255,255,.45);
+  border-radius:10px;padding:7px 8px;cursor:pointer;backdrop-filter:blur(4px)}
+.langsel option{color:#111;background:#fff}
+
+/* don */
+:root{--hot:#ff3f6c}
+@keyframes battement{0%,100%{transform:scale(1)}12%{transform:scale(1.28)}24%{transform:scale(1)}36%{transform:scale(1.18)}48%{transform:scale(1)}}
+@keyframes ondule{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes lueur{0%,100%{box-shadow:0 0 0 0 rgba(255,63,108,0)}12%{box-shadow:0 0 18px 2px rgba(255,63,108,.45)}48%{box-shadow:0 0 0 0 rgba(255,63,108,0)}}
+.give{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;color:#fff;border:1px solid rgba(255,63,108,.65);border-radius:10px;padding:8px 13px;white-space:nowrap;
+  background:linear-gradient(110deg,rgba(255,63,108,.30),rgba(255,63,108,.60),rgba(255,134,54,.40),rgba(255,63,108,.30));background-size:300% 300%;
+  animation:ondule 6s ease-in-out infinite,lueur 1.3s ease-in-out infinite;backdrop-filter:blur(4px)}
+.give svg{width:16px;height:16px}
+.give svg,.support .big svg,.sbtn .btn.pri svg{transform-origin:50% 55%;animation:battement 1.3s ease-in-out infinite}
+.support{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;border:1px solid rgba(255,63,108,.35);border-radius:18px;padding:32px;
+  background:linear-gradient(120deg,rgba(255,63,108,.08),rgba(255,63,108,.18),rgba(255,134,54,.10),var(--card),rgba(255,63,108,.14));background-size:300% 300%;animation:ondule 10s ease-in-out infinite}
+.support .big{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:rgba(255,63,108,.18);color:var(--hot);animation:lueur 1.3s ease-in-out infinite}
+.support .big svg{width:34px;height:34px}
+.support .k{font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--hot)}
+.support h2{font-size:clamp(24px,3.2vw,34px);margin:8px 0 0}
+.support p{color:var(--muted);margin:8px 0 0;max-width:620px}
+.support small{display:block;color:var(--muted);margin-top:8px;font-size:13px}
+.sbtn{display:flex;flex-direction:column;gap:10px;min-width:240px}
+.sbtn .btn{justify-content:center;font-size:15px;padding:12px 18px}
+.btn.pri{background:var(--hot);color:#fff;box-shadow:0 8px 26px rgba(255,63,108,.35)}
+.btn.soft{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line)}
+.btn.soft:hover{border-color:var(--hot)}
+.others{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px;color:var(--muted);font-size:15px}
+.others a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px}
+.others a:hover{border-color:var(--celeste)}
+
+footer{padding:34px clamp(16px,5vw,64px);color:var(--muted);font-size:14px;border-top:1px solid var(--line);background:#080d13}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer p{flex-basis:100%;margin:0;font-size:13px}
+
+@media (max-width:1240px){nav{gap:14px} nav a.l2{display:none}}
+@media (max-width:900px){.support{grid-template-columns:auto 1fr}.sbtn{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.sbtn .btn{flex:1 1 200px}
+  .dlhead{grid-template-columns:1fr}.dlhead figure{width:min(420px,100%);transform:none}}
+@media (max-width:820px){.shots{grid-template-columns:1fr}.shots .big{grid-column:auto} nav a.l{display:none}}
+@media (max-width:560px){.support{grid-template-columns:1fr;padding:22px}.sbtn{min-width:0}.give span{display:none}.give{padding:8px 10px}}
+@media (prefers-reduced-motion:reduce){.give,.give svg,.support,.support .big,.support .big svg,.sbtn .btn.pri svg{animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <nav>
+    <a class="brand" href="#"><img src="img/icon.png" alt=""><span><span class="s">SOLAR</span> DUO</span></a>
+    <a class="l" href="#fonctions"><span data-i="nf">Fonctions</span></a>
+    <a class="l" href="#methode"><span data-i="nm">Méthode</span></a>
+    <a class="l l2" href="#captures"><span data-i="nc">Captures</span></a>
+    <a class="l" href="#telecharger"><span data-i="nt">Télécharger</span></a>
+    <a class="l" id="navApp" href="app/"><span data-i="no">En ligne</span></a>
+    <a class="l" id="navNotice" href="notice/index.html"><span data-i="nn">Notice</span></a>
+    <a class="l l2" href="https://github.com/Deltapassion/Solar-Duo">GitHub</a>
+    <select id="lang" class="langsel" aria-label="Langue / Language">
+      <option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option>
+      <option value="de">🇩🇪 Deutsch</option><option value="it">🇮🇹 Italiano</option><option value="el">🇬🇷 Ελληνικά</option><option value="zh">🇨🇳 中文</option>
+      <option value="ru">🇷🇺 Русский</option><option value="uk">🇺🇦 Українська</option><option value="ar">العربية</option><option value="sq">🇦🇱 Shqip</option>
+    </select>
+    <a class="give" href="https://ko-fi.com/djlatinjazz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></svg><span><span data-i="don">Faire un don</span></span></a>
+  </nav>
+  <div class="inner">
+    <span class="kicker"><span data-i="kick">Version 1.0.0 · Logiciel libre · Windows · macOS · Linux · en ligne</span></span>
+    <div class="title"><img src="img/solar-duo-logo.png" alt=""><h1><span class="s">SOLAR</span> <span class="d">DUO</span></h1></div>
+    <p class="lead"><span data-i="lead">Dimensionner une installation photovoltaïque, en site isolé avec batteries ou raccordée au réseau : bilan énergétique, panneaux, batteries, régulateur, onduleur, câbles et protections, avec le schéma et la mise à la terre. Pensé pour la classe, gratuit pour tous.</span></p>
+    <div class="btns">
+      <a class="btn primary" id="heroDl" href="#telecharger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+        <span class="dltxt">Télécharger</span>
+      </a>
+      <a class="btn ghost" id="heroApp" href="app/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span data-i="online">Utiliser en ligne</span></a>
+      <a class="btn ghost" href="https://github.com/Deltapassion/Solar-Duo"><span data-i="code">Voir le code sur GitHub</span></a>
+    </div>
+    <p class="osnote" id="heroNote"><a href="#telecharger">Toutes les versions : Windows, macOS, Linux</a></p>
+  </div>
+  <span class="photo-credit">Payolle, Hautes-Pyrénées</span>
+</header>
+
+<section id="fonctions">
+  <div class="wrap">
+    <h2><span data-i="h2f">Du bilan énergétique au schéma des protections</span></h2>
+    <p class="sub"><span data-i="subf">Les onglets suivent la démarche du cours ; chaque résultat affiche sa formule avec les valeurs, pour que l'élève puisse refaire le calcul.</span></p>
+    <div class="grid">
+      <div class="card"><div class="ic" style="background:#e0861a">⚡</div><h3><span data-i="c1t">Bilan énergétique</span></h3><p><span data-i="c1">Appareils types, puissance et durée d'utilisation, veille, coefficients Ku et Ks avec leurs tableaux de référence.</span></p></div>
+      <div class="card"><div class="ic" style="background:#1d6fb8">▦</div><h3><span data-i="c2t">Panneaux</span></h3><p><span data-i="c2">DualSun (fabricant français) et Jinko Solar : puissance crête, modules en série et en parallèle, limite de 120 V en site isolé.</span></p></div>
+      <div class="card"><div class="ic" style="background:#2f8f5b">🔋</div><h3><span data-i="c3t">Batteries</span></h3><p><span data-i="c3">Plomb ou lithium : capacité, autonomie, profondeur de décharge, couplage série / parallèle et courant de court-circuit du parc.</span></p></div>
+      <div class="card"><div class="ic" style="background:#3b5bdb">⇄</div><h3><span data-i="c4t">Régulateur et onduleur</span></h3><p><span data-i="c4">Victron et Studer jusqu'à 5 kVA : tension du champ par grand froid, courant de charge, puissance appelée.</span></p></div>
+      <div class="card"><div class="ic" style="background:#8b4513">〰</div><h3><span data-i="c5t">Câbles</span></h3><p><span data-i="c5">Sections normalisées et chutes de tension entre panneaux, régulateur, batteries et onduleur.</span></p></div>
+      <div class="card"><div class="ic" style="background:#c62828">⏚</div><h3><span data-i="c6t">Protections</span></h3><p><span data-i="c6">Coupe-circuits porte-fusibles, sectionnement, disjoncteurs courant continu, parafoudres, différentiel 30 mA type A : Legrand, Schneider, ABB.</span></p></div>
+      <div class="card"><div class="ic" style="background:#2e9e4f">⏚</div><h3><span data-i="c7t">Mise à la terre</span></h3><p><span data-i="c7">Toutes les masses reliées à la terre, cadres des panneaux compris, visibles sur le schéma ; option « − batterie à la terre » selon Victron.</span></p></div>
+      <div class="card"><div class="ic" style="background:#6a4fb3">📖</div><h3><span data-i="c8t">Documentation technique</span></h3><p><span data-i="c8">Tout le catalogue avec les liens vers les fiches des fabricants ; un clic pour choisir, le matériel retenu est surligné.</span></p></div>
+      <div class="card"><div class="ic" style="background:#b07a00">🖨</div><h3><span data-i="c9t">Synthèse imprimable</span></h3><p><span data-i="c9">Récapitulatif, liste du matériel et schéma unifilaire, à imprimer ou à enregistrer en PDF ; projets enregistrés dans un fichier.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="methode" class="zone-clair">
+  <div class="wrap">
+    <h2><span data-i="h2m">La méthode du cours, pas une boîte noire</span></h2>
+    <p class="sub"><span data-i="subm">Les calculs suivent les TD de bac pro électricité et les textes de référence : NF C 15-100, guide UTE C 15-712-2.</span></p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3><span data-i="m1t">Énergie consommée par jour</span></h3><div class="f">E<sub>ch</sub> = Σ P × t</div><p><span data-i="m1">Pour chaque appareil, puissance × durée d'utilisation ; la veille est ajoutée.</span></p></div>
+      <div class="step"><span class="n">2</span><h3><span data-i="m2t">Puissance crête</span></h3><div class="f">P<sub>c</sub> = E<sub>ch</sub> / (N<sub>e</sub> × η<sub>ph</sub>)</div><p><span data-i="m2">N<sub>e</sub> : heures équivalentes du mois le plus défavorable ; η<sub>ph</sub> = 0,75.</span></p></div>
+      <div class="step"><span class="n">3</span><h3><span data-i="m3t">Capacité des batteries</span></h3><div class="f">C = E<sub>ch</sub> × J / (U × D)</div><p><span data-i="m3">J : jours d'autonomie ; U : tension du parc ; D : profondeur de décharge.</span></p></div>
+      <div class="step"><span class="n">4</span><h3><span data-i="m4t">Tension du champ</span></h3><div class="f">1,2 × N<sub>s</sub> × U<sub>oc</sub> ≤ 120 V</div><p><span data-i="m4">Site isolé (UTE C 15-712-2) ; la tension doit aussi rester compatible avec le régulateur.</span></p></div>
+    </div>
+    <h3 style="font-size:22px;margin:0 0 16px"><span data-i="ex">Trois exemples corrigés, à charger en un clic</span></h3>
+    <div class="uses">
+      <div class="use"><span class="tag"><span data-i="iso">Site isolé</span></span><h3><span data-i="e1t">Phare de la Caravelle</span></h3><p><span data-i="e1">Une petite résidence en autonomie complète, d'après le TD du phare de la Caravelle.</span></p>
+        <div class="num"><span>3 220 Wh/j</span><span>5 × 155 Wc</span><span>383 Ah</span></div></div>
+      <div class="use"><span class="tag"><span data-i="iso">Site isolé</span></span><h3><span data-i="e2t">Pavillon F4 à Tarbes</span></h3><p><span data-i="e2">Une maison entière en autonomie : électroménager, éclairage, multimédia.</span></p>
+        <div class="num"><span>7 266 Wh/j</span><span>11 × 500 Wc</span><span>1 730 Ah</span></div></div>
+      <div class="use"><span class="tag"><span data-i="iso">Site isolé</span></span><h3><span data-i="e3t">Ombrière solaire</span></h3><p><span data-i="e3">Une ombrière de recharge de véhicules électriques en Martinique, qui produit et stocke son énergie.</span></p>
+        <div class="num"><span>22 000 Wh/j</span><span>32 × 185 Wc</span><span>1 310 Ah</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="captures">
+  <div class="wrap">
+    <h2><span data-i="h2c">En images</span></h2>
+    <p class="sub"><span data-i="subc">L'exemple du pavillon F4 à Tarbes, du schéma des protections à la synthèse.</span></p>
+    <div class="shots">
+      <figure class="big"><img data-shot="07b-schema" src="img/captures/fr-07b-schema.jpg" alt="" loading="lazy">
+        <figcaption><span data-i="f1">Schéma unifilaire : coupe-circuits, disjoncteurs, parafoudres, différentiel et mise à la terre de toutes les masses.</span></figcaption></figure>
+      <figure><img data-shot="03-pv" src="img/captures/fr-03-pv.jpg" alt="" loading="lazy">
+        <figcaption><span data-i="f2">Choix des panneaux et calcul de la puissance crête.</span></figcaption></figure>
+      <figure><img data-shot="07-prot" src="img/captures/fr-07-prot.jpg" alt="" loading="lazy">
+        <figcaption><span data-i="f3">Protections avec les règles de choix et les références.</span></figcaption></figure>
+      <figure><img data-shot="08-doc" src="img/captures/fr-08-doc.jpg" alt="" loading="lazy">
+        <figcaption><span data-i="f4">Documentation technique : le catalogue et les fiches des fabricants.</span></figcaption></figure>
+      <figure><img data-shot="09-sum" src="img/captures/fr-09-sum.jpg" alt="" loading="lazy">
+        <figcaption><span data-i="f5">Synthèse à imprimer ou à enregistrer en PDF.</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="telecharger" class="dl">
+  <div class="wrap">
+    <div class="dlhead">
+      <div>
+        <h2><span data-i="h2d">Télécharger Solar Duo</span></h2>
+        <p class="sub"><span data-i="subd">Gratuit, sans publicité, sans compte. Pas envie d'installer ? La version en ligne fonctionne dans le navigateur, même sur tablette.</span></p>
+        <div class="mainrow"><a class="btn big dlmain" id="mainDl" href="#telecharger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg><span class="dltxt">Télécharger</span></a><span class="alt" id="mainAlt">Choisissez votre système ci-dessous.</span></div>
+        <div class="counter" id="counter" hidden>⬇ <b id="total">—</b> <span><span data-i="cnt">téléchargements</span></span></div>
+      </div>
+      <figure><img src="img/deltaplane.jpg" alt="" loading="lazy"><figcaption><span data-i="dcap">Deltaplane au-dessus du lac de Génos-Loudenvielle</span> · <span data-i="photo">photo</span> Patrick LEVERGER</figcaption></figure>
+    </div>
+    <div class="dlgrid">
+      <a class="dlc" data-os="win" data-asset="Solar-Duo-Windows-Setup.exe" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-Windows-Setup.exe">
+        <span class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10 4.5v7H3zM11 4.3 21 3v8.5H11zM3 12.5h7v7l-7-1zM11 12.5h10V21l-10-1.4z"/></svg><strong>Windows</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="w1">Installeur (.exe) — Windows 10 et 11, raccourcis menu Démarrer et bureau</span></span><em></em></a>
+      <a class="dlc" data-os="win-zip" data-asset="Solar-Duo-Windows.zip" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-Windows.zip">
+        <span class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10 4.5v7H3zM11 4.3 21 3v8.5H11zM3 12.5h7v7l-7-1zM11 12.5h10V21l-10-1.4z"/></svg><strong><span data-i="wpt">Windows portable</span></strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="w2">Archive .zip sans installation : décompresser puis lancer « Solar Duo.exe »</span></span><em></em></a>
+      <a class="dlc" data-os="mac-arm" data-asset="Solar-Duo-macOS-AppleSilicon.zip" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-macOS-AppleSilicon.zip">
+        <span class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8C7 7.3 5.6 8.2 4.8 9.6c-1.6 2.8-.4 6.9 1.2 9.1.8 1.1 1.7 2.3 2.8 2.3 1.1 0 1.6-.7 2.9-.7s1.7.7 2.9.7 2-1.1 2.7-2.2c.9-1.3 1.2-2.5 1.2-2.6 0 0-2-.8-2-3.6zM14.3 5.6c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 .1 2-.5 2.6-1.2z"/></svg><strong>macOS Apple Silicon</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="m1d">Mac M1, M2, M3, M4… — décompresser, glisser dans Applications, puis clic droit › Ouvrir au premier lancement</span></span><em></em></a>
+      <a class="dlc" data-os="mac-intel" data-asset="Solar-Duo-macOS-Intel.zip" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-macOS-Intel.zip">
+        <span class="os"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8C7 7.3 5.6 8.2 4.8 9.6c-1.6 2.8-.4 6.9 1.2 9.1.8 1.1 1.7 2.3 2.8 2.3 1.1 0 1.6-.7 2.9-.7s1.7.7 2.9.7 2-1.1 2.7-2.2c.9-1.3 1.2-2.5 1.2-2.6 0 0-2-.8-2-3.6zM14.3 5.6c.6-.7 1-1.7.9-2.6-.9 0-1.9.6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 .1 2-.5 2.6-1.2z"/></svg><strong>macOS Intel</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="m2d">Mac à processeur Intel — décompresser, glisser dans Applications, puis clic droit › Ouvrir au premier lancement</span></span><em></em></a>
+      <a class="dlc" data-os="deb" data-asset="solar-duo_amd64.deb" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/solar-duo_amd64.deb">
+        <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c-2 0-3 2-3 4.5 0 2-1.5 3-2.5 5S4 17 5.5 18.5 9 20 12 20s5 0 6.5-1.5S19 14.5 17.5 12.5 15 9.5 15 7.5C15 5 14 3 12 3z"/><circle cx="10.5" cy="7.5" r=".6" fill="currentColor"/><circle cx="13.5" cy="7.5" r=".6" fill="currentColor"/></svg><strong>Linux .deb</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="l1">Debian, Ubuntu, Linux Mint — double-clic pour installer</span></span><em></em></a>
+      <a class="dlc" data-os="appimage" data-asset="Solar-Duo-x86_64.AppImage" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-x86_64.AppImage">
+        <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c-2 0-3 2-3 4.5 0 2-1.5 3-2.5 5S4 17 5.5 18.5 9 20 12 20s5 0 6.5-1.5S19 14.5 17.5 12.5 15 9.5 15 7.5C15 5 14 3 12 3z"/><circle cx="10.5" cy="7.5" r=".6" fill="currentColor"/><circle cx="13.5" cy="7.5" r=".6" fill="currentColor"/></svg><strong>Linux AppImage</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="l2">Toutes distributions : rendre exécutable puis lancer</span></span><em></em></a>
+      <a class="dlc" data-os="targz" data-asset="Solar-Duo-Linux-x86_64.tar.gz" href="https://github.com/Deltapassion/Solar-Duo/releases/latest/download/Solar-Duo-Linux-x86_64.tar.gz">
+        <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c-2 0-3 2-3 4.5 0 2-1.5 3-2.5 5S4 17 5.5 18.5 9 20 12 20s5 0 6.5-1.5S19 14.5 17.5 12.5 15 9.5 15 7.5C15 5 14 3 12 3z"/><circle cx="10.5" cy="7.5" r=".6" fill="currentColor"/><circle cx="13.5" cy="7.5" r=".6" fill="currentColor"/></svg><strong>Linux .tar.gz</strong><span class="badge"><span data-i="badge">Pour vous</span></span></span><span><span data-i="l3">Archive portable : décompresser puis lancer « solar-duo »</span></span><em></em></a>
+      <a class="dlc web" id="dlApp" href="app/">
+        <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><strong><span data-i="olt">Version en ligne</span></strong></span><span><span data-i="ol">Dans le navigateur, sans installation : ordinateur, tablette, téléphone</span></span></a>
+      <a class="dlc" id="dlNotice" href="notice/index.html?lang=fr">
+        <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6M8 11h6"/></svg><strong><span data-i="allt">Notice d'utilisation</span></strong></span><span><span data-i="all">Illustrée, en ligne, dans votre langue</span></span></a>
+    </div>
+    <h3 style="margin:6px 0 4px"><span data-i="nh">Notice d'utilisation</span></h3>
+    <div class="notices">
+      <a href="notice/index.html?lang=fr">🇫🇷 Français</a>
+      <a href="notice/index.html?lang=en">🇬🇧 English</a>
+      <a href="notice/index.html?lang=es">🇪🇸 Español</a>
+      <a href="notice/index.html?lang=pt">🇵🇹 Português</a>
+      <a href="notice/index.html?lang=de">🇩🇪 Deutsch</a>
+      <a href="notice/index.html?lang=it">🇮🇹 Italiano</a>
+      <a href="notice/index.html?lang=el">🇬🇷 Ελληνικά</a>
+      <a href="notice/index.html?lang=zh">🇨🇳 中文</a>
+      <a href="notice/index.html?lang=ru">🇷🇺 Русский</a>
+      <a href="notice/index.html?lang=uk">🇺🇦 Українська</a>
+      <a href="notice/index.html?lang=ar">العربية</a>
+      <a href="notice/index.html?lang=sq">🇦🇱 Shqip</a>
+    </div>
+    <p style="margin-top:-14px;font-size:14px;color:#cfe0ee"><span data-i="np">La notice s'ouvre aussi depuis le logiciel : menu Aide › Notice. L'interface du logiciel est en français, en anglais et en espagnol.</span></p>
+    <p><b><span data-i="src">Avec le code source :</span></b></p>
+    <ol>
+      <li><span data-i="sr1">Télécharger le code source sur GitHub (Code › Download ZIP) et le décompresser.</span></li>
+      <li><span data-i="sr2">Ouvrir <code>src/solar-duo.html</code> dans un navigateur, ou, avec Node.js : <code>npm install</code> puis <code>npm start</code>.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="soutenir" style="padding-top:clamp(40px,6vw,72px)">
+  <div class="wrap">
+    <div class="support">
+      <div class="big"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></svg></div>
+      <div><div class="k"><span data-i="sk">Soutenir</span></div>
+        <h2><span data-i="sh">Solar Duo est gratuit et le restera</span></h2>
+        <p><span data-i="sp">Si le logiciel vous rend service, en classe ou pour un projet, un petit don aide à le faire évoluer : nouveau matériel, nouvelles langues, corrections.</span></p>
+        <small><span data-i="ss">Dons sur Ko-fi : montant libre, par carte bancaire ou PayPal, sans créer de compte.</span></small></div>
+      <div class="sbtn">
+        <a class="btn pri" href="https://ko-fi.com/djlatinjazz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></svg><span><span data-i="kofi">Faire un don sur Ko-fi</span></span></a>
+        <a class="btn soft" href="https://github.com/Deltapassion/Solar-Duo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9L12 2.8Z"/></svg><span><span data-i="star">Une étoile sur GitHub</span></span></a>
+        <a class="btn soft" href="https://github.com/Deltapassion/Solar-Duo/issues/new" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="7" y="7" width="10" height="13" rx="5"/><path d="M12 11v9M9 4l1.5 3M15 4l-1.5 3M3 12h4M17 12h4M4 18l3.5-2M20 18l-3.5-2M4 7l3.5 2M20 7l-3.5 2"/></svg><span><span data-i="bug">Signaler un bug</span></span></a>
+      </div>
+    </div>
+    <div class="others"><span data-i="oth">Du même auteur :</span>
+      <a href="https://deltapassion.github.io/PDF-DUO/">PDF DUO</a>
+      <a href="https://deltapassion.github.io/Platine-Duo/">Platine DUO</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><span data-i="ft1">Solar Duo — Jacques Branas, en collaboration avec Claude.ai · Licence GNU GPL v3</span></span>
+    <span><span data-i="ft2">Contact :</span> <a href="mailto:deltapassion@gmx.com">deltapassion@gmx.com</a></span>
+    <p><span data-i="ft3">Les résultats sont une aide au dimensionnement : vérifiez les fiches techniques à jour des fabricants et les textes en vigueur avant toute réalisation.</span></p>
+  </div>
+</footer>
+
+<script src="i18n-site.js"></script>
+<script>
+(function(){
+  var T = window.SITE_T || {}, DYN = window.SITE_DYN || {};
+  var LANGS = ["fr","en","es","pt","de","it","el","zh","ru","uk","ar","sq"], APP_LANGS = ["fr","en","es"], FR = {}, lang = "fr";
+  var els = document.querySelectorAll("[data-i]");
+  els.forEach(function(e){ FR[e.getAttribute("data-i")] = e.innerHTML; });
+  function D(k){ return (DYN[lang] && DYN[lang][k]) || DYN.fr[k]; }
+  function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(e){ return null; } }
+  var REPO = "Deltapassion/Solar-Duo";
+  var BASE = "https://github.com/" + REPO + "/releases/latest/download/";
+  var NAMES = {win:"Windows", "win-zip":"Windows", deb:"Linux (.deb)", appimage:"Linux", targz:"Linux", "mac-arm":"Mac Apple Silicon", "mac-intel":"Mac Intel"};
+  function isAppleSilicon(){
+    try { var c = document.createElement("canvas").getContext("webgl"); var x = c && c.getExtension("WEBGL_debug_renderer_info");
+      var r = x ? c.getParameter(x.UNMASKED_RENDERER_WEBGL) : ""; if (/apple m\d|apple gpu/i.test(r)) return true; if (/intel|amd|radeon|nvidia/i.test(r)) return false; } catch(e){}
+    return true;
+  }
+  function detect(){
+    var ua = navigator.userAgent || "", p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    if (/android|iphone|ipad|ipod/i.test(ua) || (/mac/i.test(p) && navigator.maxTouchPoints > 1)) return "mobile";
+    if (/win/i.test(p) || /windows/i.test(ua)) return "win";
+    if (/mac/i.test(p) || /mac os x/i.test(ua)) return isAppleSilicon() ? "mac-arm" : "mac-intel";
+    if (/linux|x11|cros/i.test(p + ua)) return /ubuntu|debian|mint/i.test(ua) ? "deb" : "appimage";
+    return null;
+  }
+  var mine = detect(), mineOk = true, mainBtns = [document.getElementById("heroDl"), document.getElementById("mainDl")];
+  var counts = null;
+  function appUrl(){ return "app/" + (APP_LANGS.indexOf(lang) >= 0 ? "?lang=" + lang : ""); }
+  function fmt(n){ return n.toLocaleString(D("loc")); }
+  function render(){
+    var os = mine, card = os && document.querySelector('.dlc[data-os="' + os + '"]');
+    document.querySelectorAll(".dlc.mine").forEach(function(c){ c.classList.remove("mine"); });
+    var note = document.getElementById("heroNote");
+    if (os === "mobile"){
+      mainBtns.forEach(function(b){ b.href = appUrl(); b.removeAttribute("data-asset"); b.querySelector(".dltxt").textContent = D("useOnline"); });
+      document.getElementById("mainAlt").textContent = D("mob");
+      note.innerHTML = '<a href="#telecharger">' + D("allv") + '</a>';
+    } else if (!card || !mineOk){
+      mainBtns.forEach(function(b){ b.href = "#telecharger"; b.removeAttribute("data-asset"); b.querySelector(".dltxt").textContent = D("dl"); });
+      document.getElementById("mainAlt").textContent = os && NAMES[os] ? D("soonOs").replace("{os}", NAMES[os]) : D("pick");
+      note.innerHTML = '<a href="#telecharger">' + D("allv") + '</a>';
+    } else {
+      card.classList.add("mine");
+      mainBtns.forEach(function(b){ b.href = BASE + card.dataset.asset; b.dataset.asset = card.dataset.asset; b.querySelector(".dltxt").textContent = D("dlFor") + NAMES[os]; });
+      document.getElementById("mainAlt").textContent = D("ok");
+      note.innerHTML = D("not").replace("{os}", NAMES[os]) + ' <a href="#telecharger">' + D("allv") + '</a>';
+    }
+    document.querySelectorAll(".dlc[data-asset]").forEach(function(el){
+      var em = el.querySelector("em");
+      if (el.dataset.soon) em.textContent = D("soon");
+      else if (counts && counts.per[el.dataset.asset] !== undefined){ var n = counts.per[el.dataset.asset]; em.textContent = fmt(n) + " " + (n > 1 ? D("dn") : D("d1")); }
+    });
+    if (counts && counts.total > 0){ document.getElementById("total").textContent = fmt(counts.total); document.getElementById("counter").hidden = false; }
+  }
+  function setLang(l){
+    if (LANGS.indexOf(l) < 0) l = "fr";
+    lang = l;
+    els.forEach(function(e){ var k = e.getAttribute("data-i"); e.innerHTML = (l !== "fr" && T[l] && T[l][k] != null) ? T[l][k] : FR[k]; });
+    document.documentElement.lang = l; document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    document.getElementById("lang").value = l;
+    var shotLang = APP_LANGS.indexOf(l) >= 0 ? l : "en";
+    document.querySelectorAll("img[data-shot]").forEach(function(im){ im.src = "img/captures/" + shotLang + "-" + im.dataset.shot + ".jpg"; });
+    ["navNotice","dlNotice"].forEach(function(id){ document.getElementById(id).href = "notice/index.html?lang=" + l; });
+    ["navApp","heroApp","dlApp"].forEach(function(id){ document.getElementById(id).href = appUrl(); });
+    if (D("title")) document.title = D("title");
+    store("solarduo-site-lang", l);
+    render();
+  }
+  function firstLang(){
+    var q = new URLSearchParams(location.search).get("lang"); if (LANGS.indexOf(q) >= 0) return q;
+    var s = store("solarduo-site-lang"); if (LANGS.indexOf(s) >= 0) return s;
+    var n = navigator.languages || [navigator.language || "fr"];
+    for (var i = 0; i < n.length; i++){ var c = String(n[i]).slice(0, 2).toLowerCase(); if (LANGS.indexOf(c) >= 0) return c; }
+    return "fr";
+  }
+  document.getElementById("lang").addEventListener("change", function(e){ setLang(e.target.value); });
+  setLang(firstLang());
+  fetch("https://api.github.com/repos/" + REPO + "/releases?per_page=100")
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(rel){
+      if (!rel) return;
+      var total = 0, per = {}, lt = {};
+      var pub = rel.filter(function(r){ return !r.draft && !r.prerelease; });
+      if (pub[0]) (pub[0].assets || []).forEach(function(a){ lt[a.name] = true; });
+      rel.forEach(function(r){ (r.assets || []).forEach(function(a){ total += a.download_count; per[a.name] = (per[a.name] || 0) + a.download_count; }); });
+      counts = {total: total, per: per};
+      document.querySelectorAll(".dlc[data-asset]").forEach(function(el){
+        if (!lt[el.dataset.asset]){ el.classList.add("soon"); el.href = "https://github.com/" + REPO + "/releases"; el.dataset.soon = "1"; }
+      });
+      var mc = mine && document.querySelector('.dlc[data-os="' + mine + '"]');
+      mineOk = !!(mc && lt[mc.dataset.asset]);
+      render();
+    }).catch(function(){});
+  document.querySelectorAll(".dlc[data-asset], #heroDl, #mainDl").forEach(function(el){
+    el.addEventListener("click", function(){
+      if (!el.dataset.asset || el.dataset.soon) return;
+      if (window.goatcounter && goatcounter.count)
+        goatcounter.count({path: "solar-duo-telechargement-" + el.dataset.asset, title: el.dataset.asset, event: true});
+    });
+  });
+})();
+</script>
+<script data-goatcounter="https://deltapassion.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
