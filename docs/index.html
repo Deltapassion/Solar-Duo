@@ -169,9 +169,23 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
 @media (max-width:1240px){nav{gap:14px} nav a.l2{display:none}}
 @media (max-width:900px){.support{grid-template-columns:auto 1fr}.sbtn{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.sbtn .btn{flex:1 1 200px}
   .dlhead{grid-template-columns:1fr}.dlhead figure{width:min(420px,100%);transform:none}}
-@media (max-width:820px){.shots{grid-template-columns:1fr}.shots .big{grid-column:auto} nav a.l{display:none}}
+@media (max-width:820px){.btn.l2b{display:none}.shots{grid-template-columns:1fr}.shots .big{grid-column:auto} nav a.l{display:none}}
 @media (max-width:560px){.support{grid-template-columns:1fr;padding:22px}.sbtn{min-width:0}.give span{display:none}.give{padding:8px 10px}}
 @media (prefers-reduced-motion:reduce){.give,.give svg,.support,.support .big,.support .big svg,.sbtn .btn.pri svg{animation:none!important}}
+
+/* ---------- vidéo de présentation ---------- */
+.vid{position:relative;aspect-ratio:16/9;max-width:960px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.vid img,.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.vid button{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;background:none;cursor:pointer;display:grid;place-items:center}
+.vid button::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.45))}
+.vid .play{position:relative;z-index:1;width:84px;height:84px;border-radius:50%;background:rgba(229,57,53,.92);display:grid;place-items:center;box-shadow:0 8px 30px rgba(0,0,0,.45);transition:transform .15s ease}
+.vid button:hover .play{transform:scale(1.08)}
+.vid .play svg{width:34px;height:34px;margin-left:5px}
+.vidlangs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px;color:var(--muted);font-size:15px}
+.vidlangs a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:14px}
+.vidlangs a:hover{border-color:var(--celeste)}
+.vidlangs a[aria-current="true"]{border-color:var(--celeste);background:var(--sky-deep);color:#fff}
+@media (max-width:600px){.vid .play{width:64px;height:64px}.vid .play svg{width:26px;height:26px}}
 </style>
 </head>
 <body>
@@ -180,6 +194,7 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
   <nav>
     <a class="brand" href="#"><img src="img/icon.png" alt=""><span><span class="s">SOLAR</span> DUO</span></a>
     <a class="l" href="#fonctions"><span data-i="nf">Fonctions</span></a>
+    <a class="l" href="#video"><span data-i="nv">Vidéo</span></a>
     <a class="l" href="#methode"><span data-i="nm">Méthode</span></a>
     <a class="l l2" href="#captures"><span data-i="nc">Captures</span></a>
     <a class="l" href="#telecharger"><span data-i="nt">Télécharger</span></a>
@@ -203,7 +218,8 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
         <span class="dltxt">Télécharger</span>
       </a>
       <a class="btn ghost" id="heroApp" href="app/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><span data-i="online">Utiliser en ligne</span></a>
-      <a class="btn ghost" href="https://github.com/Deltapassion/Solar-Duo"><span data-i="code">Voir le code sur GitHub</span></a>
+      <a class="btn ghost" href="#video"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i="watch">Voir la vidéo</span></a>
+      <a class="btn ghost l2b" href="https://github.com/Deltapassion/Solar-Duo"><span data-i="code">Voir le code sur GitHub</span></a>
     </div>
     <p class="osnote" id="heroNote"><a href="#telecharger">Toutes les versions : Windows, macOS, Linux</a></p>
   </div>
@@ -225,6 +241,15 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
       <div class="card"><div class="ic" style="background:#6a4fb3">📖</div><h3><span data-i="c8t">Documentation technique</span></h3><p><span data-i="c8">Tout le catalogue avec les liens vers les fiches des fabricants ; un clic pour choisir, le matériel retenu est surligné.</span></p></div>
       <div class="card"><div class="ic" style="background:#b07a00">🖨</div><h3><span data-i="c9t">Synthèse imprimable</span></h3><p><span data-i="c9">Récapitulatif, liste du matériel et schéma unifilaire, à imprimer ou à enregistrer en PDF ; projets enregistrés dans un fichier.</span></p></div>
     </div>
+  </div>
+</section>
+
+<section id="video" style="padding-top:0">
+  <div class="wrap">
+    <h2><span data-i="h2v">Solar Duo en deux minutes</span></h2>
+    <p class="sub"><span data-i="subv">Le tour des onglets sur l'exemple du pavillon F4 à Tarbes, du bilan énergétique au schéma des protections.</span></p>
+    <div class="vid" id="vid"><button type="button" id="vidPlay" aria-label="Lire la vidéo"><img id="vidImg" src="https://i.ytimg.com/vi/0DwFtQnNzbk/hqdefault.jpg" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></button></div>
+    <div class="vidlangs"><span data-i="vl">Langue de la vidéo :</span> <a href="#video" data-vl="fr">🇫🇷 Français</a> <a href="#video" data-vl="en">🇬🇧 English</a></div>
   </div>
 </section>
 
@@ -407,6 +432,24 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
     });
     if (counts && counts.total > 0){ document.getElementById("total").textContent = fmt(counts.total); document.getElementById("counter").hidden = false; }
   }
+  var VID = {fr: "0DwFtQnNzbk", en: "aGeFV34_Xz8"}, vlang = "fr";
+  var PLAYL = {fr:"Lire la vidéo",en:"Play the video",es:"Reproducir el vídeo",pt:"Reproduzir o vídeo",de:"Video abspielen",it:"Riproduci il video",el:"Αναπαραγωγή βίντεο",zh:"播放视频",ru:"Смотреть видео",uk:"Дивитися відео",ar:"تشغيل الفيديو",sq:"Luaj videon"};
+  function showVid(auto){
+    var f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/" + VID[vlang] + "?rel=0&hl=" + lang + (auto ? "&autoplay=1" : "");
+    f.title = "Solar Duo"; f.dataset.l = vlang; f.allowFullscreen = true;
+    f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+    var box = document.getElementById("vid"); box.innerHTML = ""; box.appendChild(f);
+  }
+  function vidLang(v){
+    vlang = VID[v] ? v : "en";
+    var b = document.getElementById("vidPlay");
+    if (b){ document.getElementById("vidImg").src = "https://i.ytimg.com/vi/" + VID[vlang] + "/hqdefault.jpg"; b.setAttribute("aria-label", PLAYL[lang] || PLAYL.en); }
+    else { var f = document.querySelector("#vid iframe"); if (f && f.dataset.l !== vlang) showVid(false); }
+    document.querySelectorAll(".vidlangs a").forEach(function(a){ a.setAttribute("aria-current", a.dataset.vl === vlang); });
+  }
+  document.getElementById("vidPlay").addEventListener("click", function(){ showVid(true); });
+  document.querySelectorAll(".vidlangs a").forEach(function(a){ a.addEventListener("click", function(e){ e.preventDefault(); vidLang(a.dataset.vl); }); });
   function setLang(l){
     if (LANGS.indexOf(l) < 0) l = "fr";
     lang = l;
@@ -419,6 +462,7 @@ footer p{flex-basis:100%;margin:0;font-size:13px}
     ["navApp","heroApp","dlApp"].forEach(function(id){ document.getElementById(id).href = appUrl(); });
     if (D("title")) document.title = D("title");
     store("solarduo-site-lang", l);
+    vidLang(l === "fr" ? "fr" : "en");
     render();
   }
   function firstLang(){
